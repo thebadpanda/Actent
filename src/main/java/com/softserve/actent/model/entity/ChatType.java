@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="chat_types")
+@Table(name = "chat_types")
 public class ChatType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
