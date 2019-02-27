@@ -26,5 +26,5 @@ public class Subcategory {
     @NotBlank(message = "Can't be empty")
     @Length(max = 20, message = "Too long")
     @Column(unique = true, nullable = false, length = 20)
-    private String type;
+    private String name;
 }
