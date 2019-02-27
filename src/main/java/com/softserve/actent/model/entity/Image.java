@@ -4,7 +4,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
@@ -25,7 +30,7 @@ public class Image {
 
     @NonNull
     @NotBlank(message = "hash can`t be empty.")
-    @Column(name = "hash", unique = true, length = 256)
+    @Column(unique = true, length = 256)
     @Length(max = 256, message = "Too long")
     private String hash;
 }
