@@ -23,6 +23,6 @@ public class MessageType {
 
     @NonNull
     @NotBlank(message = "Review text can`t be empty.")
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String type;
 }
