@@ -24,9 +24,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role", unique = true)
-    @NotBlank(message = "Role cannot be empty")
+
     @NonNull
-    @Length(max = 20, message = "Too long")
+    @Length(max = 20,  message = "Too long")
+    @NotBlank(message = "Role cannot be empty")
+    @Column(name = "role", unique = true, nullable = false)
     private String role;
 }
