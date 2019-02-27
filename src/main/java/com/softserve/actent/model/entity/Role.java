@@ -13,10 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "roles")
+
 @Data
 @NoArgsConstructor
+@Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
