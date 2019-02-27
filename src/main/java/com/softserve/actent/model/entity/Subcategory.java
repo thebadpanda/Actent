@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,7 @@ public class Subcategory {
     private Long id;
 
     @NonNull
+    @NotNull
     @NotBlank(message = "Can't be empty")
     @Column(unique = true, nullable = false, length = 20)
     private String type;
