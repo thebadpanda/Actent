@@ -4,11 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,10 +19,12 @@ public class Review {
 
     @NonNull
     @NotBlank(message = "Review text can`t be empty.")
+    @Column(nullable = false)
     private String text;
 
     @NonNull
     @NotNull(message = "Review can`t be null.")
+    @Column(nullable = false)
     private Integer score;
 }
 
