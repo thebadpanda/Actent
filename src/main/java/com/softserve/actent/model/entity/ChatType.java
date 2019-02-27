@@ -25,5 +25,5 @@ public class ChatType {
     @NonNull
     @NotBlank(message = "type can`t be empty.")
     @Column(unique = true, nullable = false)
-    private String type;
+    private String name;
 }
