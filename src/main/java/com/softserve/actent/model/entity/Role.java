@@ -28,6 +28,6 @@ public class Role {
     @NonNull
     @Length(max = 20,  message = "Too long")
     @NotBlank(message = "Role cannot be empty")
-    @Column(name = "role", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String role;
 }
