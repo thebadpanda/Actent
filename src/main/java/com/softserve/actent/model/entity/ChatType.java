@@ -23,7 +23,7 @@ public class ChatType {
     private Long id;
 
     @NonNull
-    @NotBlank(message="type can`t be empty.")
-    @Column(unique = true,nullable = false)
+    @NotBlank(message = "type can`t be empty.")
+    @Column(unique = true, nullable = false)
     private String type;
 }
