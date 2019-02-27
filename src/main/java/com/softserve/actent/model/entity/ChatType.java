@@ -3,9 +3,13 @@ package com.softserve.actent.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -21,5 +25,4 @@ public class ChatType {
     @NotBlank(message="type can`t be empty.")
     @Column(name="type",unique = true)
     private String type;
-
 }
