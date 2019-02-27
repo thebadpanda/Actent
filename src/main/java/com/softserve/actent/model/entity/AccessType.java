@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -23,7 +22,7 @@ public class AccessType {
     private Integer id;
 
     @NonNull
-    @NotBlank(message = "Review text can`t be empty.")
+    @NotBlank(message = "type can`t be empty.")
     @Column(unique = true, nullable = false)
-    private String type;
+    private String name;
 }
