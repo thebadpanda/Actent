@@ -24,13 +24,13 @@ public class Image {
 
     @NonNull
     @NotBlank(message = "File path can`t be empty.")
-    @Column(nullable = false, name = "file_path", unique = true, length = 256)
+    @Column(name = "file_path", nullable = false,  unique = true, length = 256)
     @Length(max = 256, message = "Too long")
     private String filePath;
 
     @NonNull
     @NotBlank(message = "hash can`t be empty.")
     @Column(nullable = false, unique = true, length = 256)
-    @Length(max = 256, min = 256, message = "Hash must be of exact length 256")
+    @Length(min = 256, max = 256, message = "Hash must be of exact length 256")
     private String hash;
 }
