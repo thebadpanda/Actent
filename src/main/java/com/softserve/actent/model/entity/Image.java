@@ -31,6 +31,6 @@ public class Image {
     @NonNull
     @NotBlank(message = "hash can`t be empty.")
     @Column(nullable = false, unique = true, length = 256)
-    @Length(max = 256, message = "Too long")
+    @Length(max = 256, min = 256, message = "Hash must be of exact length 256")
     private String hash;
 }
