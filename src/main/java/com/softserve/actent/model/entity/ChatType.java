@@ -12,10 +12,11 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
-@Entity
+
 @Data
-@Table(name="chat_types")
 @NoArgsConstructor
+@Entity
+@Table(name="chat_types")
 public class ChatType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
