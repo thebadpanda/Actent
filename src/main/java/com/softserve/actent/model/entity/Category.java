@@ -4,10 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,9 +29,6 @@ public class Category {
     private String name;
 
     @NonNull
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "category_subcategories",
-            joinColumns = {@JoinColumn(name = "category_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "subcategory_id", nullable = false)})
-    private Set<Subcategory> subcategories;
+    @Column(name = "parent_id")
+    private Long parentId;
 }
