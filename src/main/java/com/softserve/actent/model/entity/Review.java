@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.resources.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -23,12 +24,12 @@ public class Review {
     private Long id;
 
     @NonNull
-    @NotBlank(message = "Review text can`t be empty.")
+    @NotBlank(message = StringConstants.EMPTY_REWIEW_TEXT)
     @Column(nullable = false)
     private String text;
 
     @NonNull
-    @NotNull(message = "Review can`t be null.")
+    @NotNull(message = StringConstants.NO_REVIEW_SCORE)
     @Column(nullable = false)
     private Integer score;
 }
