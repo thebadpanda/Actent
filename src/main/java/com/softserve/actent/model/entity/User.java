@@ -66,13 +66,11 @@ public class User {
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avatar_id")
     private Image avatar;
 
     @NonNull
     @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
     @NonNull
