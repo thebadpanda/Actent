@@ -15,8 +15,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "subcategories")
-public class Subcategory {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +27,8 @@ public class Subcategory {
     @Length(max = 20, message = "Too long")
     @Column(unique = true, nullable = false, length = 20)
     private String name;
+
+    @NonNull
+    @Column(name = "parent_id")
+    private Long parentId;
 }
