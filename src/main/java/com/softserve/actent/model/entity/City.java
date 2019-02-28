@@ -1,8 +1,7 @@
 package com.softserve.actent.model.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import com.softserve.actent.resources.StringConstants;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -10,14 +9,15 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "cities")
+@Entity
+@Table(name = "cities")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
-    @NotBlank(message = "City can`t be blank")
+    @NotBlank(message = StringConstants.CITY_SHOULD_NOT_BE_BLANK)
     @Length(max = 30, message = "Too long")
     @Column(unique = true, nullable = false, length = 30)
     private String name;
