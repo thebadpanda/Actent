@@ -25,6 +25,10 @@ public class Category {
     @Column(unique = true, nullable = false, length = 20)
     private String name;
 
-    
+    @NonNull
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "category_subcategories",
+            joinColumns = {@JoinColumn(name = "category_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "subcategory_id", nullable = false)})
     private Set<Subcategory> subcategories;
 }
