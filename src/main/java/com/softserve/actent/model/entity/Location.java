@@ -25,8 +25,8 @@ public class Location {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.NOT_BLANK_FIELD)
-    @Length(max = 50, message = StringConstants.TOO_LONG)
+    @NotBlank(message = StringConstants.LOCATION_SHOULD_NOT_BE_BLANK)
+    @Length(max = 50, message = StringConstants.LOCATION_NO_LONGER_THAT_FIFTY_SYMBOLS)
     @Column(unique = true, nullable = false, length = 50)
     private String address;
 

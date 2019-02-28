@@ -26,8 +26,8 @@ public class Country {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.NOT_BLANK_FIELD)
-    @Length(max = 30, message = StringConstants.TOO_LONG)
+    @NotBlank(message = StringConstants.COUNTRY_SHOULD_NOT_BE_BLANK)
+    @Length(max = 30, message = StringConstants.COUNTRY_NO_LONGER_THAT_THIRTY_SYMBOLS)
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
