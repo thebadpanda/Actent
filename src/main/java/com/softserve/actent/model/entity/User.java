@@ -1,38 +1,100 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.resources.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Data
 public class User {
     @Id
-//    @GenericGenerator(name = "idGenerator", strategy = "increment")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
-    @Column(name = "first_name")
+    @NotBlank(message = StringConstants.EMPTY_USER_FIRST_NAME)
+    @Column(nullable = false)
     private String firstName;
 
     @NonNull
-    @Column(name = "last_name")
+    @NotBlank(message = StringConstants.EMPTY_USER_LAST_NAME)
+    @Column(nullable = false)
     private String lastName;
 
-    // TODO: make unique
     @NonNull
+    @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
+    @Column(unique = true, nullable = false)
     private String login;
+
+    @NotNull
+    @NotBlank(message = StringConstants.EMPTY_USER_EMAIL)
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @NonNull
+    @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
+    @Column(nullable = false)
+    private String password;
+
+    @NonNull
+    @NotNull(message = StringConstants.EMPTY_USER_BIRTH_DATE)
+    @Column(nullable = false)
+    private Date birth_date;
+
+    @NonNull
+    @Column
+    private Image avatar;
+
+    @NonNull
+    @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
+    @ManyToOne
+    @Column(nullable = false)
+    private Location location;
+
+    @NonNull
+    @Column(length = 500)
+    private String bio;
+
+    @NonNull
+    @Column
+    private List<Category> interests;
+
+    @NonNull
+    @NotBlank(message = StringConstants.EMPTY_USER_SEX)
+    @Column(nullable = false)
+    private String sex;
+
+    @NonNull
+    @Column
+    @ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+    private List<Event> events;
+
+    @NonNull
+    @Column
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id", nullable = false)
+    private List<Review> reviews;
+
+
+    @NonNull
+    @NotNull(message = StringConstants.EMPTY_USER_ROLE)
+    @Column(nullable = false)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private List<Role> roles;
+
 }
