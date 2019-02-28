@@ -23,9 +23,6 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne
-//    private Event event;
-
     @NonNull
     @NotBlank(message = StringConstants.NO_TAG_TEXT)
     @Column(nullable = false)
