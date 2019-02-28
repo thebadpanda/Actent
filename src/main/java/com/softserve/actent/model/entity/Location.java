@@ -32,5 +32,4 @@ public class Location {
 
     @ManyToOne
     private City city;
-
 }
