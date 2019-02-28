@@ -26,11 +26,11 @@ public class City {
 
     @NonNull
     @NotBlank(message = StringConstants.CITY_SHOULD_NOT_BE_BLANK)
-    @Length(max = 30, message = StringConstants.CITY_NO_LONGER_THAT_THIRTY_SYMBOLS)
+    @Length(max = 30, message = StringConstants.CITY_NO_LONGER_THAN_THIRTY_SYMBOLS)
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
-
     @ManyToOne
     private Region region;
+
 }
