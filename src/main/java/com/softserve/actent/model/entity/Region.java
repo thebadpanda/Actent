@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -38,5 +38,5 @@ public class Region {
     private Country country;
 
     @OneToMany(mappedBy = "region")
-    private List<City> cities;
+    private Set<City> cities;
 }
