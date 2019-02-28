@@ -2,9 +2,12 @@ package com.softserve.actent.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,12 +27,15 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @NonNull
+    @Enumerated(EnumType.ORDINAL)
     private MessageType messageType;
 
+    @NonNull
     @OneToOne(cascade = CascadeType.ALL)
     private MessageBody messageBody;
 
+    @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User sender;
 
