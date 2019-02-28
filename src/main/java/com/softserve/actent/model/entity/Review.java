@@ -1,6 +1,6 @@
 package com.softserve.actent.model.entity;
 
-import com.softserve.actent.resources.StringConstants;
+import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
