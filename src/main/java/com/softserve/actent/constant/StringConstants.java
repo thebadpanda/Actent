@@ -1,4 +1,4 @@
-package com.softserve.actent.resources;
+package com.softserve.actent.constant;
 
 public class StringConstants {
 
