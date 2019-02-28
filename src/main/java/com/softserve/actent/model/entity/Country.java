@@ -27,10 +27,11 @@ public class Country {
 
     @NonNull
     @NotBlank(message = StringConstants.COUNTRY_SHOULD_NOT_BE_BLANK)
-    @Length(max = 30, message = StringConstants.COUNTRY_NO_LONGER_THAT_THIRTY_SYMBOLS)
+    @Length(max = 30, message = StringConstants.COUNTRY_NO_LONGER_THAN_THIRTY_SYMBOLS)
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
     @OneToMany(mappedBy = "country")
     private Set<Region> regions;
+
 }
