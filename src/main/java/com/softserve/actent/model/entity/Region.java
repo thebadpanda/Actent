@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -28,13 +27,12 @@ public class Region {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.REGION_SHOULD_NOT_BE_BLANK)
+    @NotBlank(message = StringConstants.NOT_BLANK_FIELD)
     @Length(max = 30, message = StringConstants.TOO_LONG)
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "country_id")
     private Country country;
 
     @OneToMany(mappedBy = "region")
