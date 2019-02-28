@@ -87,7 +87,6 @@ public class User {
     @JoinColumn(name = "review_id", nullable = false)
     private List<Review> reviews;
 
-
     @NonNull
     @NotNull(message = StringConstants.EMPTY_USER_ROLE)
     @Column(nullable = false)
