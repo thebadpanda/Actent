@@ -91,12 +91,12 @@ public class User {
     @Column(nullable = false)
     private String sex;
 
-//    @NonNull
-//    @ManyToMany
-//    @JoinTable(name = "user_events",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "event_id")})
-//    private Set<Event> events;
+    @NonNull
+    @ManyToMany
+    @JoinTable(name = "user_events",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+    private Set<Event> events;
 
     @NonNull
     @OneToMany(fetch = FetchType.LAZY)
