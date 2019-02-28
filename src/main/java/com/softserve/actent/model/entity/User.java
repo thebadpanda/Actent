@@ -51,13 +51,14 @@ public class User {
     private Date birth_date;
 
     @NonNull
-    @Column
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_id")
     private Image avatar;
 
     @NonNull
     @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
     @NonNull
@@ -66,6 +67,10 @@ public class User {
 
     @NonNull
     @Column
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_categories",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "interests_id")})
     private List<Category> interests;
 
     @NonNull
@@ -87,13 +92,6 @@ public class User {
     @JoinColumn(name = "review_id", nullable = false)
     private List<Review> reviews;
 
-    @NonNull
-    @NotNull(message = StringConstants.EMPTY_USER_ROLE)
-    @Column(nullable = false)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roles;
-
+    @Enumerated(EnumType.STRING)
+    private Role roles;
 }
