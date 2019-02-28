@@ -14,4 +14,8 @@ public class StringConstants {
     public static final String CITY_NO_LONGER_THAN_THIRTY_SYMBOLS ="City shouldn`t be longer than 30";
     public static final String REGION_NO_LONGER_THAN_THIRTY_SYMBOLS ="Region shouldn`t be longer than 30";
     public static final String COUNTRY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Country shouldn`t be longer than 30";
+
+    public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
+    public static final String DESCRIPTION_SHOULD_NOT_BE_BLANK = "Description can`t be blank";
+
 }
