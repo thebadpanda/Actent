@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 
@@ -63,15 +62,15 @@ public class User {
     @NonNull
     @NotNull(message = StringConstants.EMPTY_USER_BIRTH_DATE)
     @Column(nullable = false)
-    private Date birth_date;
+    private LocalDate birthDate;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Image avatar;
 
     @NonNull
     @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Location location;
 
     @NonNull
@@ -80,7 +79,7 @@ public class User {
     private String bio;
 
     @NonNull
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "user_categories",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
@@ -96,7 +95,7 @@ public class User {
     private Set<Event> events;
 
     @NonNull
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(nullable = false)
     private Set<Review> reviews;
 
@@ -107,6 +106,5 @@ public class User {
     private Set<Chat> bannedChats;
 
     @Enumerated(EnumType.STRING)
-    private Role roles;
-
+    private Role role;
 }
