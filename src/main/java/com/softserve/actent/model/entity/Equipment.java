@@ -39,11 +39,11 @@ public class Equipment {
     private boolean satisfied;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private User assignedUser;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Event assignedEvent;
 
 }
