@@ -4,6 +4,7 @@ import com.softserve.actent.resources.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -74,6 +75,7 @@ public class User {
     private Location location;
 
     @NonNull
+    @Length(max = 500)
     @Column(length = 500)
     private String bio;
 
@@ -91,9 +93,6 @@ public class User {
 
     @NonNull
     @ManyToMany
-    @JoinTable(name = "user_events",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "event_id")})
     private Set<Event> events;
 
     @NonNull
