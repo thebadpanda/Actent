@@ -12,7 +12,6 @@ public class StringConstants {
 
     public static final String TOO_LONG = "Too long";
 
-    // USER
     public static final String EMPTY_USER_FIRST_NAME = "User first name can not be empty.";
     public static final String EMPTY_USER_LAST_NAME = "User last name can not be empty.";
     public static final String EMPTY_USER_LOGIN = "User login can not be empty.";
