@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -82,7 +82,7 @@ public class User {
     @JoinTable(name = "user_categories",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
-    private List<Category> interests;
+    private Set<Category> interests;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_SEX)
@@ -99,7 +99,7 @@ public class User {
     @NonNull
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private List<Review> reviews;
+    private Set<Review> reviews;
 
     @Enumerated(EnumType.STRING)
     private Role roles;
