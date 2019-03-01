@@ -32,9 +32,11 @@ public class Region {
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
+    @NonNull
     @ManyToOne
     private Country country;
 
+    @NonNull
     @OneToMany(mappedBy = "region")
     private Set<City> cities;
 }
