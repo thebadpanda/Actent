@@ -42,6 +42,6 @@ public class Chat {
     @NonNull
     @OneToMany(fetch=FetchType.LAZY,
             mappedBy = "chat")
-    private Set<User> banned = new HashSet<>();
+    private Set<User> bannedUsers = new HashSet<>();
 
 }
