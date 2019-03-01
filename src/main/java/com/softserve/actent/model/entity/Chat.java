@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,8 +30,7 @@ public class Chat {
     private Long id;
 
     @NonNull
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "chat")
+    @OneToMany(mappedBy = "chat")
     private Set<Message> messages;
 
     @NonNull
@@ -42,8 +40,7 @@ public class Chat {
 
     @NonNull
     @Column(name = "banned_in_chat")
-    @ManyToMany(fetch=FetchType.LAZY,
-            mappedBy = "bannedChats")
+    @ManyToMany(mappedBy = "bannedChats")
     private Set<User> bannedUsers = new HashSet<>();
 
 }
