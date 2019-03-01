@@ -100,7 +100,13 @@ public class User {
     @JoinColumn(nullable = false)
     private Set<Review> reviews;
 
+    @ManyToMany
+    @JoinTable(name = "user_chat",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "chat_id")})
+    private Set<Chat> bannedChats;
+
     @Enumerated(EnumType.STRING)
     private Role roles;
 
-}
+}git
