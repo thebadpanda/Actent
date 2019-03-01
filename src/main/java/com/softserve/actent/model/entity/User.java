@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -83,7 +84,7 @@ public class User {
     @JoinTable(name = "user_categories",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
-    private Set<Category> interests;
+    private Set<Category> interests = new HashSet<>();
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_SEX)
@@ -92,18 +93,18 @@ public class User {
 
     @NonNull
     @ManyToMany
-    private Set<Event> events;
+    private Set<Event> events = new HashSet<>();
 
     @NonNull
     @OneToMany
     @JoinColumn(nullable = false)
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "user_chat",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chat_id")})
-    private Set<Chat> bannedChats;
+    private Set<Chat> bannedChats = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
