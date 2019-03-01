@@ -13,8 +13,6 @@ public class StringConstants {
     public static final String EMPTY_USER_PASSWORD = "User password can not be empty.";
     public static final String EMPTY_USER_BIRTH_DATE = "User birth date can not be empty.";
     public static final String EMPTY_USER_LOCATION = "User location can not be empty.";
-    public static final String EMPTY_USER_SEX= "User sex can not be empty.";
-    public static final String EMPTY_USER_ROLE= "User role can not be empty.";
-
+    public static final String EMPTY_USER_SEX = "User sex can not be empty.";
 
 }

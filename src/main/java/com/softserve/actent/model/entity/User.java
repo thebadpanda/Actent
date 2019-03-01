@@ -98,9 +98,10 @@ public class User {
 
     @NonNull
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id", nullable = false)
+    @JoinColumn(nullable = false)
     private List<Review> reviews;
 
     @Enumerated(EnumType.STRING)
     private Role roles;
+
 }
