@@ -39,5 +39,5 @@ public class Region {
 
     @NonNull
     @OneToMany(mappedBy = "region")
-    private Set<City> cities =new HashSet<>();
+    private Set<City> cities = new HashSet<>();
 }
