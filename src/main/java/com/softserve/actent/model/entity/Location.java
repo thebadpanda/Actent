@@ -18,15 +18,15 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "location")
+@Table(name = "locations")
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.CITY_SHOULD_NOT_BE_BLANK)
-    @Length(max = 50, message = StringConstants.TOO_LONG)
+    @NotBlank(message = StringConstants.LOCATION_SHOULD_NOT_BE_BLANK)
+    @Length(max = 50, message = StringConstants.LOCATION_NO_LONGER_THAN_FIFTY_SYMBOLS)
     @Column(unique = true, nullable = false, length = 50)
     private String address;
 
