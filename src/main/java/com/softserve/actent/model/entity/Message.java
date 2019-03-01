@@ -37,7 +37,7 @@ public class Message {
     private MessageBody messageBody;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User sender;
 
     @NonNull
