@@ -31,6 +31,7 @@ public class Country {
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
+    @NonNull
     @OneToMany(mappedBy = "country")
     private Set<Region> regions;
 }
