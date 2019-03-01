@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -38,5 +39,5 @@ public class Region {
 
     @NonNull
     @OneToMany(mappedBy = "region")
-    private Set<City> cities;
+    private Set<City> cities =new HashSet<>();
 }
