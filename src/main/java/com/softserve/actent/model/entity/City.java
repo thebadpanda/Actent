@@ -30,6 +30,7 @@ public class City {
     @Column(unique = true, nullable = false, length = 30)
     private String name;
 
+    @NonNull
     @ManyToOne
     private Region region;
 }
