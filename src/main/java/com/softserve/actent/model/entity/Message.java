@@ -28,7 +28,7 @@ public class Message {
     private Long id;
 
     @NonNull
-    Long sendTime;
+    private Long sendTime;
 
     @NonNull
     @Enumerated(EnumType.STRING)
