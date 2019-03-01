@@ -42,7 +42,7 @@ public class Message {
 
     @NonNull
     @ManyToOne
-    @JoinColumn(name = "chat_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Chat chat;
 
 }
