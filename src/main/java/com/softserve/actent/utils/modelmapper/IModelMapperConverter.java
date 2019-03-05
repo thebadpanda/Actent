@@ -1,4 +1,4 @@
-package utils.modelmapper;
+package com.softserve.actent.utils.modelmapper;
 
 
 import java.util.List;
