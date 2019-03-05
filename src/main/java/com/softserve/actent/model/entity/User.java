@@ -1,10 +1,13 @@
 package com.softserve.actent.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,17 +22,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
+@Component
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +57,7 @@ public class User {
     @NotNull
     @NotBlank(message = StringConstants.EMPTY_USER_EMAIL)
     @Column(unique = true, nullable = false)
+    @Email
     private String email;
 
     @NonNull
@@ -61,17 +66,20 @@ public class User {
     private String password;
 
     @NonNull
-    @NotNull(message = StringConstants.EMPTY_USER_BIRTH_DATE)
+//    @NotNull(message = StringConstants.EMPTY_USER_BIRTH_DATE)
+    @JsonManagedReference
     @Column(nullable = false)
     private LocalDate birthDate;
 
     @NonNull
     @ManyToOne
+    @JsonManagedReference
     private Image avatar;
 
     @NonNull
-    @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
+//    @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
     @ManyToOne
+    @JsonManagedReference
     private Location location;
 
     @NonNull
@@ -81,30 +89,34 @@ public class User {
 
     @NonNull
     @ManyToMany
+    @JsonBackReference
     @JoinTable(name = "user_categories",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
-    private Set<Category> interests = new HashSet<>();
+    private List<Category> interests;
 
     @NonNull
-    @NotBlank(message = StringConstants.EMPTY_USER_SEX)
+//    @NotBlank(message = StringConstants.EMPTY_USER_SEX)
     @Column(nullable = false)
     private String sex;
 
-    @NonNull
-    @ManyToMany
-    private Set<Event> events = new HashSet<>();
+//    @NonNull
+//    @ManyToMany
+//    @JsonBackReference
+//    private List<Event> events;
 
     @NonNull
+    @JsonBackReference
     @OneToMany
     @JoinColumn(nullable = false)
-    private Set<Review> reviews = new HashSet<>();
+    private List<Review> reviews;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "user_chat",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chat_id")})
-    private Set<Chat> bannedChats = new HashSet<>();
+    private List<Chat> bannedChats;
 
     @Enumerated(EnumType.STRING)
     private Role role;

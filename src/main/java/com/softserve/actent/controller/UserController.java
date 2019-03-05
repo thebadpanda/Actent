@@ -1,10 +1,9 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.CreateUserDto;
 import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.RegisterUserDto;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +19,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/users")
-    public ResponseEntity<IdDto> addUser(@RequestBody CreateUserDto createUserDto) {
-
-        User user = userService.addUser(new User(createUserDto.getFirstName(), createUserDto.getLastName(),
-                createUserDto.getLogin()));
-
-        return new ResponseEntity<>(new IdDto(user.getId()), HttpStatus.CREATED);
+    public ResponseEntity<IdDto> addUser(@RequestBody RegisterUserDto registerUserDto) {
+        if(userService.registerUser(registerUserDto)){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @GetMapping(value = "/users")
