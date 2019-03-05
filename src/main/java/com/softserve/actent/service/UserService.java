@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface UserService {
 
-    boolean registerUser(RegisterUserDto registerUserDto);
+    RegisterUserDto registerUser(RegisterUserDto registerUserDto);
 
-    boolean saveUserSettings(UserSettingsDto userSettingsDto);
+    UserSettingsDto saveUserSettings(UserSettingsDto userSettingsDto);
 
     List<User> getUsers();
 
-    User getUserById(Long id);
+    UserSettingsDto getUserById(Long id);
 
     void deleteUserById(Long id);
 }

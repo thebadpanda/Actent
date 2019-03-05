@@ -66,9 +66,8 @@ public class User {
     private String password;
 
     @NonNull
-//    @NotNull(message = StringConstants.EMPTY_USER_BIRTH_DATE)
     @JsonManagedReference
-    @Column(nullable = false)
+    @Column
     private LocalDate birthDate;
 
     @NonNull
@@ -77,7 +76,6 @@ public class User {
     private Image avatar;
 
     @NonNull
-//    @NotNull(message = StringConstants.EMPTY_USER_LOCATION)
     @ManyToOne
     @JsonManagedReference
     private Location location;
@@ -96,19 +94,18 @@ public class User {
     private List<Category> interests;
 
     @NonNull
-//    @NotBlank(message = StringConstants.EMPTY_USER_SEX)
-    @Column(nullable = false)
+    @Column
     private String sex;
 
-//    @NonNull
-//    @ManyToMany
-//    @JsonBackReference
-//    private List<Event> events;
+    @NonNull
+    @ManyToMany
+    @JsonBackReference
+    private List<Event> events;
 
     @NonNull
     @JsonBackReference
     @OneToMany
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private List<Review> reviews;
 
     @JsonBackReference
