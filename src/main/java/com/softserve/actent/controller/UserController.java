@@ -22,10 +22,10 @@ public class UserController {
     @PostMapping(value = "/users")
     public ResponseEntity<IdDto> addUser(@RequestBody CreateUserDto createUserDto) {
 
-        User user = userService.addUser(new User(createUserDto.getFirstName(), createUserDto.getLastName(),
-                createUserDto.getLogin()));
+       /* User user = userService.addUser(new User(createUserDto.getFirstName(), createUserDto.getLastName(),
+                createUserDto.getLogin()));*/
 
-        return new ResponseEntity<>(new IdDto(user.getId()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new IdDto(/*user.getId()*/1L), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
