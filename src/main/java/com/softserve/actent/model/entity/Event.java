@@ -25,7 +25,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -110,7 +109,7 @@ public class Event {
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false)},
             foreignKey = @ForeignKey(name = "FK_event_to_tag_id"),
             inverseForeignKey = @ForeignKey(name = "FK_tag_to_event_id"))
-    private Set<Tag> tags;
+    private List<Tag> tags;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", foreignKey = @ForeignKey(name = "FK_event_to_chat_id"))
