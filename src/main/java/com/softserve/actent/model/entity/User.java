@@ -60,12 +60,12 @@ public class User {
     private LocalDate birthDate;
 
     @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonManagedReference
     private Image avatar;
 
     @NonNull
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JsonManagedReference
     private Location location;
 
