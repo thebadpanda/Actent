@@ -1,20 +1,18 @@
 package com.softserve.actent.service;
 
-import com.softserve.actent.model.dto.RegisterUserDto;
-import com.softserve.actent.model.dto.UserSettingsDto;
 import com.softserve.actent.model.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    RegisterUserDto registerUser(RegisterUserDto registerUserDto);
+    User registerUser(User user);
 
-    UserSettingsDto saveUserSettings(UserSettingsDto userSettingsDto);
+    User saveUserSettings(User user);
 
     List<User> getUsers();
 
-    UserSettingsDto getUserById(Long id);
+    User getUserById(Long id);
 
     User getUserByEmail(String email);
 
