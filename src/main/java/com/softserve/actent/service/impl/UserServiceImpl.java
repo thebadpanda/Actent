@@ -48,12 +48,11 @@ public class UserServiceImpl implements UserService, IModelMapperConverter<User,
     @Transactional
     @Override
     public UserSettingsDto saveUserSettings(UserSettingsDto userSettingsDto) {
-
         if (userRepository.existsById(userSettingsDto.getId())) {
             userRepository.save(convertToEntity(userSettingsDto));
             return userSettingsDto;
         } else {
-            System.out.println("There is a user with such id");
+            System.out.println("User not registered");
             // TODO: throw exception
             return null;
         }
@@ -77,6 +76,14 @@ public class UserServiceImpl implements UserService, IModelMapperConverter<User,
         UserSettingsDto dto = modelMapper.map(user, UserSettingsDto.class);
         return dto;
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+//        UserSettingsDto dto = modelMapper.map(user, UserSettingsDto.class);
+        return user;
+    }
+
 
     @Override
     public void deleteUserById(Long id) {
