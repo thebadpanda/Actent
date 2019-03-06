@@ -24,14 +24,14 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<RegisterUserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
-        userService.registerUser(registerUserDtoToEntity(registerUserDto));
-        return new ResponseEntity<>(registerUserDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(registerUserEntityToDto(userService.
+                registerUser(registerUserDtoToEntity(registerUserDto))), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/users")
     public ResponseEntity<UserSettingsDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto) {
-        userService.saveUserSettings(userSettingsToEntity(userSettingsDto));
-        return new ResponseEntity<>(userSettingsDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(userSettingsEntityToDto(userService.
+                saveUserSettings(userSettingsToEntity(userSettingsDto))), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
@@ -42,6 +42,11 @@ public class UserController {
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<UserSettingsDto> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/users/{email}")
+    public ResponseEntity<UserSettingsDto> getUserByEmail(@PathVariable String email){
+        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/users/{id}")
@@ -61,6 +66,10 @@ public class UserController {
 
     private UserSettingsDto userSettingsEntityToDto(User entity) {
         return modelMapper.map(entity, UserSettingsDto.class);
+    }
+
+    private RegisterUserDto registerUserEntityToDto(User entity) {
+        return modelMapper.map(entity, RegisterUserDto.class);
     }
 }
 
