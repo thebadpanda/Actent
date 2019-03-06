@@ -1,6 +1,6 @@
-package com.travelstory.exceptions;
+package com.softserve.actent.exceptions;
 
-import com.travelstory.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * </p>
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends TravelStoryAppException {
+public class ResourceNotFoundException extends ActentAppException {
 
     public ResourceNotFoundException(String message, ExceptionCode exceptionCode) {
         super(message, exceptionCode);

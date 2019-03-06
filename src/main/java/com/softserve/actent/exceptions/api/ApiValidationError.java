@@ -1,6 +1,9 @@
-package com.travelstory.exceptions.api;
+package com.softserve.actent.exceptions.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

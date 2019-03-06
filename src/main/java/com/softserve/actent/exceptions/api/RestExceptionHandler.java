@@ -1,7 +1,7 @@
-package com.travelstory.exceptions.api;
+package com.softserve.actent.exceptions.api;
 
-import com.travelstory.exceptions.TravelStoryAppException;
-import com.travelstory.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.ActentAppException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -40,9 +40,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      *            web request
      * @return the ResponseEntity
      */
-    @ExceptionHandler(TravelStoryAppException.class)
-    protected ResponseEntity<HashMap<String, Object>> handleCustomRuntimeException(TravelStoryAppException ex,
-            WebRequest request) {
+    @ExceptionHandler(ActentAppException.class)
+    protected ResponseEntity<HashMap<String, Object>> handleCustomRuntimeException(ActentAppException ex,
+                                                                                   WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         if (responseStatus != null) {
@@ -76,7 +76,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                          HttpHeaders headers, HttpStatus status, WebRequest request) {
         String errorText = ex.getParameterName() + " parameter is missing";
         log.error(errorText);
         log.error(ex.getMessage());
@@ -99,7 +99,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                     HttpHeaders headers, HttpStatus status, WebRequest request) {
         StringBuilder builder = new StringBuilder();
         builder.append(ex.getContentType());
         builder.append(" media type is not supported. Supported media types are ");
@@ -128,7 +128,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
         ApiError apiError = new ApiError();
         apiError.setStatus(BAD_REQUEST);
         apiError.setDebugMessage("Validation error");
@@ -178,7 +178,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-            HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         String errorText = "Malformed JSON request";
         return buildResponseEntity(new ApiError(BAD_REQUEST, ExceptionCode.JSON_IS_MALFORMED.exceptionCode, errorText));
@@ -199,7 +199,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
+                                                                   HttpStatus status, WebRequest request) {
 
         ApiError apiError = new ApiError(BAD_REQUEST, ExceptionCode.NO_EXCEPTION_HANDLER.exceptionCode,
                 String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
