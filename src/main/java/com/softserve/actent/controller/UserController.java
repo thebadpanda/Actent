@@ -1,7 +1,9 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectEmailException;
 import com.softserve.actent.model.dto.RegisterUserDto;
+import com.softserve.actent.model.dto.UserSettingsDto;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +20,28 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/users")
-    public ResponseEntity<IdDto> addUser(@RequestBody RegisterUserDto registerUserDto) {
-        if(userService.registerUser(registerUserDto)){
-            return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping(value = "/register")
+    public ResponseEntity<RegisterUserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
+        if (userService.getUserByEmail(registerUserDto.getEmail()) != null) {
+            throw new IncorrectEmailException("Email already used", ExceptionCode.INCORRECT_EMAIL);
+//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(userService.registerUser(registerUserDto), HttpStatus.CREATED);
         }
+    }
+
+    @PostMapping(value = "/users")
+    public ResponseEntity<UserSettingsDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto) {
+        return new ResponseEntity<>(userService.saveUserSettings(userSettingsDto), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
     public ResponseEntity<List<User>> getUsers() {
-
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-
+    public ResponseEntity<UserSettingsDto> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 

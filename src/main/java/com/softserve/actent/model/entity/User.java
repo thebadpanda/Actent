@@ -6,22 +6,11 @@ import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -71,12 +60,12 @@ public class User {
     private LocalDate birthDate;
 
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private Image avatar;
 
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private Location location;
 
@@ -93,9 +82,11 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
     private List<Category> interests;
 
+
     @NonNull
-    @Column
-    private String sex;
+    public enum sex {
+        MALE, FEMALE
+    }
 
     @NonNull
     @ManyToMany
