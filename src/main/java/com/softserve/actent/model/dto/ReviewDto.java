@@ -1,13 +1,16 @@
 package com.softserve.actent.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@NoArgsConstructor
 public class ReviewDto {
-    @NonNull
-    private String reviewText;
 
     @NonNull
-    private Integer reviewScore;
+    private String text;
+
+    @NonNull
+    private Integer score;
 }
