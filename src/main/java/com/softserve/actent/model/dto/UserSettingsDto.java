@@ -17,7 +17,6 @@ public class UserSettingsDto {
     private String lastName;
     private String password;
     private LocalDate birthDate;
-//    private String locationAddress;
     private Image avatar;
     private Location location;
     private String bio;

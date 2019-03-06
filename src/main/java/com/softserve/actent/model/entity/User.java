@@ -6,7 +6,6 @@ import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 
@@ -105,7 +104,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chat_id")})
     private List<Chat> bannedChats;
-
+    
     @Enumerated(EnumType.STRING)
     private Role role;
 }
