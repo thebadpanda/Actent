@@ -1,4 +1,4 @@
-package com.travelstory.exceptions.api;
+package com.softserve.actent.exceptions.api;
 
 abstract class ApiSubError {
 

@@ -1,7 +1,7 @@
-package com.travelstory.exceptions.security;
+package com.softserve.actent.exceptions.security;
 
-import com.travelstory.exceptions.TravelStoryAppException;
-import com.travelstory.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.ActentAppException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * </p>
  */
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-public class SecurityException extends TravelStoryAppException {
+public class SecurityException extends ActentAppException {
     public SecurityException(String message, ExceptionCode exceptionCode) {
         super(message, exceptionCode);
     }

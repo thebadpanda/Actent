@@ -1,6 +1,6 @@
-package com.travelstory.exceptions.security;
+package com.softserve.actent.exceptions.security;
 
-import com.travelstory.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
