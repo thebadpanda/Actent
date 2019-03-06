@@ -28,13 +28,13 @@ public class ReviewController {
     }
 
     @GetMapping(value = "/reviews/{id}")
-    public ResponseEntity<ReviewDto> getReview(@RequestParam Long id) {
+    public ResponseEntity<ReviewDto> getReview(@PathVariable Long id) {
         Review review = reviewService.getReviewById(id);
         return new ResponseEntity<>(modelMapper.map(review, ReviewDto.class), HttpStatus.OK);
     }
 
     @PutMapping(value = "/reviews/{id}")
-    public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto reviewDto, @RequestParam Long id) {
+    public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto reviewDto, @PathVariable Long id) {
 
         Review review = reviewService.updateReviewById(modelMapper.map(reviewDto, Review.class), id);
         return new ResponseEntity<>(modelMapper.map(review, ReviewDto.class), HttpStatus.OK);
