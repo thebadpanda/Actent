@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -97,8 +98,7 @@ public class User {
 
     @NonNull
     @OneToMany
-    @JoinColumn(nullable = false)
-    private Set<Review> reviews = new HashSet<>();
+    private List<Review> reviews;
 
     @ManyToMany
     @JoinTable(name = "user_chat",
