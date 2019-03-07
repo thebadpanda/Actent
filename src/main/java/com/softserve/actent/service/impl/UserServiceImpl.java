@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public User registerUser(User user) {
         if (!userRepository.existsByEmail(user.getEmail())) {
-
             return userRepository.save(user);
         } else {
             log.error("There is a user with such email. Cannot register!");
@@ -44,6 +43,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User saveUserSettings(User user, Long id) {
         if (userRepository.existsById(id)) {
+            user.setId(id);
             return userRepository.save(user);
         } else {
             throw new AccessDeniedException("User not registered", ExceptionCode.USER_NOT_FOUND);
