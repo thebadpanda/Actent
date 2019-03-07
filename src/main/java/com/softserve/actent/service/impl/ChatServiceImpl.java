@@ -6,7 +6,7 @@ import com.softserve.actent.repository.ChatRepository;
 import com.softserve.actent.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -15,6 +15,7 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     private ChatRepository chatRepository;
 
+    @Transactional
     @Override
     public Chat addChat(String type) {
         Chat chat = null;
