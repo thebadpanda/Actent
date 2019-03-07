@@ -31,7 +31,8 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public User registerUser(User user) {
-        if (!userRepository.existsById(user.getId())) {
+        if (!userRepository.existsByEmail(user.getEmail())) {
+
             return userRepository.save(user);
         } else {
             log.error("There is a user with such email. Cannot register!");
@@ -41,8 +42,8 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public User saveUserSettings(User user) {
-        if (userRepository.existsById(user.getId())) {
+    public User saveUserSettings(User user, Long id) {
+        if (userRepository.existsById(id)) {
             return userRepository.save(user);
         } else {
             throw new AccessDeniedException("User not registered", ExceptionCode.USER_NOT_FOUND);
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findUserByEmail(email);
     }
 
-
+    @Transactional
     @Override
     public void deleteUserById(Long id) {
 

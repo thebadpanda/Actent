@@ -1,7 +1,5 @@
 package com.softserve.actent.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,18 +52,15 @@ public class User {
     private String password;
 
     @NonNull
-    @JsonManagedReference
     @Column
     private LocalDate birthDate;
 
     @NonNull
     @ManyToOne
-    @JsonManagedReference
     private Image avatar;
 
     @NonNull
     @ManyToOne
-    @JsonManagedReference
     private Location location;
 
     @NonNull
@@ -75,7 +70,6 @@ public class User {
 
     @NonNull
     @ManyToMany
-    @JsonBackReference
     @JoinTable(name = "user_categories",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
@@ -89,16 +83,13 @@ public class User {
 
     @NonNull
     @ManyToMany
-    @JsonBackReference
     private List<Event> events;
 
     @NonNull
-    @JsonBackReference
     @OneToMany
     @JoinColumn
     private List<Review> reviews;
 
-    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "user_chat",
             joinColumns = {@JoinColumn(name = "user_id")},
