@@ -1,6 +1,6 @@
 package com.softserve.actent.exceptions.codes;
 
-<<<<<<< HEAD
+
 /**
  * ExceptionCode contains all exception codes which are used in TravelStoryApp API
  */
@@ -143,7 +143,5 @@ public enum ExceptionCode {
         exceptionCode = code;
     }
 
-=======
-public enum ExceptionCode {
->>>>>>> 60d91744d8002360822b3818831ca0715d931ad0
+
 }
