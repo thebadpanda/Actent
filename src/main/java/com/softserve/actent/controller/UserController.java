@@ -18,11 +18,15 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class UserController {
 
-    @Autowired
-    ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    private final UserService userService;
 
     @Autowired
-    UserService userService;
+    public UserController(ModelMapper modelMapper, UserService userService) {
+        this.modelMapper = modelMapper;
+        this.userService = userService;
+    }
 
     @PostMapping(value = "/users")
     public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {

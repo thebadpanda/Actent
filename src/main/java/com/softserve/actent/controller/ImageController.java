@@ -31,7 +31,7 @@ public class ImageController {
     public ResponseEntity<IdDto> addImage(@RequestBody ImageDto addImageDto) {
 
         Image image = modelMapper.map(addImageDto, Image.class);
-        image = imageService.addImage(image);
+        image = imageService.add(image);
 
         return new ResponseEntity<>(new IdDto(image.getId()), HttpStatus.CREATED);
     }
@@ -39,7 +39,7 @@ public class ImageController {
     @GetMapping(value = "/images/{id}")
     public ResponseEntity<ImageDto> getImageById(@PathVariable Long id) {
 
-        Image image = imageService.getImageById(id);
+        Image image = imageService.get(id);
         return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
     }
 
@@ -53,7 +53,7 @@ public class ImageController {
             return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
         } else {
 
-            List<Image> images = imageService.getAllImages();
+            List<Image> images = imageService.getAll();
             List<ImageDto> imagesDto = new ArrayList<>();
 
             for (Image image : images) {
@@ -67,14 +67,14 @@ public class ImageController {
     @PutMapping(value = "/images/{id}")
     public ResponseEntity<ImageDto> updateImage(@RequestBody ImageDto imageDto, @PathVariable Long id) {
 
-        Image image = imageService.updateImageById(modelMapper.map(imageDto, Image.class), id);
+        Image image = imageService.update(modelMapper.map(imageDto, Image.class), id);
         return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/images/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
 
-        imageService.deleteImageById(id);
+        imageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,5 +1,6 @@
 package com.softserve.actent.exceptions.codes;
 
+
 /**
  * ExceptionCode contains all exception codes which are used in TravelStoryApp API
  */
