@@ -40,4 +40,17 @@ public class ChatServiceImpl implements ChatService {
         Optional<Chat> chatOptional = chatRepository.findById(chatId);
         return chatOptional.orElse(null);
     }
+
+    @Override
+    public void deleteChatById(Long chatId) {
+
+        if(chatRepository.existsById(chatId)){
+            chatRepository.deleteById(chatId);
+        }else{
+            //throw new exception
+        }
+
+    }
+
+
 }
