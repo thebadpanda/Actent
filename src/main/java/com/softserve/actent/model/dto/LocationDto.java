@@ -9,4 +9,7 @@ import lombok.NonNull;
 public class LocationDto {
     @NonNull
     private String address;
+
+    @NonNull
+    private Long cityId;
 }
