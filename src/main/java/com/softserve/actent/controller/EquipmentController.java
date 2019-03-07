@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class EquipmentController {
 
     private final EquipmentServiceImpl equipmentServiceImpl;
@@ -40,7 +40,7 @@ public class EquipmentController {
     @GetMapping("/equipments")
     public ResponseEntity<List<EquipmentDto>> getAllEquipments(){
 
-        List<Equipment> equipments = equipmentServiceImpl.getAllEquipments();
+        List<Equipment> equipments = equipmentServiceImpl.getAll();
 
         List<EquipmentDto> equipmentDtos = equipments.stream()
                 .map(equipment -> modelMapper.map(equipment, EquipmentDto.class))
@@ -52,7 +52,7 @@ public class EquipmentController {
     @GetMapping("/equipments/{id}")
     public ResponseEntity<EquipmentDto> getEquipmentById(@PathVariable Long id){
 
-        Equipment equipment = equipmentServiceImpl.getEquipmentById(id);
+        Equipment equipment = equipmentServiceImpl.get(id);
         EquipmentDto equipmentDto = modelMapper.map(equipment, EquipmentDto.class);
 
         return new ResponseEntity<>(equipmentDto, HttpStatus.OK);
@@ -70,7 +70,7 @@ public class EquipmentController {
         newEquipment.setAssignedUser(user);
         newEquipment.setAssignedEvent(event);
 
-        Equipment equipment = equipmentServiceImpl.addEquipment(newEquipment);
+        Equipment equipment = equipmentServiceImpl.add(newEquipment);
 
         createEquipmentDto = modelMapper.map(equipment, CreateEquipmentDto.class);
         createEquipmentDto.setUserid(equipment.getAssignedUser().getId());
@@ -82,7 +82,7 @@ public class EquipmentController {
     @DeleteMapping("/equipments/{id}")
     public ResponseEntity<Void> deleteEquipmentById(@PathVariable Long id){
 
-        equipmentServiceImpl.deleteEquipmentById(id);
+        equipmentServiceImpl.delete(id);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 
@@ -90,7 +90,7 @@ public class EquipmentController {
     public ResponseEntity<CreateEquipmentDto> updateEquipmentById(@PathVariable Long id, @RequestBody CreateEquipmentDto createEquipmentDto){
 
         // TODO: use User and Event services for check if they exists
-        Equipment equipment = equipmentServiceImpl.updateEquipmentById(id, modelMapper.map(createEquipmentDto, Equipment.class));
+        Equipment equipment = equipmentServiceImpl.update(modelMapper.map(createEquipmentDto, Equipment.class), id);
         return new ResponseEntity<>(modelMapper.map(equipment, CreateEquipmentDto.class), HttpStatus.OK);
     }
 }
