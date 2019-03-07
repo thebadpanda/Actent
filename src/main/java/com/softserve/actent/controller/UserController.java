@@ -29,14 +29,14 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
         User user = userService.add(registerUserDtoToEntity(registerUserDto));
         UserDto userDto = registerUserEntityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<UserDto> saveUserSetting(@Valid @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
+    public ResponseEntity<UserDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
         UserDto userDto = userSettingsEntityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
