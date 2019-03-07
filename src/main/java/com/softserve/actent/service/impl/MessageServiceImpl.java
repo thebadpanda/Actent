@@ -1,6 +1,5 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.model.dto.message.CreateTextMessageDto;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Message;
 import com.softserve.actent.model.entity.MessageType;
@@ -35,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public Message addTextMessage(Message message) {
+    public Message add(Message message) {
         message.setMessageType(MessageType.TEXT);
         return messageRepository.save(message);
     }
@@ -50,14 +49,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getMessages() {
+    public List<Message> getAll() {
         return messageRepository.findAll();
     }
 
 
     @Override
     @Transactional
-    public void deleteMessageById(Long id) {
+    public void delete(Long id) {
         Optional<Message> optionalMessage = messageRepository.findById(id);
         if (optionalMessage.isPresent()) {
             messageRepository.deleteById(id);
@@ -66,24 +65,26 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message findById(Long id) {
+    public Message get(Long id) {
         return messageRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
-    public Message updateMessage(Long id, CreateTextMessageDto createMessageDto) {
+    public Message update(Message message, Long id) {
         Optional<Message> optionalMessage = messageRepository.findById(id);
+
         if (optionalMessage.isPresent()) {
-            modelMapper.map(createMessageDto, optionalMessage.get());
-            messageRepository.save(optionalMessage.get());
+                message.setId(id);
+                return messageRepository.save(message);
         }
-        return optionalMessage.orElse(null);
+        return null;//optionalMessage.orElseThrow(()-> new ResourceNotFoundException("",));
     }
 
     @Override
     public List<Message> getAllMessagesByChatId(Long id) {
         return messageRepository.findAllByChatId(id);
     }
+
 
 }

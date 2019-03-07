@@ -1,6 +1,5 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.dto.converter.TextMessageConvert;
 import com.softserve.actent.model.dto.converter.ViewMessageConverter;
@@ -14,7 +13,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -46,11 +52,13 @@ public class MessageController {
 
     @PostMapping(value = "/textMessages")
     public ResponseEntity<ViewMessageDto> addMessage(@RequestBody CreateTextMessageDto createMessageDto) {
-        Message message = messageService.addTextMessage(textMessageConvert.convertToEntity(createMessageDto));
+
+        Message message = messageService.add(textMessageConvert.convertToEntity(createMessageDto));
+
         return new ResponseEntity<>(viewMessageConverter.convertToDto(message), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/imageMessage")
+    @PostMapping(value = "/imageMessages")
     public ResponseEntity<ViewMessageDto> addImage(@RequestBody ImageDto addImageDto) {
 
         Image image = modelMapper.map(addImageDto, Image.class);
@@ -61,14 +69,15 @@ public class MessageController {
 
     @DeleteMapping(value = "/textMessages/{id}")
     public ResponseEntity<Void> deleteMessageById(@PathVariable Long id) {
-        messageService.deleteMessageById(id);
+
+        messageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/messages")
     public ResponseEntity<List<ViewMessageDto>> getMessages() {
 
-        return new ResponseEntity<>((viewMessageConverter.convertToDto(messageService.getMessages())), HttpStatus.OK);
+        return new ResponseEntity<>((viewMessageConverter.convertToDto(messageService.getAll())), HttpStatus.OK);
     }
 
     @GetMapping(value = "/messages/{id}")
@@ -80,9 +89,8 @@ public class MessageController {
     @PutMapping(value = "/messages/{id}")
     public ResponseEntity<CreateTextMessageDto> updateMessage(@PathVariable Long id,
                                                               @RequestBody CreateTextMessageDto createMessageDto) {
+       Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
 
-        Message message = messageService.updateMessage(id, createMessageDto);
-        messageService.addTextMessage(message);
         return new ResponseEntity<>((textMessageConvert.convertToDto(message)), HttpStatus.OK);
     }
 
