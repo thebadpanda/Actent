@@ -52,11 +52,6 @@ public class UserController {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.get(id)), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/email/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
-        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
-    }
-
     @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
 
