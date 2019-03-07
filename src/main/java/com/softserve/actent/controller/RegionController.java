@@ -46,29 +46,26 @@ public class RegionController {
         return new ResponseEntity<>(regionConverter.convertToDto(region), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/regions")
-    public ResponseEntity<List<RegionDto>> getAll() {
-        List<Region> regions = regionService.getAll();
-        if (regions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(regionConverter.convertToDto(regions), HttpStatus.OK);
-    }
 
     @GetMapping(value = "/regions")
-    public ResponseEntity<List<RegionDto>> getAllInCountry(@RequestParam(value = "countryId",required = false) Long countryId) {
-        List<Region> regions = regionService.getByCountryId(countryId);
-        if (regions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<RegionDto>> getAll(@RequestParam(value = "countryId", required = false) Long countryId) {
+        List<Region> regions;
+        if (countryId == null) {
+            regions = regionService.getAll();
+        } else {
+            regions = regionService.getByCountryId(countryId);
+            if (regions.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
         return new ResponseEntity<>(regionConverter.convertToDto(regions), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/regions")
-    public ResponseEntity<IdDto> add(@PathVariable Long countryId, @RequestBody RegionDto regionDto) {
+    public ResponseEntity<IdDto> add(@RequestBody RegionDto regionDto) {
         Region region = new Region();
         region.setName(regionDto.getName());
-        region.setCountry(countryService.get(countryId));
+        region.setCountry(countryService.get(regionDto.getCountryId()));
         regionService.add(region);
         return new ResponseEntity<>(new IdDto(region.getId()), HttpStatus.CREATED);
     }
