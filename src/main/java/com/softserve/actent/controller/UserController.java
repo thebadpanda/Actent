@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.model.dto.RegisterUserDto;
+import com.softserve.actent.model.dto.UserDto;
 import com.softserve.actent.model.dto.UserSettingsDto;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.UserService;
@@ -24,15 +25,17 @@ public class UserController {
     UserService userService;
 
     @PostMapping(value = "/users")
-    public ResponseEntity<RegisterUserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        return new ResponseEntity<>(registerUserEntityToDto(userService.
-                registerUser(registerUserDtoToEntity(registerUserDto))), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
+        User user = userService.registerUser(registerUserDtoToEntity(registerUserDto));
+        UserDto userDto = registerUserEntityToDto(user);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<UserSettingsDto> saveUserSetting(@Valid @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
-        return new ResponseEntity<>(userSettingsEntityToDto(userService.
-                saveUserSettings(userSettingsToEntity(userSettingsDto), id)), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> saveUserSetting(@Valid @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
+        User user = userService.saveUserSettings(userSettingsToEntity(userSettingsDto), id);
+        UserDto userDto = userSettingsEntityToDto(user);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
@@ -41,12 +44,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{id}")
-    public ResponseEntity<UserSettingsDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserById(id)), HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{email}")
-    public ResponseEntity<UserSettingsDto> getUserByEmail(@PathVariable String email){
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
     }
 
@@ -65,11 +68,11 @@ public class UserController {
         return modelMapper.map(userSettingsDto, User.class);
     }
 
-    private UserSettingsDto userSettingsEntityToDto(User entity) {
-        return modelMapper.map(entity, UserSettingsDto.class);
+    private UserDto userSettingsEntityToDto(User entity) {
+        return modelMapper.map(entity, UserDto.class);
     }
 
-    private RegisterUserDto registerUserEntityToDto(User entity) {
-        return modelMapper.map(entity, RegisterUserDto.class);
+    private UserDto registerUserEntityToDto(User entity) {
+        return modelMapper.map(entity, UserDto.class);
     }
 }
