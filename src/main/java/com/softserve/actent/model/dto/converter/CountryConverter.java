@@ -1,4 +1,4 @@
-package com.softserve.actent.model.dto.converters;
+package com.softserve.actent.model.dto.converter;
 
 import com.softserve.actent.model.dto.CountryDto;
 import com.softserve.actent.model.entity.Country;
