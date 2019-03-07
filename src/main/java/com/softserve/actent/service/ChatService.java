@@ -8,4 +8,6 @@ public interface ChatService {
 
     Chat getChatById(Long chatId);
 
+    void deleteChatById(Long chatId);
+
 }
