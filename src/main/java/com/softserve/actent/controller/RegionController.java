@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/regions")
+@RequestMapping("/api/v1")
 public class RegionController {
 
     private final RegionService regionService;
@@ -34,7 +34,7 @@ public class RegionController {
         this.countryService = countryService;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/regions/{id}")
     public ResponseEntity<RegionDto> get(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -46,7 +46,7 @@ public class RegionController {
         return new ResponseEntity<>(regionConverter.convertToDto(region), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(value = "/regions")
     public ResponseEntity<List<RegionDto>> getAll() {
         List<Region> regions = regionService.getAll();
         if (regions.isEmpty()) {
@@ -55,8 +55,8 @@ public class RegionController {
         return new ResponseEntity<>(regionConverter.convertToDto(regions), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/countries/{countryId}")
-    public ResponseEntity<List<RegionDto>> getAllInCountry(@PathVariable Long countryId) {
+    @GetMapping(value = "/regions")
+    public ResponseEntity<List<RegionDto>> getAllInCountry(@RequestParam(value = "countryId",required = false) Long countryId) {
         List<Region> regions = regionService.getByCountryId(countryId);
         if (regions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -64,7 +64,7 @@ public class RegionController {
         return new ResponseEntity<>(regionConverter.convertToDto(regions), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/country/{countryId}")
+    @PostMapping(value = "/regions")
     public ResponseEntity<IdDto> add(@PathVariable Long countryId, @RequestBody RegionDto regionDto) {
         Region region = new Region();
         region.setName(regionDto.getName());
@@ -73,7 +73,7 @@ public class RegionController {
         return new ResponseEntity<>(new IdDto(region.getId()), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/regions/{id}")
     public ResponseEntity<IdDto> update(@PathVariable Long id, @RequestBody RegionDto regionDto) {
         Region region = regionService.get(id);
         if (region == null) {
@@ -84,7 +84,7 @@ public class RegionController {
         return new ResponseEntity<>(new IdDto(region.getId()), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/regions/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Region region = regionService.get(id);
         if (region == null) {
