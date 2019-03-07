@@ -1,6 +1,5 @@
 package com.softserve.actent.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,6 @@ public class Location {
     private String address;
 
     @NonNull
-    @JsonManagedReference
     @ManyToOne
     private City city;
 }
