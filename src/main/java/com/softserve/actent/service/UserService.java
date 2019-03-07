@@ -8,7 +8,7 @@ public interface UserService {
 
     User registerUser(User user);
 
-    User saveUserSettings(User user);
+    User saveUserSettings(User user, Long id);
 
     List<User> getUsers();
 

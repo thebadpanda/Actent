@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Data
 public class UserSettingsDto {
 
-    private Long id;
     private String login;
     private String email;
     private String firstName;
@@ -22,6 +21,5 @@ public class UserSettingsDto {
     private String bio;
     private String sex;
     private Role role;
-
 
 }

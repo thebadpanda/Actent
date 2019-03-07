@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,16 +23,16 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/register")
-    public ResponseEntity<RegisterUserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
+    @PostMapping(value = "/users")
+    public ResponseEntity<RegisterUserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
         return new ResponseEntity<>(registerUserEntityToDto(userService.
                 registerUser(registerUserDtoToEntity(registerUserDto))), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/users")
-    public ResponseEntity<UserSettingsDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto) {
+    @PutMapping(value = "/users/{id}")
+    public ResponseEntity<UserSettingsDto> saveUserSetting(@Valid @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.
-                saveUserSettings(userSettingsToEntity(userSettingsDto))), HttpStatus.CREATED);
+                saveUserSettings(userSettingsToEntity(userSettingsDto), id)), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
@@ -72,13 +73,3 @@ public class UserController {
         return modelMapper.map(entity, RegisterUserDto.class);
     }
 }
-
-
-
-
-
-
-
-
-
-
