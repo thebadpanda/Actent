@@ -1,5 +1,6 @@
 package com.softserve.actent.model.dto.converter;
 
+import com.softserve.actent.model.dto.CityDto;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.utils.modelmapper.IModelMapperConverter;
 import org.modelmapper.ModelMapper;
