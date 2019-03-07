@@ -1,6 +1,5 @@
 package com.softserve.actent.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +33,6 @@ public class Country {
     private String name;
 
     @NonNull
-    @JsonBackReference
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     private List<Region> regions;
 }
