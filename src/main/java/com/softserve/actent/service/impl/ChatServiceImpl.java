@@ -7,6 +7,8 @@ import com.softserve.actent.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ChatServiceImpl implements ChatService {
 
@@ -34,6 +36,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Chat getChatById(Long chatId) {
-        return chatRepository.findOneById(chatId);
+        Optional<Chat> chatOptional = chatRepository.findById(chatId);
+        return chatOptional.orElse(null);
     }
 }
