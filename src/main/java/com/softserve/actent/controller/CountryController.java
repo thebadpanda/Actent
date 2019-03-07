@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/countries")
+@RequestMapping("/api/v1")
 public class CountryController {
 
     private final CountryService countryService;
@@ -37,7 +37,7 @@ public class CountryController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/countries/{id}")
     public ResponseEntity<CountryDto> get(@PathVariable Long id) {
         if (id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -49,7 +49,7 @@ public class CountryController {
         return new ResponseEntity<>(countryConverter.convertToDto(country), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(value = "/countries")
     public ResponseEntity<List<CountryDto>> getAll() {
         List<Country> countries = countryService.getAll();
         if (countries == null) {
@@ -58,20 +58,20 @@ public class CountryController {
         return new ResponseEntity<>(countryConverter.convertToDto(countries), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping(value = "/countries")
     public ResponseEntity<IdDto> add(@RequestBody CountryDto countryDto) {
         Country country = countryConverter.convertToEntity(countryDto);
         countryService.add(country);
         return new ResponseEntity<>(new IdDto(country.getId()), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/countries/{id}")
     public ResponseEntity<IdDto> update(@PathVariable Long id, @RequestBody CountryDto countryDto) {
         Country country = countryService.update(modelMapper.map(countryDto, Country.class), id);
         return new ResponseEntity<>(new IdDto(country.getId()), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/countries/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Country country = countryService.get(id);
         if (country == null) {
