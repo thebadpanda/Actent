@@ -25,6 +25,6 @@ public class Tag {
 
     @NonNull
     @NotBlank(message = StringConstants.NO_TAG_TEXT)
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String text;
 }
