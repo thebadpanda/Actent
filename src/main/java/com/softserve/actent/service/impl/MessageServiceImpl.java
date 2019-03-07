@@ -46,7 +46,7 @@ public class MessageServiceImpl implements MessageService {
         image.setHash(message.getImage().getHash());
         image.setFilePath(message.getImage().getFilePath());
         message.setMessageType(MessageType.IMAGE);
-        message.setImage(imageService.addImage(image));
+        message.setImage(imageService.add(image));
         return messageRepository.save(message);
     }
 
@@ -69,7 +69,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message get(Long id) {
         return messageRepository.findById(id).
-                orElseThrow(()-> new ResourceNotFoundException("Message not found",MESSAGE_NOT_FOUND));
+                orElseThrow(() -> new ResourceNotFoundException("Message not found", MESSAGE_NOT_FOUND));
     }
 
     @Override
@@ -77,10 +77,10 @@ public class MessageServiceImpl implements MessageService {
     public Message update(Message message, Long id) {
 
         if (messageRepository.existsById(id)) {
-                message.setId(id);
-                return messageRepository.save(message);
-        }else {
-            throw new ResourceNotFoundException("Message not found",MESSAGE_NOT_FOUND);
+            message.setId(id);
+            return messageRepository.save(message);
+        } else {
+            throw new ResourceNotFoundException("Message not found", MESSAGE_NOT_FOUND);
         }
     }
 
