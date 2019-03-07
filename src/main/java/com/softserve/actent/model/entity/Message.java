@@ -3,18 +3,17 @@ package com.softserve.actent.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -28,15 +27,17 @@ public class Message {
     private Long id;
 
     @NonNull
-    private Long sendTime;
-
-    @NonNull
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+    private String messageContent;
+
     @NonNull
-    @OneToOne(cascade = CascadeType.ALL)
-    private MessageBody messageBody;
+    @CreationTimestamp
+    private LocalDateTime sendTime;
+
+    @ManyToOne
+    private Image image;
 
     @NonNull
     @ManyToOne
@@ -44,7 +45,6 @@ public class Message {
 
     @NonNull
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Chat chat;
 
 }
