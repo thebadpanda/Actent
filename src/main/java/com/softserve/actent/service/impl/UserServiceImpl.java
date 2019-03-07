@@ -7,6 +7,7 @@ import com.softserve.actent.exceptions.validation.IncorrectEmailException;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService{
         if (!userRepository.existsById(user.getId())) {
             return userRepository.save(user);
         } else {
+            log.error("There is a user with such email. Cannot register!");
             throw new IncorrectEmailException("This email already used!", ExceptionCode.INCORRECT_EMAIL);
         }
     }
