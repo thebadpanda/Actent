@@ -1,5 +1,6 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Message;
 import com.softserve.actent.model.entity.MessageType;
@@ -14,6 +15,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.softserve.actent.exceptions.codes.ExceptionCode.MESSAGE_NOT_FOUND;
+
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -23,13 +26,10 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     ImageService imageService;
 
-    private final
-    ModelMapper modelMapper;
 
     @Autowired
     public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper) {
         this.messageRepository = messageRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -41,8 +41,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public Message addImageMessage(Image image) {
-        Message message = new Message();
+    public Message addImageMessage(Message message) {
+        Image image = new Image();
+        image.setHash(message.getImage().getHash());
+        image.setFilePath(message.getImage().getFilePath());
         message.setMessageType(MessageType.IMAGE);
         message.setImage(imageService.addImage(image));
         return messageRepository.save(message);
@@ -66,25 +68,25 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message get(Long id) {
-        return messageRepository.findById(id).orElse(null);
+        return messageRepository.findById(id).
+                orElseThrow(()-> new ResourceNotFoundException("Message not found",MESSAGE_NOT_FOUND));
     }
 
     @Override
     @Transactional
     public Message update(Message message, Long id) {
-        Optional<Message> optionalMessage = messageRepository.findById(id);
 
-        if (optionalMessage.isPresent()) {
+        if (messageRepository.existsById(id)) {
                 message.setId(id);
                 return messageRepository.save(message);
+        }else {
+            throw new ResourceNotFoundException("Message not found",MESSAGE_NOT_FOUND);
         }
-        return null;//optionalMessage.orElseThrow(()-> new ResourceNotFoundException("",));
     }
 
     @Override
     public List<Message> getAllMessagesByChatId(Long id) {
         return messageRepository.findAllByChatId(id);
     }
-
 
 }
