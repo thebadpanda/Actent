@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +38,6 @@ public class Region {
     private Country country;
 
     @NonNull
-    @OneToMany(mappedBy = "region")
-    private Set<City> cities = new HashSet<>();
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
+    private List<City> cities;
 }
