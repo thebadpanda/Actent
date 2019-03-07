@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
             user.setId(id);
             return userRepository.save(user);
         } else {
-            throw new AccessDeniedException("User not registered", ExceptionCode.USER_NOT_FOUND);
+            throw new AccessDeniedException("User not registered", ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found", ExceptionCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found", ExceptionCode.NOT_FOUND));
     }
 
     @Override
