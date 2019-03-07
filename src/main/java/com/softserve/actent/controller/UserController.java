@@ -26,29 +26,29 @@ public class UserController {
 
     @PostMapping(value = "/users")
     public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        User user = userService.registerUser(registerUserDtoToEntity(registerUserDto));
+        User user = userService.add(registerUserDtoToEntity(registerUserDto));
         UserDto userDto = registerUserEntityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/users/{id}")
     public ResponseEntity<UserDto> saveUserSetting(@Valid @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
-        User user = userService.saveUserSettings(userSettingsToEntity(userSettingsDto), id);
+        User user = userService.update(userSettingsToEntity(userSettingsDto), id);
         UserDto userDto = userSettingsEntityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/users")
     public ResponseEntity<List<User>> getUsers() {
-        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(userSettingsEntityToDto(userService.get(id)), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/{email}")
+    @GetMapping(value = "/users/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
     }
@@ -56,7 +56,7 @@ public class UserController {
     @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
 
-        userService.deleteUserById(id);
+        userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
