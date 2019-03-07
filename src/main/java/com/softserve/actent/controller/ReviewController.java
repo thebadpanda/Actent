@@ -23,27 +23,27 @@ public class ReviewController {
     @PostMapping(value = "/reviews")
     public ResponseEntity<IdDto> addReview(@RequestBody ReviewDto addReviewDto) {
         Review review = modelMapper.map(addReviewDto, Review.class);
-        review = reviewService.addReview(review);
+        review = reviewService.add(review);
         return new ResponseEntity<>(new IdDto(review.getId()), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/reviews/{id}")
     public ResponseEntity<ReviewDto> getReview(@PathVariable Long id) {
-        Review review = reviewService.getReviewById(id);
+        Review review = reviewService.get(id);
         return new ResponseEntity<>(modelMapper.map(review, ReviewDto.class), HttpStatus.OK);
     }
 
     @PutMapping(value = "/reviews/{id}")
     public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto reviewDto, @PathVariable Long id) {
 
-        Review review = reviewService.updateReviewById(modelMapper.map(reviewDto, Review.class), id);
+        Review review = reviewService.update(modelMapper.map(reviewDto, Review.class), id);
         return new ResponseEntity<>(modelMapper.map(review, ReviewDto.class), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/reviews/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
 
-        reviewService.deleteReviewById(id);
+        reviewService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
