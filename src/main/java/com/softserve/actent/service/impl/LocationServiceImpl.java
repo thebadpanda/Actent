@@ -6,6 +6,7 @@ import com.softserve.actent.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,24 +18,16 @@ public class LocationServiceImpl implements LocationService {
         this.locationRepository = locationRepository;
     }
 
+    @Transactional
     @Override
     public Location add(Location location) {
         return locationRepository.save(location);
     }
 
-    @Override
-    public List<Location> getAll() {
-        return locationRepository.findAll();
-    }
-
-    @Override
-    public Location get(Long locationId) {
-        return locationRepository.getOne(locationId);
-    }
-
+    @Transactional
     @Override
     public Location update(Location location, Long id) {
-        if (locationRepository.findById(id).isPresent()) {
+        if (locationRepository.existsById(id)) {
             location.setId(id);
             return locationRepository.save(location);
         } else {
@@ -44,13 +37,23 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void delete(Long locationId) {
-        locationRepository.deleteById(locationId);
+    public Location get(Long id) {
+        return locationRepository.getOne(id);
+    }
+
+    @Override
+    public List<Location> getAll() {
+        return locationRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        locationRepository.deleteById(id);
     }
 
     @Override
     public List<Location> getByCityId(Long cityId) {
         return locationRepository.findAllByCityId(cityId);
     }
-
 }
