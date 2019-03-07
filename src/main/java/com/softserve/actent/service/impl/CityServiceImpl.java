@@ -6,6 +6,7 @@ import com.softserve.actent.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class CityServiceImpl implements CityService {
     public CityServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
-
+    @Transactional
     @Override
     public City add(City city) {
         return cityRepository.save(city);
@@ -34,7 +35,7 @@ public class CityServiceImpl implements CityService {
         Optional<City> optionalCity = cityRepository.findById(id);
         return optionalCity.orElse(null);
     }
-
+    @Transactional
     @Override
     public City update(City city, Long id) {
         if (cityRepository.findById(id).isPresent()) {
@@ -45,7 +46,7 @@ public class CityServiceImpl implements CityService {
             return null;
         }
     }
-
+    @Transactional
     @Override
     public void delete(Long id) {
         cityRepository.deleteById(id);
