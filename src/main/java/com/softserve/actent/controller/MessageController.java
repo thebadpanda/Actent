@@ -1,8 +1,10 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.model.dto.ImageDto;
+import com.softserve.actent.model.dto.converter.ImageMessageConverter;
 import com.softserve.actent.model.dto.converter.TextMessageConvert;
 import com.softserve.actent.model.dto.converter.ViewMessageConverter;
+import com.softserve.actent.model.dto.message.CreateImageMessageDto;
 import com.softserve.actent.model.dto.message.CreateTextMessageDto;
 import com.softserve.actent.model.dto.message.ViewMessageDto;
 import com.softserve.actent.model.entity.Image;
@@ -36,17 +38,17 @@ public class MessageController {
 
     private final ModelMapper modelMapper;
 
-    @Autowired
-    ImageService imageService;
+    private final ImageMessageConverter imageMessageConverter;
 
     @Autowired
     public MessageController(MessageService messageService,
                              ViewMessageConverter viewMessageConverter,
-                             TextMessageConvert textMessageConvert, ModelMapper modelMapper) {
+                             TextMessageConvert textMessageConvert, ModelMapper modelMapper, ImageMessageConverter imageMessageConverter) {
         this.messageService = messageService;
         this.viewMessageConverter = viewMessageConverter;
         this.textMessageConvert = textMessageConvert;
         this.modelMapper = modelMapper;
+        this.imageMessageConverter = imageMessageConverter;
     }
 
 
@@ -59,10 +61,9 @@ public class MessageController {
     }
 
     @PostMapping(value = "/imageMessages")
-    public ResponseEntity<ViewMessageDto> addImage(@RequestBody ImageDto addImageDto) {
+    public ResponseEntity<ViewMessageDto> addImage(@RequestBody CreateImageMessageDto createImageMessageDto) {
 
-        Image image = modelMapper.map(addImageDto, Image.class);
-        Message message = messageService.addImageMessage(image);
+        Message message = messageService.addImageMessage(imageMessageConverter.convertToEntity(createImageMessageDto));
 
         return new ResponseEntity<>(viewMessageConverter.convertToDto(message), HttpStatus.CREATED);
     }
@@ -89,7 +90,7 @@ public class MessageController {
     @PutMapping(value = "/messages/{id}")
     public ResponseEntity<CreateTextMessageDto> updateMessage(@PathVariable Long id,
                                                               @RequestBody CreateTextMessageDto createMessageDto) {
-       Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
+        Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
 
         return new ResponseEntity<>((textMessageConvert.convertToDto(message)), HttpStatus.OK);
     }
