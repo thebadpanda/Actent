@@ -39,11 +39,11 @@ public class Equipment {
     private boolean satisfied;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User assignedUser;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Event assignedEvent;
 
 }

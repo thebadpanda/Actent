@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +28,10 @@ public class Message {
     private Long id;
 
     @NonNull
-    @Enumerated(EnumType.ORDINAL)
+    private Long sendTime;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
     @NonNull
