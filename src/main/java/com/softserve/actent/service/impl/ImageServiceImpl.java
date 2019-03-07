@@ -20,13 +20,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image addImage(Image image) {
+    public Image add(Image image) {
 
         return imageRepository.save(image);
     }
 
     @Override
-    public Image getImageById(Long imageId) {
+    public Image get(Long imageId) {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
@@ -50,13 +50,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<Image> getAllImages() {
+    public List<Image> getAll() {
 
         return imageRepository.findAll();
     }
 
     @Override
-    public Image updateImageById(Image image, Long imageId) {
+    public Image update(Image image, Long imageId) {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
@@ -69,7 +69,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteImageById(Long imageId) {
+    public void delete(Long imageId) {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
