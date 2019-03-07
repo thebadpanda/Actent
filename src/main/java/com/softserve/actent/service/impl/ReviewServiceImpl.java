@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,13 +20,13 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewRepository reviewRepository;
 
     @Override
-    public Review addReview(Review review) {
+    public Review add(Review review) {
 
         return reviewRepository.save(review);
     }
 
     @Override
-    public Review getReviewById(Long reviewId) {
+    public Review get(Long reviewId) {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
@@ -33,7 +34,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review updateReviewById(Review review, Long reviewId) {
+    public List<Review> getAll() {
+
+        return reviewRepository.findAll();
+    }
+
+    @Override
+    public Review update(Review review, Long reviewId) {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
@@ -46,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReviewById(Long reviewId) {
+    public void delete(Long reviewId) {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
