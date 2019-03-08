@@ -1,18 +1,16 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.RegionDto;
-import com.softserve.actent.model.dto.converter.RegionConverter;
 import com.softserve.actent.model.entity.Region;
 import com.softserve.actent.service.CountryService;
 import com.softserve.actent.service.RegionService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -20,19 +18,16 @@ public class RegionController {
 
     private final RegionService regionService;
 
-    private final RegionConverter regionConverter;
+    private final CountryService countryService;
 
     private final ModelMapper modelMapper;
 
-    private final CountryService countryService;
-
-    @Autowired
-    public RegionController(RegionService regionService, RegionConverter regionConverter, ModelMapper modelMapper, CountryService countryService) {
+    public RegionController(RegionService regionService, CountryService countryService, ModelMapper modelMapper) {
         this.regionService = regionService;
-        this.regionConverter = regionConverter;
-        this.modelMapper = modelMapper;
         this.countryService = countryService;
+        this.modelMapper = modelMapper;
     }
+
 
     @GetMapping(value = "/regions/{id}")
     public ResponseEntity<RegionDto> get(@PathVariable Long id) {
@@ -43,13 +38,15 @@ public class RegionController {
         if (region == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(regionConverter.convertToDto(region), HttpStatus.OK);
+        RegionDto regionDto = modelMapper.map(region, RegionDto.class);
+        return new ResponseEntity<>(regionDto, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/regions")
     public ResponseEntity<List<RegionDto>> getAll(@RequestParam(value = "countryId", required = false) Long countryId) {
         List<Region> regions;
+        List<RegionDto> regionDtos;
         if (countryId == null) {
             regions = regionService.getAll();
         } else {
@@ -58,27 +55,29 @@ public class RegionController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
-        return new ResponseEntity<>(regionConverter.convertToDto(regions), HttpStatus.CREATED);
+        regionDtos = regions.stream()
+                .map(region -> modelMapper.map(region, RegionDto.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(regionDtos, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/regions")
-    public ResponseEntity<IdDto> add(@RequestBody RegionDto regionDto) {
-        Region region = new Region();
-        region.setName(regionDto.getName());
-        region.setCountry(countryService.get(regionDto.getCountryId()));
-        regionService.add(region);
-        return new ResponseEntity<>(new IdDto(region.getId()), HttpStatus.CREATED);
+    public ResponseEntity<RegionDto> add(@RequestBody RegionDto regionDto) {
+        Region newRegion = modelMapper.map(regionDto, Region.class);
+        newRegion.setName(regionDto.getName());
+        newRegion.setCountry(countryService.get(regionDto.getCountryId()));
+
+        Region region = regionService.add(newRegion);
+        regionDto = modelMapper.map(region, RegionDto.class);
+        regionDto.setName(region.getName());
+        regionDto.setCountryId(region.getCountry().getId());
+        return new ResponseEntity<>(regionDto, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/regions/{id}")
-    public ResponseEntity<IdDto> update(@PathVariable Long id, @RequestBody RegionDto regionDto) {
-        Region region = regionService.get(id);
-        if (region == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        modelMapper.map(regionDto, region);
-        regionService.add(region);
-        return new ResponseEntity<>(new IdDto(region.getId()), HttpStatus.OK);
+    public ResponseEntity<RegionDto> update(@PathVariable Long id, @RequestBody RegionDto regionDto) {
+        Region region = regionService.update(modelMapper.map(regionDto, Region.class), id);
+        return new ResponseEntity<>(modelMapper.map(region, RegionDto.class), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/regions/{id}")
