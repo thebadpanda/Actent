@@ -36,10 +36,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Transactional
     @Override
     public Equipment update(Equipment entity, Long id) {
-        if(equipmentRepository.findById(id).isPresent()){
+        if (equipmentRepository.findById(id).isPresent()) {
             entity.setId(id);
             return equipmentRepository.save(entity);
-        }else{
+        } else {
 
             // TODO: else throw exception or so
             return null;
@@ -50,8 +50,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     public Equipment get(Long id) {
 
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
-        return optionalEquipment.orElse(null);
-        // TODO: or else throw exception
+
+        return optionalEquipment.orElseThrow(()
+                -> new ResourceNotFoundException(
+                ExceptionMessages.EQUIPMENT_BY_THIS_ID_IS_NOT_FOUND,
+                ExceptionCode.NOT_FOUND
+        ));
     }
 
     @Override
@@ -59,13 +63,13 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         List<Equipment> equipmentList = equipmentRepository.findAll();
 
-        if (equipmentList.isEmpty()){
+        if (equipmentList.isEmpty()) {
 
             throw new ResourceNotFoundException(
                     ExceptionMessages.EQUIPMENTS_ARE_NOT_FOUND,
                     ExceptionCode.NOT_FOUND
             );
-        }else {
+        } else {
 
             return equipmentList;
         }
@@ -77,10 +81,10 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
 
-        if(optionalEquipment.isPresent()) {
+        if (optionalEquipment.isPresent()) {
 
             equipmentRepository.deleteById(id);
-        }else{
+        } else {
 
             throw new ResourceNotFoundException(
                     ExceptionMessages.EQUIPMENT_BY_THIS_ID_IS_NOT_FOUND,
