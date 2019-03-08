@@ -35,18 +35,29 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public Equipment add(Equipment entity) {
 
-        if (entity.getAssignedEvent() == null || !eventRepository.existsById(entity.getAssignedEvent().getId())){
+        if (entity.getAssignedEvent() == null) {
 
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND
+            );
+            // TODO: create exception for nullable = false column
+        } else if (!eventRepository.existsById(entity.getAssignedEvent().getId())) {
 
-        }else if (entity.getAssignedUser() != null && !userRepository.existsById(entity.getAssignedUser().getId())) {
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND
+            );
+        } else if (entity.getAssignedUser() != null && !userRepository.existsById(entity.getAssignedUser().getId())) {
 
             throw new ResourceNotFoundException(
                     ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND,
                     ExceptionCode.NOT_FOUND
             );
+        } else {
+
+            return equipmentRepository.save(entity);
         }
-        return equipmentRepository.save(entity);
-        // TODO: throw exception
     }
 
     @Transactional
