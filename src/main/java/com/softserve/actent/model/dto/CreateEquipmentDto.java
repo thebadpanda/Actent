@@ -17,8 +17,9 @@ public class CreateEquipmentDto {
     @NonNull
     private boolean satisfied;
 
-    private Long userid;
+    private Long userId;
 
-    private Long eventid;
+    @NonNull
+    private Long eventId;
 
 }
