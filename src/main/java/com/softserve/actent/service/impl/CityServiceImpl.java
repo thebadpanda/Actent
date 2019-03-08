@@ -19,6 +19,7 @@ public class CityServiceImpl implements CityService {
     public CityServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
+
     @Transactional
     @Override
     public City add(City city) {
@@ -35,6 +36,7 @@ public class CityServiceImpl implements CityService {
         Optional<City> optionalCity = cityRepository.findById(id);
         return optionalCity.orElse(null);
     }
+
     @Transactional
     @Override
     public City update(City city, Long id) {
@@ -46,6 +48,7 @@ public class CityServiceImpl implements CityService {
             return null;
         }
     }
+    
     @Transactional
     @Override
     public void delete(Long id) {
