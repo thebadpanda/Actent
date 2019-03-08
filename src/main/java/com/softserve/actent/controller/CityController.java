@@ -2,7 +2,6 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.model.dto.CityDto;
 import com.softserve.actent.model.dto.IdDto;
-import com.softserve.actent.model.dto.converter.CityConverter;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.service.CityService;
 import com.softserve.actent.service.RegionService;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -28,16 +28,13 @@ public class CityController {
 
     private final CityService cityService;
 
-    private final CityConverter cityConverter;
-
     private final RegionService regionService;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CityController(CityService cityService, CityConverter cityConverter, RegionService regionService, ModelMapper modelMapper) {
+    public CityController(CityService cityService, RegionService regionService, ModelMapper modelMapper) {
         this.cityService = cityService;
-        this.cityConverter = cityConverter;
         this.regionService = regionService;
         this.modelMapper = modelMapper;
     }
@@ -51,37 +48,45 @@ public class CityController {
         if (city == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(cityConverter.convertToDto(city), HttpStatus.OK);
+        CityDto cityDto = modelMapper.map(city, CityDto.class);
+        return new ResponseEntity<>(cityDto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/cities")
     public ResponseEntity<List<CityDto>> getAll(@RequestParam(value = "regionId", required = false) Long regionId) {
         List<City> cities;
+        List<CityDto> cityDtos;
         if (regionId == null) {
             cities = cityService.getAll();
         } else {
             cities = cityService.getByRegionId(regionId);
         }
-
         if (cities.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(cityConverter.convertToDto(cities), HttpStatus.OK);
+        cityDtos = cities.stream()
+                .map(city -> modelMapper.map(city, CityDto.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(cityDtos, HttpStatus.OK);
     }
 
     @PostMapping(value = "/cities")
-    public ResponseEntity<IdDto> add(@RequestBody CityDto cityDto) {
-        City city = new City();
-        city.setName(cityDto.getName());
-        city.setRegion(regionService.get(cityDto.getRegionId()));
-        cityService.add(city);
-        return new ResponseEntity<>(new IdDto(city.getId()), HttpStatus.CREATED);
+    public ResponseEntity<CityDto> add(@RequestBody CityDto cityDto) {
+        City newCity = modelMapper.map(cityDto, City.class);
+        newCity.setName(cityDto.getName());
+        newCity.setRegion(regionService.get(cityDto.getRegionId()));
+
+        City city = cityService.add(newCity);
+        cityDto = modelMapper.map(city, CityDto.class);
+        cityDto.setName(city.getName());
+        cityDto.setRegionId(city.getRegion().getId());
+        return new ResponseEntity<>(cityDto, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/cities/{id}")
-    public ResponseEntity<IdDto> update(@PathVariable Long id, @RequestBody CityDto cityDto) {
+    public ResponseEntity<CityDto> update(@PathVariable Long id, @RequestBody CityDto cityDto) {
         City city = cityService.update(modelMapper.map(cityDto, City.class), id);
-        return new ResponseEntity<>(new IdDto(city.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(city, CityDto.class), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/cities/{id}")
