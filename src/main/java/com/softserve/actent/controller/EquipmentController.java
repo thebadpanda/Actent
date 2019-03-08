@@ -8,6 +8,7 @@ import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.impl.EquipmentServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class EquipmentController {
@@ -40,6 +42,9 @@ public class EquipmentController {
     @GetMapping("/equipments")
     public ResponseEntity<List<EquipmentDto>> getAllEquipments(){
 
+        log.error("sakdjkjsahkdkjashdjkhaskjdhjksahdkjahdkj");
+        log.trace("sadadasdasdasd");
+        log.info("sadasdjakdkjakdjhaskjhdjkashdhasjdhkjashdjkashdkashjkdhasdkj");
         List<Equipment> equipments = equipmentServiceImpl.getAll();
 
         List<EquipmentDto> equipmentDtos = equipments.stream()
@@ -61,20 +66,26 @@ public class EquipmentController {
     @PostMapping("/equipments")
     public ResponseEntity<CreateEquipmentDto> addEquipment(@RequestBody CreateEquipmentDto createEquipmentDto){
 
+        log.info("=======================================================================================================================");
+        log.info("before map dto to entity assignedUserId: {}", createEquipmentDto.getUserId());
+        log.info("before map dto to entity assignedEventId: {}", createEquipmentDto.getEventId());
+
+        if (createEquipmentDto.getUserId() == null || createEquipmentDto.getUserId() == 0) {
+
+            log.error("invalid UserId. The given id must not be null or 0");
+        }
+
         Equipment newEquipment = modelMapper.map(createEquipmentDto, Equipment.class);
 
+        log.info("after map dto to entity assignedUserId: {}", newEquipment.getAssignedUser());
+        log.info("after map dto to entity assignedEventId: {}", newEquipment.getAssignedEvent());
+
         // TODO: use User and Event services for check if they exists
-        User user = userRepository.getOne(createEquipmentDto.getUserid());
-        Event event = eventRepository.getOne(createEquipmentDto.getEventid());
-
-        newEquipment.setAssignedUser(user);
-        newEquipment.setAssignedEvent(event);
-
         Equipment equipment = equipmentServiceImpl.add(newEquipment);
 
         createEquipmentDto = modelMapper.map(equipment, CreateEquipmentDto.class);
-        createEquipmentDto.setUserid(equipment.getAssignedUser().getId());
-        createEquipmentDto.setEventid(equipment.getAssignedEvent().getId());
+        createEquipmentDto.setUserId(equipment.getAssignedUser().getId());
+        createEquipmentDto.setEventId(equipment.getAssignedEvent().getId());
 
         return new ResponseEntity<>(createEquipmentDto, HttpStatus.CREATED);
     }
