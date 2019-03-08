@@ -117,7 +117,7 @@ public class EventServiceImpl implements EventService {
 
     private User getUserFromDataBase(Event event) {
 
-        return userService.getUserById(event.getCreator().getId());
+        return userService.get(event.getCreator().getId());
     }
 
     private Location getLocationFromDataBase(Event event) {
