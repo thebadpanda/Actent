@@ -70,9 +70,9 @@ public class ImageController {
 
     @PutMapping(value = "/images/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ImageDto updateImage(@RequestBody ImageDto imageDto, @PathVariable Long id) {
+    public ImageDto updateImage(@RequestBody AddImageDto addImageDto, @PathVariable Long id) {
 
-        Image image = imageService.update(modelMapper.map(imageDto, Image.class), id);
+        Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
         return modelMapper.map(image, ImageDto.class);
     }
 
