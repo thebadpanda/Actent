@@ -1,5 +1,8 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Equipment;
 import com.softserve.actent.repository.EquipmentRepository;
 import com.softserve.actent.service.EquipmentService;
@@ -63,10 +66,17 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void delete(Long id) {
 
         Optional<Equipment> optionalEquipment = equipmentRepository.findById(id);
+
         if(optionalEquipment.isPresent()) {
+
             equipmentRepository.deleteById(id);
+        }else{
+
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.EQUIPMENT_BY_THIS_ID_IS_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND
+            );
         }
 
-        // TODO: else throw exception or so
     }
 }
