@@ -28,44 +28,48 @@ public class TagController {
     }
 
     @PostMapping(value = "/tags")
-    public ResponseEntity<IdDto> addTag(@RequestBody TagDto tagDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public IdDto addTag(@RequestBody TagDto tagDto) {
 
         Tag tag = modelMapper.map(tagDto, Tag.class);
         tag = tagService.add(tag);
 
-        return new ResponseEntity<>(new IdDto(tag.getId()), HttpStatus.CREATED);
+        return new IdDto(tag.getId());
     }
 
     @GetMapping(value = "/tags/{id}")
-    public ResponseEntity<TagDto> getTagById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto getTagById(@PathVariable Long id) {
 
         Tag tag = tagService.get(id);
-        return new ResponseEntity<>(modelMapper.map(tag, TagDto.class), HttpStatus.OK);
+        return modelMapper.map(tag, TagDto.class);
     }
 
     @GetMapping(value = "/tags")
-    public ResponseEntity<List<TagDto>> getTags() {
+    @ResponseStatus(HttpStatus.OK)
+    public List<TagDto> getTags() {
 
         List<Tag> tags = tagService.getAll();
         List<TagDto> imagesDto = tags.stream()
                 .map(image -> modelMapper.map(image, TagDto.class))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(imagesDto, HttpStatus.OK);
+        return imagesDto;
     }
 
     @PutMapping(value = "/tags/{id}")
-    public ResponseEntity<TagDto> updateTagById(@RequestBody TagDto tagDto, @PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto updateTagById(@RequestBody TagDto tagDto, @PathVariable Long id) {
 
         Tag tag = tagService.update(modelMapper.map(tagDto, Tag.class), id);
-        return new ResponseEntity<>(modelMapper.map(tag, TagDto.class), HttpStatus.OK);
+        return modelMapper.map(tag, TagDto.class);
     }
 
     @DeleteMapping(value = "/tags/{id}")
-    public ResponseEntity<Void> deleteTagById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTagById(@PathVariable Long id) {
 
         tagService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 
