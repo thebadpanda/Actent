@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ImageDto {
+public class AddImageDto {
 
     @NonNull
     private String filePath;
