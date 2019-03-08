@@ -57,8 +57,18 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public List<Equipment> getAll() {
 
-        return equipmentRepository.findAll();
-        // TODO: throw exception
+        List<Equipment> equipmentList = equipmentRepository.findAll();
+
+        if (equipmentList.isEmpty()){
+
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.EQUIPMENTS_ARE_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND
+            );
+        }else {
+
+            return equipmentList;
+        }
     }
 
     @Transactional
@@ -77,6 +87,5 @@ public class EquipmentServiceImpl implements EquipmentService {
                     ExceptionCode.NOT_FOUND
             );
         }
-
     }
 }
