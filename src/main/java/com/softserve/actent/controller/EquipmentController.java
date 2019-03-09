@@ -1,9 +1,8 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.equipment.CreateEquipmentDto;
+import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
 import com.softserve.actent.model.dto.equipment.EquipmentDto;
 import com.softserve.actent.model.entity.Equipment;
-import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.impl.EquipmentServiceImpl;
 import com.softserve.actent.service.impl.EventServiceImpl;
@@ -11,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,15 +58,15 @@ public class EquipmentController {
 
     @PostMapping("/equipments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateEquipmentDto addEquipment(@RequestBody CreateEquipmentDto createEquipmentDto){
+    public EquipmentCreateDto addEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto){
 
-        Equipment newEquipment = modelMapper.map(createEquipmentDto, Equipment.class);
+        Equipment newEquipment = modelMapper.map(equipmentCreateDto, Equipment.class);
 
         Equipment equipment = equipmentServiceImpl.add(newEquipment);
 
-        createEquipmentDto = modelMapper.map(equipment, CreateEquipmentDto.class);
+        equipmentCreateDto = modelMapper.map(equipment, EquipmentCreateDto.class);
 
-        return createEquipmentDto;
+        return equipmentCreateDto;
     }
 
     @DeleteMapping("/equipments/{id}")
@@ -80,10 +78,10 @@ public class EquipmentController {
 
     @PutMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CreateEquipmentDto updateEquipmentById(@PathVariable Long id, @RequestBody CreateEquipmentDto createEquipmentDto){
+    public EquipmentCreateDto updateEquipmentById(@PathVariable Long id, @RequestBody EquipmentCreateDto equipmentCreateDto){
 
         // TODO: use User and Event services for check if they exists
-        Equipment equipment = equipmentServiceImpl.update(modelMapper.map(createEquipmentDto, Equipment.class), id);
-        return modelMapper.map(equipment, CreateEquipmentDto.class);
+        Equipment equipment = equipmentServiceImpl.update(modelMapper.map(equipmentCreateDto, Equipment.class), id);
+        return modelMapper.map(equipment, EquipmentCreateDto.class);
     }
 }
