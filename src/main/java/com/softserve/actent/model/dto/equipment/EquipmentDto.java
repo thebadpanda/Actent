@@ -1,4 +1,4 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.equipment;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class EquipmentDto {
     @NonNull
     private String description;
 
-    private boolean satisfied;
+    private Boolean satisfied;
 
     private String assignedUserFirstName;
 
