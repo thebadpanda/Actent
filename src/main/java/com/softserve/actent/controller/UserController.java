@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping(value = "/users")
     public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
-        User user = userService.add(registerUserDtoToEntity(registerUserDto));
+        @Valid User user = userService.add(registerUserDtoToEntity(registerUserDto));
         UserDto userDto = registerUserEntityToDto(user);
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<UserDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
         UserDto userDto = userSettingsEntityToDto(user);
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(userDto, HttpStatus.RESET_CONTENT);
     }
 
     @GetMapping(value = "/users")
@@ -50,6 +50,11 @@ public class UserController {
     @GetMapping(value = "/users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.get(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/users/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/users/{id}")
