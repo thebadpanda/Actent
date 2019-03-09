@@ -80,7 +80,6 @@ public class EquipmentController {
     @ResponseStatus(HttpStatus.OK)
     public EquipmentCreateDto updateEquipmentById(@PathVariable Long id, @RequestBody EquipmentCreateDto equipmentCreateDto){
 
-        // TODO: use User and Event services for check if they exists
         Equipment equipment = equipmentServiceImpl.update(modelMapper.map(equipmentCreateDto, Equipment.class), id);
         return modelMapper.map(equipment, EquipmentCreateDto.class);
     }
