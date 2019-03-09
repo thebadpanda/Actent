@@ -65,14 +65,10 @@ public class CityController {
     @PostMapping(value = "/cities")
     @ResponseStatus(HttpStatus.CREATED)
     public CityDto add(@RequestBody CityDto cityDto) {
-        City newCity = modelMapper.map(cityDto, City.class);
-        newCity.setName(cityDto.getName());
-        newCity.setRegion(regionService.get(cityDto.getRegionId()));
-
-        City city = cityService.add(newCity);
-        cityDto = modelMapper.map(city, CityDto.class);
-        cityDto.setName(city.getName());
-        cityDto.setRegionId(city.getRegion().getId());
+        City city = new City();
+        city.setName(cityDto.getName());
+        city.setRegion(regionService.get(cityDto.getRegionId()));
+        cityService.add(city);
         return cityDto;
     }
 
