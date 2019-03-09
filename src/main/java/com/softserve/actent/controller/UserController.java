@@ -43,8 +43,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+    public ResponseEntity<?> getUsers(@RequestParam(value = "email", required = false) String email) {
+        if (email == null){
+            return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/users/{id}")
@@ -52,10 +56,10 @@ public class UserController {
         return new ResponseEntity<>(userSettingsEntityToDto(userService.get(id)), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/email/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
-        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
-    }
+//    @GetMapping(value = "/users", params = "email")
+//    public ResponseEntity<UserDto> getUserByEmail(@RequestParam(value = "email", required = false) String email) {
+//        return new ResponseEntity<>(userSettingsEntityToDto(userService.getUserByEmail(email)), HttpStatus.OK);
+//    }
 
     @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
