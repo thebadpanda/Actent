@@ -8,11 +8,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -35,6 +33,6 @@ public class Image {
     @NonNull
     @NotBlank(message = StringConstants.IMAGE_HASH_SHOULD_NOT_BE_BLANK)
     @Column(nullable = false, unique = true, length = 64)
-    @Length(min = 64, max = 64, message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_64)
+    @Length(min = 64, max = 64, message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
     private String hash;
 }
