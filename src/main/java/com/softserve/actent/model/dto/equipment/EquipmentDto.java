@@ -17,6 +17,7 @@ public class EquipmentDto {
     @NonNull
     private String description;
 
+    @NonNull
     private Boolean satisfied;
 
     private String assignedUserFirstName;
