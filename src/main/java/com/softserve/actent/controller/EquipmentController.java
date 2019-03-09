@@ -72,17 +72,18 @@ public class EquipmentController {
     }
 
     @DeleteMapping("/equipments/{id}")
-    public ResponseEntity<Void> deleteEquipmentById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEquipmentById(@PathVariable Long id){
 
         equipmentServiceImpl.delete(id);
-        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/equipments/{id}")
-    public ResponseEntity<CreateEquipmentDto> updateEquipmentById(@PathVariable Long id, @RequestBody CreateEquipmentDto createEquipmentDto){
+    @ResponseStatus(HttpStatus.OK)
+    public CreateEquipmentDto updateEquipmentById(@PathVariable Long id, @RequestBody CreateEquipmentDto createEquipmentDto){
 
         // TODO: use User and Event services for check if they exists
         Equipment equipment = equipmentServiceImpl.update(modelMapper.map(createEquipmentDto, Equipment.class), id);
-        return new ResponseEntity<>(modelMapper.map(equipment, CreateEquipmentDto.class), HttpStatus.OK);
+        return modelMapper.map(equipment, CreateEquipmentDto.class);
     }
 }
