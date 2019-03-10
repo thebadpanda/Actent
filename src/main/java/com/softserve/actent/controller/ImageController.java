@@ -1,5 +1,8 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.AddImageDto;
 import com.softserve.actent.model.dto.ImageDto;
@@ -18,7 +21,6 @@ import java.util.List;
 public class ImageController {
 
     private final ImageService imageService;
-
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -31,10 +33,21 @@ public class ImageController {
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addImage(@RequestBody AddImageDto addImageDto) {
 
-        Image image = modelMapper.map(addImageDto, Image.class);
-        image = imageService.add(image);
+        if (addImageDto.getHash().length() != 64) {
 
-        return new IdDto(image.getId());
+            throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else if (addImageDto.getFilePath().isEmpty()) {
+
+            throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else {
+
+            Image image = modelMapper.map(addImageDto, Image.class);
+            image = imageService.add(image);
+
+            return new IdDto(image.getId());
+        }
     }
 
     @GetMapping(value = "/images/{id}")
@@ -72,8 +85,19 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public ImageDto updateImage(@RequestBody AddImageDto addImageDto, @PathVariable Long id) {
 
-        Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
-        return modelMapper.map(image, ImageDto.class);
+        if (addImageDto.getHash().length() != 64) {
+
+            throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else if (addImageDto.getFilePath().isEmpty()) {
+
+            throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else {
+
+            Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
+            return modelMapper.map(image, ImageDto.class);
+        }
     }
 
     @DeleteMapping(value = "/images/{id}")

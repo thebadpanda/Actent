@@ -1,5 +1,9 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectInputDataException;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.dto.CreateReviewDto;
 import com.softserve.actent.model.dto.ReviewDto;
 import com.softserve.actent.model.dto.IdDto;
@@ -18,20 +22,35 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 public class ReviewController {
 
-    @Autowired
-    ReviewService reviewService;
+    private final ReviewService reviewService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    ModelMapper modelMapper;
+    public ReviewController(ReviewService reviewService, ModelMapper modelMapper) {
+        this.reviewService = reviewService;
+        this.modelMapper = modelMapper;
+    }
 
     @PostMapping(value = "/reviews")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addReview(@RequestBody CreateReviewDto addReviewDto) {
 
-        Review review = modelMapper.map(addReviewDto, Review.class);
-        review = reviewService.add(review);
+        if (addReviewDto.getText() == null || addReviewDto.getText().isEmpty()) {
 
-        return new IdDto(review.getId());
+            throw new IncorrectStringException(ExceptionMessages.NO_REVIEW_TEXT, ExceptionCode.INCORRECT_STRING);
+        } else if (addReviewDto.getScore() == null) {
+
+            throw new IncorrectInputDataException(ExceptionMessages.NO_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
+        } else if (addReviewDto.getScore() < 1 || addReviewDto.getScore() > 5) {
+
+            throw new IncorrectInputDataException(ExceptionMessages.BAD_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
+        } else {
+
+            Review review = modelMapper.map(addReviewDto, Review.class);
+            review = reviewService.add(review);
+
+            return new IdDto(review.getId());
+        }
     }
 
     @GetMapping(value = "/reviews/{id}")
@@ -54,10 +73,21 @@ public class ReviewController {
 
     @PutMapping(value = "/reviews/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewDto updateReview(@RequestBody CreateReviewDto reviewDto, @PathVariable Long id) {
+    public ReviewDto updateReview(@RequestBody CreateReviewDto updateReviewDto, @PathVariable Long id) {
 
-        Review review = reviewService.update(modelMapper.map(reviewDto, Review.class), id);
-        return modelMapper.map(review, ReviewDto.class);
+        if (updateReviewDto.getText() == null || updateReviewDto.getText().isEmpty()) {
+
+            throw new IncorrectStringException(ExceptionMessages.NO_REVIEW_TEXT, ExceptionCode.INCORRECT_STRING);
+        } else if (updateReviewDto.getScore() == null) {
+
+            throw new IncorrectInputDataException(ExceptionMessages.NO_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
+        } else if (updateReviewDto.getScore() < 1 || updateReviewDto.getScore() > 5) {
+
+            throw new IncorrectInputDataException(ExceptionMessages.BAD_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
+        } else {
+            Review review = reviewService.update(modelMapper.map(updateReviewDto, Review.class), id);
+            return modelMapper.map(review, ReviewDto.class);
+        }
     }
 
     @DeleteMapping(value = "/reviews/{id}")
