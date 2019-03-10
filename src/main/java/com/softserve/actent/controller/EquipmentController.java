@@ -65,7 +65,7 @@ public class EquipmentController {
 
         // TODO: use User and Event services for check if they exists
         User user = userRepository.getOne(createEquipmentDto.getUserId());
-        Event event = eventRepository.getOne(createEquipmentDto.getUserId());
+        Event event = eventRepository.getOne(createEquipmentDto.getEventId());
 
         newEquipment.setAssignedUser(user);
         newEquipment.setAssignedEvent(event);
