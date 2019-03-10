@@ -1,15 +1,12 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.dto.converter.ImageMessageConverter;
 import com.softserve.actent.model.dto.converter.TextMessageConvert;
 import com.softserve.actent.model.dto.converter.ViewMessageConverter;
 import com.softserve.actent.model.dto.message.CreateImageMessageDto;
 import com.softserve.actent.model.dto.message.CreateTextMessageDto;
 import com.softserve.actent.model.dto.message.ViewMessageDto;
-import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Message;
-import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
