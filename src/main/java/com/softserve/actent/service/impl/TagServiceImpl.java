@@ -1,5 +1,8 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.repository.TagRepository;
 import com.softserve.actent.service.TagService;
@@ -24,7 +27,8 @@ public class TagServiceImpl implements TagService {
     @Transactional
     public Tag add(Tag tag) {
 
-        return tagRepository.save(tag);
+        Optional<Tag> optionalTag = tagRepository.findByText(tag.getText());
+        return optionalTag.orElseGet(() -> tagRepository.save(tag));
     }
 
     @Override
@@ -37,14 +41,15 @@ public class TagServiceImpl implements TagService {
             tag.setId(id);
             return tagRepository.save(tag);
         } else {
-            return null;
+            throw new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 
     @Override
     public Tag get(Long id) {
 
-        return tagRepository.findById(id).orElse(null);
+        return tagRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -61,6 +66,8 @@ public class TagServiceImpl implements TagService {
 
         if (optionalReview.isPresent()) {
             tagRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Review;
 import com.softserve.actent.repository.ReviewRepository;
 import com.softserve.actent.service.ReviewService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,12 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Autowired
-    ModelMapper modelMapper;
+    private final ReviewRepository reviewRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    public ReviewServiceImpl(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
 
     @Override
     public Review add(Review review) {
@@ -30,7 +33,8 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
-        return optionalReview.orElse(null);
+        return optionalReview.orElseThrow(()
+                -> new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
             review.setId(reviewId);
             return reviewRepository.save(review);
         } else {
-            return null;
+            throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -59,8 +63,8 @@ public class ReviewServiceImpl implements ReviewService {
 
         if(optionalReview.isPresent()) {
             reviewRepository.deleteById(reviewId);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
         }
-
-        // TODO: else throw exception or so
     }
 }
