@@ -10,6 +10,7 @@ import com.softserve.actent.model.entity.MessageType;
 import com.softserve.actent.repository.MessageRepository;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static com.softserve.actent.exceptions.codes.ExceptionCode.MESSAGE_NOT_FOUND;
 
+@Log4j2
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -68,7 +70,6 @@ public class MessageServiceImpl implements MessageService {
         }
     }
 
-
     @Override
     @Transactional
     public void delete(Long id) {
@@ -83,7 +84,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message get(Long id) {
         return messageRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Message not found", MESSAGE_NOT_FOUND));
+                orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.MESSAGE_NOT_FOUND, MESSAGE_NOT_FOUND));
     }
 
     @Override
@@ -124,7 +125,8 @@ public class MessageServiceImpl implements MessageService {
                 optionalMessage.get().getSender().getId().equals(message.getSender().getId())) {
             return true;
         } else
-            throw new MessageValidationException(ExceptionMessages.YOU_CAN_NOT_CHANGE_THIS_MESSAGE, ExceptionCode.VALIDATION_FAILED);
+            throw new MessageValidationException(ExceptionMessages.YOU_CAN_NOT_CHANGE_THIS_MESSAGE,
+                    ExceptionCode.VALIDATION_FAILED);
 
 
     }
