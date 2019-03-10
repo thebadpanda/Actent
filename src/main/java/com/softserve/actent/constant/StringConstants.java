@@ -37,4 +37,6 @@ public class StringConstants {
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
     public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
 
+    public static final String CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Category shouldn`t be longer than 30";
+    public static final String CATEGORY_NOT_BE_BLANK = "Category can`t be blank";
 }
