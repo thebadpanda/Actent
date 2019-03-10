@@ -1,4 +1,4 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.equipment;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class CreateEquipmentDto {
+public class EquipmentCreateDto {
 
     @NonNull
     private String title;
@@ -15,11 +15,11 @@ public class CreateEquipmentDto {
     private String description;
 
     @NonNull
-    private boolean satisfied;
+    private Boolean satisfied;
 
-    private Long userId;
+    private Long assignedUserId;
 
     @NonNull
-    private Long eventId;
+    private Long assignedEventId;
 
 }
