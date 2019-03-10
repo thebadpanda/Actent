@@ -4,9 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import javax.validation.constraints.Null;
+
 @Data
 @NoArgsConstructor
 public class EquipmentCreateDto {
+
+    @Null
+    private Long id;
 
     @NonNull
     private String title;
