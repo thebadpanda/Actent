@@ -39,7 +39,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.NO_IMAGE_WITH_ID + " Id: " + imageId);
-            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND)
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -50,7 +50,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.NO_IMAGE_WITH_PATH + " Path: " + filePath);
-            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_PATH, ExceptionCode.NOT_FOUND));
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_PATH, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -67,7 +67,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.NO_IMAGE_WITH_HASH);
-            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_HASH, ExceptionCode.NOT_FOUND)
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_HASH, ExceptionCode.NOT_FOUND);
         });
     }
 
