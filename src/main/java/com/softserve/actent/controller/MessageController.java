@@ -11,7 +11,6 @@ import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -54,54 +54,51 @@ public class MessageController {
 
 
     @PostMapping(value = "/textMessages")
-    public ResponseEntity<ViewMessageDto> addMessage(@RequestBody CreateTextMessageDto createMessageDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ViewMessageDto addMessage(@RequestBody CreateTextMessageDto createMessageDto) {
 
         Message message = modelMapper.map(createMessageDto, Message.class);
         message.setSender(userService.get(createMessageDto.getSenderId()));
         message.setChat(chatService.getChatById(createMessageDto.getChatId()));
 
-        return new ResponseEntity<>(viewMessageConverter.convertToDto(messageService.add(message)), HttpStatus.CREATED);
+        return viewMessageConverter.convertToDto(messageService.add(message));
     }
 
     @PostMapping(value = "/imageMessages")
-    public ResponseEntity<ViewMessageDto> addImage(@RequestBody CreateImageMessageDto createImageMessageDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ViewMessageDto addImage(@RequestBody CreateImageMessageDto createImageMessageDto) {
 
         Message message = modelMapper.map(createImageMessageDto, Message.class);
         message.setSender(userService.get(createImageMessageDto.getSenderId()));
         message.setChat(chatService.getChatById(createImageMessageDto.getChatId()));
 
-        return new ResponseEntity<>(viewMessageConverter.convertToDto(messageService.addImageMessage(message)), HttpStatus.CREATED);
-    }
-
-    @DeleteMapping(value = "/textMessages/{id}")
-    public ResponseEntity<Void> deleteMessageById(@PathVariable Long id) {
-
-        messageService.delete(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping(value = "/messages")
-    public ResponseEntity<List<ViewMessageDto>> getMessages() {
-
-        return new ResponseEntity<>((viewMessageConverter.convertToDto(messageService.getAll())), HttpStatus.OK);
+        return viewMessageConverter.convertToDto(messageService.addImageMessage(message));
     }
 
     @GetMapping(value = "/messages/{id}")
-    public ResponseEntity<List<ViewMessageDto>> getMessagesByChatId(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public List<ViewMessageDto> getMessagesByChatId(@PathVariable Long id) {
 
-        return new ResponseEntity<>((viewMessageConverter.convertToDto(messageService.getAllMessagesByChatId(id))), HttpStatus.OK);
+        return viewMessageConverter.convertToDto(messageService.getAllMessagesByChatId(id));
     }
 
     @PutMapping(value = "/messages/{id}")
-    public ResponseEntity<ViewMessageDto> updateMessage(@PathVariable Long id,
-                                                        @RequestBody CreateTextMessageDto createMessageDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public ViewMessageDto updateMessage(@PathVariable Long id,
+                                        @RequestBody CreateTextMessageDto createMessageDto) {
 
         Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
         message.setSender(userService.get(createMessageDto.getSenderId()));
         message.setChat(chatService.getChatById(createMessageDto.getChatId()));
-        return new ResponseEntity<>((viewMessageConverter.convertToDto(message)), HttpStatus.OK);
+        return viewMessageConverter.convertToDto(message);
     }
 
+    @DeleteMapping(value = "/textMessages/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMessageById(@PathVariable Long id) {
+
+        messageService.delete(id);
+
+    }
 
 }
