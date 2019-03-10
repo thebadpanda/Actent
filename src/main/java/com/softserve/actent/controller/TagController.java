@@ -50,11 +50,10 @@ public class TagController {
     public List<TagDto> getTags() {
 
         List<Tag> tags = tagService.getAll();
-        List<TagDto> imagesDto = tags.stream()
+
+        return tags.stream()
                 .map(image -> modelMapper.map(image, TagDto.class))
                 .collect(Collectors.toList());
-
-        return imagesDto;
     }
 
     @PutMapping(value = "/tags/{id}")
