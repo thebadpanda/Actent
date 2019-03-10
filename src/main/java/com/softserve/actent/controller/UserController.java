@@ -8,10 +8,9 @@ import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,34 +28,53 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserDto registerUserDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto addUser(@RequestBody RegisterUserDto registerUserDto) {
         User user = userService.add(registerUserDtoToEntity(registerUserDto));
         UserDto userDto = registerUserEntityToDto(user);
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        return userDto;
     }
 
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity<UserDto> saveUserSetting(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
+    @ResponseStatus(HttpStatus.RESET_CONTENT)
+    public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
         UserDto userDto = userSettingsEntityToDto(user);
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        return userDto;
     }
 
     @GetMapping(value = "/users")
-    public ResponseEntity<List<User>> getUsers() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDto> getUsers(@RequestParam(value = "email", required = false) String email) {
+        if (email == null) {
+            List<UserDto> userDtoList = new ArrayList<>();
+            for (User user : userService.getAll()) {
+                userDtoList.add(userSettingsEntityToDto(user));
+            }
+            return userDtoList;
+        }
+        List<UserDto> userDtoList = new ArrayList<>();
+        UserDto userDto = userSettingsEntityToDto(userService.getUserByEmail(email));
+        userDtoList.add(userDto);
+        return userDtoList;
     }
 
     @GetMapping(value = "/users/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userSettingsEntityToDto(userService.get(id)), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getUserById(@PathVariable Long id) {
+        return userSettingsEntityToDto(userService.get(id));
+    }
+
+    @GetMapping(value = "/users", params = "email")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getUserByEmail(@RequestParam(value = "email", required = false) String email) {
+        return userSettingsEntityToDto(userService.getUserByEmail(email));
     }
 
     @DeleteMapping(value = "/users/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable Long id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private User registerUserDtoToEntity(RegisterUserDto registerUserDto) {
