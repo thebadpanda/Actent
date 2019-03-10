@@ -74,11 +74,11 @@ public class UserController {
         return userSettingsEntityToDto(userService.get(id));
     }
 
-    @GetMapping(value = "/users", params = "email")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto getUserByEmail(@RequestParam(value = "email", required = false) String email) {
-        return userSettingsEntityToDto(userService.getUserByEmail(email));
-    }
+//    @GetMapping(value = "/users", params = "email")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDto getUserByEmail(@RequestParam(value = "email", required = false) String email) {
+//        return userSettingsEntityToDto(userService.getUserByEmail(email));
+//    }
 
     @DeleteMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
