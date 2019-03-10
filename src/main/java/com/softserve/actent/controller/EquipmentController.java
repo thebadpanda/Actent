@@ -64,8 +64,8 @@ public class EquipmentController {
         Equipment newEquipment = modelMapper.map(createEquipmentDto, Equipment.class);
 
         // TODO: use User and Event services for check if they exists
-        User user = userRepository.getOne(createEquipmentDto.getUserid());
-        Event event = eventRepository.getOne(createEquipmentDto.getEventid());
+        User user = userRepository.getOne(createEquipmentDto.getUserId());
+        Event event = eventRepository.getOne(createEquipmentDto.getUserId());
 
         newEquipment.setAssignedUser(user);
         newEquipment.setAssignedEvent(event);
@@ -73,8 +73,8 @@ public class EquipmentController {
         Equipment equipment = equipmentServiceImpl.add(newEquipment);
 
         createEquipmentDto = modelMapper.map(equipment, CreateEquipmentDto.class);
-        createEquipmentDto.setUserid(equipment.getAssignedUser().getId());
-        createEquipmentDto.setEventid(equipment.getAssignedEvent().getId());
+        createEquipmentDto.setUserId(equipment.getAssignedUser().getId());
+        createEquipmentDto.setEventId(equipment.getAssignedEvent().getId());
 
         return new ResponseEntity<>(createEquipmentDto, HttpStatus.CREATED);
     }
