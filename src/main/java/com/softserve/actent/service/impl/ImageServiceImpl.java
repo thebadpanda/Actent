@@ -7,12 +7,14 @@ import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.repository.ImageRepository;
 import com.softserve.actent.service.ImageService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class ImageServiceImpl implements ImageService {
 
@@ -35,7 +37,10 @@ public class ImageServiceImpl implements ImageService {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
-        return optionalImage.orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND));
+        return optionalImage.orElseThrow(() -> {
+            log.error(ExceptionMessages.NO_IMAGE_WITH_ID + " Id: " + imageId);
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND)
+        });
     }
 
     @Override
@@ -43,22 +48,27 @@ public class ImageServiceImpl implements ImageService {
 
         Optional<Image> optionalImage = imageRepository.findByFilePath(filePath);
 
-        return optionalImage.orElseThrow(()
-                -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_PATH, ExceptionCode.NOT_FOUND));
+        return optionalImage.orElseThrow(() -> {
+            log.error(ExceptionMessages.NO_IMAGE_WITH_PATH + " Path: " + filePath);
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_PATH, ExceptionCode.NOT_FOUND));
+        });
     }
 
     @Override
     public Image getImageByHash(String hash) {
 
         if (hash.length() != 64) {
-            throw new IncorrectStringException("SHA256 hash must be exactly 64 symbols in length.",
+            log.error(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH);
+            throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
                     ExceptionCode.INCORRECT_STRING);
         }
 
         Optional<Image> optionalImage = imageRepository.findByHash(hash);
 
-        return optionalImage.orElseThrow(()
-                -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_HASH, ExceptionCode.NOT_FOUND));
+        return optionalImage.orElseThrow(() -> {
+            log.error(ExceptionMessages.NO_IMAGE_WITH_HASH);
+            return new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_HASH, ExceptionCode.NOT_FOUND)
+        });
     }
 
     @Override
@@ -76,6 +86,7 @@ public class ImageServiceImpl implements ImageService {
             image.setId(imageId);
             return imageRepository.save(image);
         } else {
+            log.error(ExceptionMessages.NO_IMAGE_WITH_ID + " Id: " + imageId);
             throw new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
@@ -85,9 +96,10 @@ public class ImageServiceImpl implements ImageService {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
-        if(optionalImage.isPresent()) {
+        if (optionalImage.isPresent()) {
             imageRepository.deleteById(imageId);
         } else {
+            log.error(ExceptionMessages.NO_IMAGE_WITH_ID + " Id: " + imageId);
             throw new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
