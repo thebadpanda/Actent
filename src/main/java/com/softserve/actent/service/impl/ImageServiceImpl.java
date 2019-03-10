@@ -1,5 +1,9 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.repository.ImageRepository;
 import com.softserve.actent.service.ImageService;
@@ -22,7 +26,8 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image add(Image image) {
 
-        return imageRepository.save(image);
+        Optional<Image> optionalImage = imageRepository.findByHash(image.getHash());
+        return optionalImage.orElseGet(() -> imageRepository.save(image));
     }
 
     @Override
@@ -30,7 +35,7 @@ public class ImageServiceImpl implements ImageService {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
 
-        return optionalImage.orElse(null);
+        return optionalImage.orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -38,15 +43,22 @@ public class ImageServiceImpl implements ImageService {
 
         Optional<Image> optionalImage = imageRepository.findByFilePath(filePath);
 
-        return optionalImage.orElse(null);
+        return optionalImage.orElseThrow(()
+                -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_PATH, ExceptionCode.NOT_FOUND));
     }
 
     @Override
     public Image getImageByHash(String hash) {
 
+        if (hash.length() != 64) {
+            throw new IncorrectStringException("SHA256 hash must be exactly 64 symbols in length.",
+                    ExceptionCode.INCORRECT_STRING);
+        }
+
         Optional<Image> optionalImage = imageRepository.findByHash(hash);
 
-        return optionalImage.orElse(null);
+        return optionalImage.orElseThrow(()
+                -> new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_HASH, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -64,7 +76,7 @@ public class ImageServiceImpl implements ImageService {
             image.setId(imageId);
             return imageRepository.save(image);
         } else {
-            return null;
+            throw new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -75,8 +87,8 @@ public class ImageServiceImpl implements ImageService {
 
         if(optionalImage.isPresent()) {
             imageRepository.deleteById(imageId);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.NO_IMAGE_WITH_ID, ExceptionCode.NOT_FOUND);
         }
-
-        // TODO: else throw exception or so
     }
 }
