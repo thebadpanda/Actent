@@ -6,10 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ReviewDto {
-
-    @NonNull
-    private Long id;
+public class CreateReviewDto {
 
     @NonNull
     private String text;
