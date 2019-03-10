@@ -1,13 +1,13 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.AddImageDto;
 import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.service.ImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,53 +28,58 @@ public class ImageController {
     }
 
     @PostMapping(value = "/images")
-    public ResponseEntity<IdDto> addImage(@RequestBody ImageDto addImageDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public IdDto addImage(@RequestBody AddImageDto addImageDto) {
 
         Image image = modelMapper.map(addImageDto, Image.class);
         image = imageService.add(image);
 
-        return new ResponseEntity<>(new IdDto(image.getId()), HttpStatus.CREATED);
+        return new IdDto(image.getId());
     }
 
     @GetMapping(value = "/images/{id}")
-    public ResponseEntity<ImageDto> getImageById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ImageDto getImageById(@PathVariable Long id) {
 
         Image image = imageService.get(id);
-        return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
+        return modelMapper.map(image, ImageDto.class);
     }
 
     @GetMapping(value = "/images")
-    public ResponseEntity<?> getImages(@RequestParam(value = "url", required = false) String url) {
+    @ResponseStatus(HttpStatus.OK)
+    public List<ImageDto> getImages(@RequestParam(value = "url", required = false) String url) {
 
+        List<ImageDto> imagesDto = new ArrayList<>();
         if (url != null) {
 
             Image image = imageService.getImageByFilePath(url);
+            imagesDto.add(modelMapper.map(image, ImageDto.class));
 
-            return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
+            return imagesDto;
         } else {
 
             List<Image> images = imageService.getAll();
-            List<ImageDto> imagesDto = new ArrayList<>();
 
             for (Image image : images) {
                 imagesDto.add(modelMapper.map(image, ImageDto.class));
             }
 
-            return new ResponseEntity<>(imagesDto, HttpStatus.OK);
+            return imagesDto;
         }
     }
 
     @PutMapping(value = "/images/{id}")
-    public ResponseEntity<ImageDto> updateImage(@RequestBody ImageDto imageDto, @PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ImageDto updateImage(@RequestBody AddImageDto addImageDto, @PathVariable Long id) {
 
-        Image image = imageService.update(modelMapper.map(imageDto, Image.class), id);
-        return new ResponseEntity<>(modelMapper.map(image, ImageDto.class), HttpStatus.OK);
+        Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
+        return modelMapper.map(image, ImageDto.class);
     }
 
     @DeleteMapping(value = "/images/{id}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteImage(@PathVariable Long id) {
 
         imageService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

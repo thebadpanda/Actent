@@ -6,10 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ImageDto {
-
-    @NonNull
-    private Long id;
+public class AddImageDto {
 
     @NonNull
     private String filePath;
