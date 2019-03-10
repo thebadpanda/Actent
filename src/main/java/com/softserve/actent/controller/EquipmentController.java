@@ -60,13 +60,8 @@ public class EquipmentController {
     @ResponseStatus(HttpStatus.CREATED)
     public EquipmentCreateDto addEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto){
 
-        Equipment newEquipment = modelMapper.map(equipmentCreateDto, Equipment.class);
-
-        Equipment equipment = equipmentServiceImpl.add(newEquipment);
-
-        equipmentCreateDto = modelMapper.map(equipment, EquipmentCreateDto.class);
-
-        return equipmentCreateDto;
+        Equipment equipment = equipmentServiceImpl.add(modelMapper.map(equipmentCreateDto, Equipment.class));
+        return modelMapper.map(equipment, EquipmentCreateDto.class);
     }
 
     @DeleteMapping("/equipments/{id}")
