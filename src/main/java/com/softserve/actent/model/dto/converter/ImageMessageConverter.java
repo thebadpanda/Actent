@@ -1,7 +1,6 @@
 package com.softserve.actent.model.dto.converter;
 
 import com.softserve.actent.model.dto.message.CreateImageMessageDto;
-import com.softserve.actent.model.dto.message.CreateTextMessageDto;
 import com.softserve.actent.model.entity.Message;
 import com.softserve.actent.service.ChatService;
 import com.softserve.actent.service.UserService;
