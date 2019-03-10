@@ -6,12 +6,14 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Review;
 import com.softserve.actent.repository.ReviewRepository;
 import com.softserve.actent.service.ReviewService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
@@ -33,8 +35,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
-        return optionalReview.orElseThrow(()
-                -> new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND));
+        return optionalReview.orElseThrow(() -> {
+            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
+            return new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
+        });
     }
 
     @Override
@@ -52,6 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
             review.setId(reviewId);
             return reviewRepository.save(review);
         } else {
+            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
             throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
@@ -61,9 +66,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
-        if(optionalReview.isPresent()) {
+        if (optionalReview.isPresent()) {
             reviewRepository.deleteById(reviewId);
         } else {
+            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
             throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }

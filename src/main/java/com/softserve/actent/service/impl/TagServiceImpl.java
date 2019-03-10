@@ -6,6 +6,7 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.repository.TagRepository;
 import com.softserve.actent.service.TagService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class TagServiceImpl implements TagService {
 
@@ -41,6 +43,7 @@ public class TagServiceImpl implements TagService {
             tag.setId(id);
             return tagRepository.save(tag);
         } else {
+            log.error(ExceptionMessages.NO_TAG_WITH_ID + " Id: " + id);
             throw new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
@@ -48,8 +51,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag get(Long id) {
 
-        return tagRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND));
+        return tagRepository.findById(id).orElseThrow(() -> {
+            log.error(ExceptionMessages.NO_TAG_WITH_ID + " Id: " + id);
+            return new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND);
+        });
     }
 
     @Override
@@ -67,6 +72,7 @@ public class TagServiceImpl implements TagService {
         if (optionalReview.isPresent()) {
             tagRepository.deleteById(id);
         } else {
+            log.error(ExceptionMessages.NO_TAG_WITH_ID + " Id: " + id);
             throw new ResourceNotFoundException(ExceptionMessages.NO_TAG_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
