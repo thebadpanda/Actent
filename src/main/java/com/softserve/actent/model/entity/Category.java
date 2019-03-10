@@ -1,6 +1,8 @@
 package com.softserve.actent.model.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
