@@ -6,14 +6,11 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ImageDto {
+public class CreateReviewDto {
 
     @NonNull
-    private Long id;
+    private String text;
 
     @NonNull
-    private String filePath;
-
-    @NonNull
-    private String hash;
+    private Integer score;
 }
