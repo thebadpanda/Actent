@@ -8,6 +8,7 @@ import com.softserve.actent.model.dto.AddImageDto;
 import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.service.ImageService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class ImageController {
@@ -35,10 +37,12 @@ public class ImageController {
 
         if (addImageDto.getHash().length() != 64) {
 
+            log.error(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH);
             throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
                     ExceptionCode.INCORRECT_STRING);
         } else if (addImageDto.getFilePath().isEmpty()) {
 
+            log.error(ExceptionMessages.NO_IMAGE_FILEPATH);
             throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
                     ExceptionCode.INCORRECT_STRING);
         } else {
@@ -87,10 +91,12 @@ public class ImageController {
 
         if (addImageDto.getHash().length() != 64) {
 
+            log.error(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH);
             throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
                     ExceptionCode.INCORRECT_STRING);
         } else if (addImageDto.getFilePath().isEmpty()) {
 
+            log.error(ExceptionMessages.NO_IMAGE_FILEPATH);
             throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
                     ExceptionCode.INCORRECT_STRING);
         } else {

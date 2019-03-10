@@ -9,6 +9,7 @@ import com.softserve.actent.model.dto.ReviewDto;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.entity.Review;
 import com.softserve.actent.service.ReviewService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class ReviewController {
@@ -37,12 +39,15 @@ public class ReviewController {
 
         if (addReviewDto.getText() == null || addReviewDto.getText().isEmpty()) {
 
+            log.error(ExceptionMessages.NO_REVIEW_TEXT);
             throw new IncorrectStringException(ExceptionMessages.NO_REVIEW_TEXT, ExceptionCode.INCORRECT_STRING);
         } else if (addReviewDto.getScore() == null) {
 
+            log.error(ExceptionMessages.NO_REVIEW_SCORE);
             throw new IncorrectInputDataException(ExceptionMessages.NO_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
         } else if (addReviewDto.getScore() < 1 || addReviewDto.getScore() > 5) {
 
+            log.error(ExceptionMessages.BAD_REVIEW_SCORE);
             throw new IncorrectInputDataException(ExceptionMessages.BAD_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
         } else {
 
@@ -77,12 +82,15 @@ public class ReviewController {
 
         if (updateReviewDto.getText() == null || updateReviewDto.getText().isEmpty()) {
 
+            log.error(ExceptionMessages.NO_REVIEW_TEXT);
             throw new IncorrectStringException(ExceptionMessages.NO_REVIEW_TEXT, ExceptionCode.INCORRECT_STRING);
         } else if (updateReviewDto.getScore() == null) {
 
+            log.error(ExceptionMessages.NO_REVIEW_SCORE);
             throw new IncorrectInputDataException(ExceptionMessages.NO_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
         } else if (updateReviewDto.getScore() < 1 || updateReviewDto.getScore() > 5) {
 
+            log.error(ExceptionMessages.BAD_REVIEW_SCORE);
             throw new IncorrectInputDataException(ExceptionMessages.BAD_REVIEW_SCORE, ExceptionCode.VALIDATION_FAILED);
         } else {
             Review review = reviewService.update(modelMapper.map(updateReviewDto, Review.class), id);

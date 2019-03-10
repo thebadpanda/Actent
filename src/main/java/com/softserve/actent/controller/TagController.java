@@ -7,6 +7,7 @@ import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.TagDto;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.service.TagService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class TagController {
@@ -34,6 +36,7 @@ public class TagController {
     public IdDto addTag(@RequestBody TagDto tagDto) {
 
         if (tagDto.getText() == null || tagDto.getText().length() < 3) {
+            log.error(ExceptionMessages.TOO_SHORT_TAG_TEXT);
             throw new IncorrectStringException(ExceptionMessages.TOO_SHORT_TAG_TEXT,
                     ExceptionCode.INCORRECT_STRING);
         } else {
@@ -68,6 +71,7 @@ public class TagController {
     public TagDto updateTagById(@RequestBody TagDto tagDto, @PathVariable Long id) {
 
         if (tagDto.getText() == null || tagDto.getText().length() < 3) {
+            log.error(ExceptionMessages.TOO_SHORT_TAG_TEXT);
             throw new IncorrectStringException(ExceptionMessages.TOO_SHORT_TAG_TEXT,
                     ExceptionCode.INCORRECT_STRING);
         } else {
