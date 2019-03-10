@@ -143,9 +143,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         Equipment equipment = get(id);
         equipment.setSatisfied(true);
-
         return update(equipment, id).isSatisfied();
-
     }
 
     @Override
@@ -153,16 +151,14 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         Equipment equipment = get(id);
         equipment.setSatisfied(false);
-
         return update(equipment, id).isSatisfied();
     }
 
     @Override
     public Equipment assignUser(User user, Long id) {
 
-            Equipment equipment = get(id);
-            equipment.setAssignedUser(user);
-
-            return update(equipment, id);
+        Equipment equipment = get(id);
+        equipment.setAssignedUser(user);
+        return update(equipment, id);
     }
 }
