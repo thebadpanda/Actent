@@ -29,6 +29,6 @@ public class RegisterUserDto {
     private String lastName;
 
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
-    @Length(max = 30, min = 6, message = StringConstants.USER_PASSWORD_LENGHT_RANGE)
+    @Length(max = 30, min = 6, message = StringConstants.USER_PASSWORD_LENGTH_RANGE)
     private String password;
 }

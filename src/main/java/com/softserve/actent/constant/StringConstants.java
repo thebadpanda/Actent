@@ -22,10 +22,7 @@ public class StringConstants {
     public static final String USER_EMAIL_LENGTH_RANGE = "Email should not be longer than 30 symbols";
     public static final String EMAIL_NOT_VALID = "Email is not valid";
     public static final String EMPTY_USER_PASSWORD = "User password can not be empty.";
-    public static final String USER_PASSWORD_LENGHT_RANGE = "Password should be from 2 up to 20 symbols";
-    public static final String EMPTY_USER_BIRTH_DATE = "User birth date can not be empty.";
-    public static final String EMPTY_USER_LOCATION = "User location can not be empty.";
-    public static final String EMPTY_USER_SEX = "User sex can not be empty.";
+    public static final String USER_PASSWORD_LENGTH_RANGE = "Password should be from 2 up to 20 symbols";
 
     public static final String COUNTRY_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
     public static final String LOCATION_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
