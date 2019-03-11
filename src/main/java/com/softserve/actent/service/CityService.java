@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface CityService extends BaseCrudService<City> {
     List<City> getByRegionId(Long regionId);
-
-    City getName(String cityName);
 }
+
