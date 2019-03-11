@@ -6,10 +6,11 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class CityDto {
-    @NonNull
-    private String name;
+public class CreateReviewDto {
 
     @NonNull
-    private Long regionId;
+    private String text;
+
+    @NonNull
+    private Integer score;
 }

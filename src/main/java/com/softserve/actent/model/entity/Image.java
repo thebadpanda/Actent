@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -7,11 +8,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -26,14 +25,14 @@ public class Image {
     private Long id;
 
     @NonNull
-    @NotBlank(message = "File path can`t be empty.")
+    @NotBlank(message = StringConstants.IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK)
     @Column(name = "file_path", nullable = false,  unique = true, length = 256)
-    @Length(max = 256, message = "Too long")
+    @Length(max = 256, message = StringConstants.TOO_LONG)
     private String filePath;
 
     @NonNull
-    @NotBlank(message = "hash can`t be empty.")
+    @NotBlank(message = StringConstants.IMAGE_HASH_SHOULD_NOT_BE_BLANK)
     @Column(nullable = false, unique = true, length = 64)
-    @Length(min = 64, max = 64, message = "Hash must be of exact length 64")
+    @Length(min = 64, max = 64, message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
     private String hash;
 }

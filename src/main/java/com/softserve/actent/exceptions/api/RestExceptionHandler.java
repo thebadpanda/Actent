@@ -2,7 +2,7 @@ package com.softserve.actent.exceptions.api;
 
 import com.softserve.actent.exceptions.ActentAppException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-@Slf4j
+@Log4j2
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,10 +34,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Main exception handler for all expected exceptions in TravelStoryAPI
      *
-     * @param ex
-     *            exception
-     * @param request
-     *            web request
+     * @param ex      exception
+     * @param request web request
      * @return the ResponseEntity
      */
     @ExceptionHandler(ActentAppException.class)
@@ -64,14 +62,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
      *
-     * @param ex
-     *            MissingServletRequestParameterException
-     * @param headers
-     *            HttpHeaders
-     * @param status
-     *            HttpStatus
-     * @param request
-     *            WebRequest
+     * @param ex      MissingServletRequestParameterException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
      * @return the ApiError object
      */
     @Override
@@ -87,14 +81,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle HttpMediaTypeNotSupportedException. This one triggers when JSON is invalid as well.
      *
-     * @param ex
-     *            HttpMediaTypeNotSupportedException
-     * @param headers
-     *            HttpHeaders
-     * @param status
-     *            HttpStatus
-     * @param request
-     *            WebRequest
+     * @param ex      HttpMediaTypeNotSupportedException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
      * @return the ApiError object
      */
     @Override
@@ -116,14 +106,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle MethodArgumentNotValidException. Triggered when an object fails @Valid validation.
      *
-     * @param ex
-     *            the MethodArgumentNotValidException that is thrown when @Valid validation fails
-     * @param headers
-     *            HttpHeaders
-     * @param status
-     *            HttpStatus
-     * @param request
-     *            WebRequest
+     * @param ex      the MethodArgumentNotValidException that is thrown when @Valid validation fails
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
      * @return the ApiError object
      */
     @Override
@@ -135,45 +121,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
+        apiError.setTimestamp(LocalDateTime.now());
 
         log.error("Validation error in handleMethodArgumentNotValid exception handler");
         log.error(ex.getMessage());
 
-        return buildResponseEntity(apiError);
+        HashMap<String, Object> jsonBody = new HashMap<String, Object>();
+        jsonBody.put("error", apiError);
+
+        return new ResponseEntity<>(jsonBody, apiError.getStatus());
+
     }
 
-    /**
-     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
-     *
-     * @param ex
-     *            the ConstraintViolationException
-     * @return the ApiError object
-     */
-    @ExceptionHandler(javax.validation.ConstraintViolationException.class)
-    protected ResponseEntity<Object> handleConstraintViolation(javax.validation.ConstraintViolationException ex) {
-        ApiError apiError = new ApiError();
-        apiError.setStatus(BAD_REQUEST);
-        apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
-        apiError.setDebugMessage("Validation error");
-        apiError.addValidationErrors(ex.getConstraintViolations());
-
-        log.error("Validation error in handleConstraintViolation exception handler");
-        log.error(ex.getMessage());
-
-        return buildResponseEntity(apiError);
-    }
 
     /**
      * Handle HttpMessageNotReadableException. Happens when request JSON is malformed.
      *
-     * @param ex
-     *            HttpMessageNotReadableException
-     * @param headers
-     *            HttpHeaders
-     * @param status
-     *            HttpStatus
-     * @param request
-     *            WebRequest
+     * @param ex      HttpMessageNotReadableException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
      * @return the ApiError object
      */
     @Override
@@ -187,14 +154,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle NoHandlerFoundException.
      *
-     * @param ex
-     *            NoHandlerFoundException
-     * @param headers
-     *            HttpHeaders
-     * @param status
-     *            HttpStatus
-     * @param request
-     *            WebRequest
+     * @param ex      NoHandlerFoundException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
      * @return the ApiError object
      */
     @Override
@@ -210,5 +173,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<Object>(apiError, apiError.getStatus());
     }
+
 
 }
