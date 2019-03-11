@@ -52,7 +52,6 @@ public class EquipmentController {
     public EquipmentDto getEquipmentById(@PathVariable Long id){
 
         Equipment equipment = equipmentServiceImpl.get(id);
-
         return modelMapper.map(equipment, EquipmentDto.class);
     }
 
