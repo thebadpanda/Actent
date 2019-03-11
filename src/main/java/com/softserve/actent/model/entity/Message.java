@@ -3,6 +3,7 @@ package com.softserve.actent.model.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,6 +27,9 @@ public class Message {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime sendTime;
+
+    @UpdateTimestamp
+    private LocalDateTime lastEditTime;
 
     @ManyToOne
     private Image image;
