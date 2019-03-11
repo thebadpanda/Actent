@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +30,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-@Component
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,7 +104,7 @@ public class User {
     @JoinTable(name = "user_chat",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chat_id")})
-    private List<Chat>usersChats;
+    private List<Chat> bannedChats;
     
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
