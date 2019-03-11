@@ -1,5 +1,6 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
 import com.softserve.actent.model.dto.equipment.EquipmentDto;
 import com.softserve.actent.model.entity.Equipment;
@@ -22,17 +23,11 @@ public class EquipmentController {
 
     private final EquipmentServiceImpl equipmentServiceImpl;
 
-    private final UserRepository userRepository;
-
-    private final EventServiceImpl eventService;
-
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EquipmentController(EquipmentServiceImpl equipmentServiceImpl, UserRepository userRepository, EventServiceImpl eventService, ModelMapper modelMapper) {
+    public EquipmentController(EquipmentServiceImpl equipmentServiceImpl, ModelMapper modelMapper) {
         this.equipmentServiceImpl = equipmentServiceImpl;
-        this.userRepository = userRepository;
-        this.eventService = eventService;
         this.modelMapper = modelMapper;
     }
 
@@ -58,10 +53,10 @@ public class EquipmentController {
 
     @PostMapping("/equipments")
     @ResponseStatus(HttpStatus.CREATED)
-    public EquipmentCreateDto addEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto){
+    public IdDto addEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto){
 
         Equipment equipment = equipmentServiceImpl.add(modelMapper.map(equipmentCreateDto, Equipment.class));
-        return modelMapper.map(equipment, EquipmentCreateDto.class);
+        return new IdDto(equipment.getId());
     }
 
     @DeleteMapping("/equipments/{id}")
