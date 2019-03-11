@@ -39,8 +39,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the ResponseEntity
      */
     @ExceptionHandler(ActentAppException.class)
-    protected ResponseEntity<HashMap<String, Object>> handleCustomRuntimeException(ActentAppException ex,
-                                                                                   WebRequest request) {
+    protected ResponseEntity<Object> handleCustomRuntimeException(ActentAppException ex,
+                                                                  WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         if (responseStatus != null) {
@@ -52,10 +52,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setExceptionCode(ex.getExceptionCode().exceptionCode);
         apiError.setTimestamp(LocalDateTime.now());
 
-        HashMap<String, Object> jsonBody = new HashMap<String, Object>();
-        jsonBody.put("error", apiError);
-
-        return new ResponseEntity<HashMap<String, Object>>(jsonBody, apiError.getStatus());
+        return buildResponseEntity(apiError);
 
     }
 
@@ -126,11 +123,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Validation error in handleMethodArgumentNotValid exception handler");
         log.error(ex.getMessage());
 
-        HashMap<String, Object> jsonBody = new HashMap<String, Object>();
-        jsonBody.put("error", apiError);
-
-        return new ResponseEntity<>(jsonBody, apiError.getStatus());
-
+        return buildResponseEntity(apiError);
     }
 
 
@@ -146,9 +139,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-        String errorText = "Malformed JSON request";
-        return buildResponseEntity(new ApiError(BAD_REQUEST, ExceptionCode.JSON_IS_MALFORMED.exceptionCode, errorText));
+
+        ApiError apiError = new ApiError();
+        apiError.setStatus(BAD_REQUEST);
+        apiError.setDebugMessage("Malformed JSON request");
+        apiError.setExceptionCode(ExceptionCode.JSON_IS_MALFORMED.exceptionCode);
+        apiError.setTimestamp(LocalDateTime.now());
+
+        log.error("Malformed JSON request error in handleHttpMessageNotReadable exception handler");
+        log.error(ex.getMessage());
+
+        return buildResponseEntity(apiError);
     }
 
     /**
@@ -171,8 +172,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<Object>(apiError, apiError.getStatus());
-    }
 
+        HashMap<String, Object> jsonBody = new HashMap<>();
+        jsonBody.put("error", apiError);
+        return new ResponseEntity<>(jsonBody, apiError.getStatus());
+    }
 
 }
