@@ -1,6 +1,7 @@
 package com.softserve.actent.model.dto;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.NumberConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
@@ -17,7 +18,7 @@ public class CreateReviewDto {
 
     @NotNull(message = ExceptionMessages.NO_REVIEW_SCORE)
     // TODO: use constants
-    @Min(value = 1, message = ExceptionMessages.BAD_REVIEW_SCORE)
-    @Max(value = 5, message = ExceptionMessages.BAD_REVIEW_SCORE)
+    @Min(value = NumberConstants.MIN_SCORE_VALUE, message = ExceptionMessages.BAD_REVIEW_SCORE)
+    @Max(value = NumberConstants.MAX_SCORE_VALUE, message = ExceptionMessages.BAD_REVIEW_SCORE)
     private Integer score;
 }
