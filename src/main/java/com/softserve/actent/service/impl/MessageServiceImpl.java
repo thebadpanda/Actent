@@ -1,13 +1,16 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.MessageValidationException;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Message;
 import com.softserve.actent.model.entity.MessageType;
 import com.softserve.actent.repository.MessageRepository;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
-import org.modelmapper.ModelMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +20,20 @@ import java.util.Optional;
 
 import static com.softserve.actent.exceptions.codes.ExceptionCode.MESSAGE_NOT_FOUND;
 
+@Log4j2
 @Service
 public class MessageServiceImpl implements MessageService {
 
     private final
     MessageRepository messageRepository;
 
-    @Autowired
-    ImageService imageService;
+    private final ImageService imageService;
 
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper) {
+    public MessageServiceImpl(MessageRepository messageRepository, ImageService imageService) {
         this.messageRepository = messageRepository;
+        this.imageService = imageService;
     }
 
     @Override
@@ -52,9 +56,19 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getAll() {
-        return messageRepository.findAll();
-    }
 
+        List<Message> messages = messageRepository.findAll();
+        if (messages.isEmpty()) {
+
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.MESSAGE_NOT_FOUND,
+                    MESSAGE_NOT_FOUND
+            );
+        } else {
+
+            return messages;
+        }
+    }
 
     @Override
     @Transactional
@@ -62,31 +76,58 @@ public class MessageServiceImpl implements MessageService {
         Optional<Message> optionalMessage = messageRepository.findById(id);
         if (optionalMessage.isPresent()) {
             messageRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.MESSAGE_NOT_FOUND, MESSAGE_NOT_FOUND);
         }
-        // todo throw exception
     }
 
     @Override
     public Message get(Long id) {
         return messageRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Message not found", MESSAGE_NOT_FOUND));
+                orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.MESSAGE_NOT_FOUND, MESSAGE_NOT_FOUND));
     }
 
     @Override
     @Transactional
     public Message update(Message message, Long id) {
+        Optional<Message> optionalMessage = messageRepository.findById(id);
 
-        if (messageRepository.existsById(id)) {
+        if (optionalMessage.isPresent() && checkCredential(optionalMessage, message)) {
+
             message.setId(id);
+            message.setMessageType(MessageType.TEXT);
             return messageRepository.save(message);
         } else {
-            throw new ResourceNotFoundException("Message not found", MESSAGE_NOT_FOUND);
+            throw new ResourceNotFoundException(ExceptionMessages.MESSAGE_NOT_FOUND, MESSAGE_NOT_FOUND);
         }
     }
 
     @Override
     public List<Message> getAllMessagesByChatId(Long id) {
-        return messageRepository.findAllByChatId(id);
+
+        List<Message> messages = messageRepository.findAllByChatId(id);
+
+        if (messages.isEmpty()) {
+
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.MESSAGE_NOT_FOUND,
+                    MESSAGE_NOT_FOUND
+            );
+        } else {
+
+            return messages;
+        }
     }
 
+    private boolean checkCredential(Optional<Message> optionalMessage, Message message) {
+
+        if (optionalMessage.get().getChat().getId().equals(message.getChat().getId()) &&
+                optionalMessage.get().getSender().getId().equals(message.getSender().getId())) {
+            return true;
+        } else
+            throw new MessageValidationException(ExceptionMessages.YOU_CAN_NOT_CHANGE_THIS_MESSAGE,
+                    ExceptionCode.VALIDATION_FAILED);
+
+
+    }
 }
