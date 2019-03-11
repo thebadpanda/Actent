@@ -57,7 +57,6 @@ public class EquipmentController {
     public EquipmentDto getEquipmentById(@PathVariable @NotNull @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         Equipment equipment = equipmentServiceImpl.get(id);
-
         return modelMapper.map(equipment, EquipmentDto.class);
     }
 
