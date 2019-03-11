@@ -106,7 +106,7 @@ public class User {
     @JoinTable(name = "user_chat",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chat_id")})
-    private List<Chat> bannedChats;
+    private List<Chat>usersChats;
     
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
