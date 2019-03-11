@@ -10,4 +10,8 @@ public class ExceptionMessages {
 
     public static final String YOU_CAN_NOT_CHANGE_THIS_MESSAGE = "You can't change this message";
     public static final String MESSAGE_NOT_FOUND = "Message not found";
+
+    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
+    public static final String USER_NOT_REGISTRED = "User not registered!";
+
 }
