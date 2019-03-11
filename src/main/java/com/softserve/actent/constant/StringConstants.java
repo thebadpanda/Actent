@@ -37,4 +37,11 @@ public class StringConstants {
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
     public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
 
+    public static final String SATISFIED_CAN_NOT_BE_NULL = "Satisfied can`t be null";
+    public static final String ASSIGNED_USER_ID_MUST_BE_POSITIVE = "Assigned userId must be positive number";
+    public static final String ASSIGNED_EVENT_ID_MUST_BE_POSITIVE = "Assigned eventId must be positive number";
+    public static final String ASSIGNED_EVENT_ID_SHOULD_NOT_BE_NULL = "Assigned eventId shouldn`t be empty";
+    public static final String TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS = "Title should be between 6 and 100 symbols";
+    public static final String DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS = "Descriptions should be between 6 and 1000 symbols";
+
 }
