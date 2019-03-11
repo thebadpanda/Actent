@@ -44,4 +44,5 @@ public class StringConstants {
     public static final String TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS = "Title should be between 6 and 100 symbols";
     public static final String DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS = "Descriptions should be between 6 and 1000 symbols";
 
+    public static final String EQUIPMENT_ID_SHOULD_BE_POSITIVE = "Equipment id should be positive";
 }
