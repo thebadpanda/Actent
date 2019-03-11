@@ -9,11 +9,10 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class AddImageDto {
+public class CreateTagDto {
 
-    @NotBlank(message = ExceptionMessages.NO_IMAGE_FILEPATH)
-    private String filePath;
-
-    @Size(min = 64, max = 64, message = ExceptionMessages.INAPPROPRIATE_HASH_LENGTH)
-    private String hash;
+    @NotBlank(message = ExceptionMessages.NO_TAG_TEXT)
+    @Size(min = 3, message = ExceptionMessages.TOO_SHORT_TAG_TEXT)
+    private String text;
 }
+
