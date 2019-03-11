@@ -2,6 +2,7 @@ package com.softserve.actent.constant;
 
 public class NumberConstants {
 
+    public static final short ID_MIN_VALUE = 1;
     public static final short TITLE_MAX_LENGTH = 100;
     public static final short DESCRIPTION_MAX_LENGTH = 500;
     public static final short MIN_VALUE_FOR_START_DATE = 0;
