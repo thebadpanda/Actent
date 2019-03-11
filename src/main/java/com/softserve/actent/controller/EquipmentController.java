@@ -1,22 +1,21 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.model.dto.CreateEquipmentDto;
-import com.softserve.actent.model.dto.EquipmentDto;
+import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
+import com.softserve.actent.model.dto.equipment.EquipmentDto;
 import com.softserve.actent.model.entity.Equipment;
-import com.softserve.actent.model.entity.Event;
-import com.softserve.actent.model.entity.User;
-import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.impl.EquipmentServiceImpl;
+import com.softserve.actent.service.impl.EventServiceImpl;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class EquipmentController {
@@ -25,72 +24,57 @@ public class EquipmentController {
 
     private final UserRepository userRepository;
 
-    private final EventRepository eventRepository;
+    private final EventServiceImpl eventService;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EquipmentController(EquipmentServiceImpl equipmentServiceImpl, UserRepository userRepository, EventRepository eventRepository, ModelMapper modelMapper) {
+    public EquipmentController(EquipmentServiceImpl equipmentServiceImpl, UserRepository userRepository, EventServiceImpl eventService, ModelMapper modelMapper) {
         this.equipmentServiceImpl = equipmentServiceImpl;
         this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
+        this.eventService = eventService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/equipments")
-    public ResponseEntity<List<EquipmentDto>> getAllEquipments(){
+    @ResponseStatus(HttpStatus.OK)
+    public List<EquipmentDto> getAllEquipments(){
 
         List<Equipment> equipments = equipmentServiceImpl.getAll();
 
-        List<EquipmentDto> equipmentDtos = equipments.stream()
+        return equipments.stream()
                 .map(equipment -> modelMapper.map(equipment, EquipmentDto.class))
                 .collect(Collectors.toList());
-
-        return new ResponseEntity<>(equipmentDtos, HttpStatus.OK);
     }
 
     @GetMapping("/equipments/{id}")
-    public ResponseEntity<EquipmentDto> getEquipmentById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.OK)
+    public EquipmentDto getEquipmentById(@PathVariable Long id){
 
         Equipment equipment = equipmentServiceImpl.get(id);
-        EquipmentDto equipmentDto = modelMapper.map(equipment, EquipmentDto.class);
-
-        return new ResponseEntity<>(equipmentDto, HttpStatus.OK);
+        return modelMapper.map(equipment, EquipmentDto.class);
     }
 
     @PostMapping("/equipments")
-    public ResponseEntity<CreateEquipmentDto> addEquipment(@RequestBody CreateEquipmentDto createEquipmentDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public EquipmentCreateDto addEquipment(@RequestBody EquipmentCreateDto equipmentCreateDto){
 
-        Equipment newEquipment = modelMapper.map(createEquipmentDto, Equipment.class);
-
-        // TODO: use User and Event services for check if they exists
-        User user = userRepository.getOne(createEquipmentDto.getUserId());
-        Event event = eventRepository.getOne(createEquipmentDto.getEventId());
-
-        newEquipment.setAssignedUser(user);
-        newEquipment.setAssignedEvent(event);
-
-        Equipment equipment = equipmentServiceImpl.add(newEquipment);
-
-        createEquipmentDto = modelMapper.map(equipment, CreateEquipmentDto.class);
-        createEquipmentDto.setUserId(equipment.getAssignedUser().getId());
-        createEquipmentDto.setEventId(equipment.getAssignedEvent().getId());
-
-        return new ResponseEntity<>(createEquipmentDto, HttpStatus.CREATED);
+        Equipment equipment = equipmentServiceImpl.add(modelMapper.map(equipmentCreateDto, Equipment.class));
+        return modelMapper.map(equipment, EquipmentCreateDto.class);
     }
 
     @DeleteMapping("/equipments/{id}")
-    public ResponseEntity<Void> deleteEquipmentById(@PathVariable Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEquipmentById(@PathVariable Long id){
 
         equipmentServiceImpl.delete(id);
-        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/equipments/{id}")
-    public ResponseEntity<CreateEquipmentDto> updateEquipmentById(@PathVariable Long id, @RequestBody CreateEquipmentDto createEquipmentDto){
+    @ResponseStatus(HttpStatus.OK)
+    public EquipmentCreateDto updateEquipmentById(@PathVariable Long id, @RequestBody EquipmentCreateDto equipmentCreateDto){
 
-        // TODO: use User and Event services for check if they exists
-        Equipment equipment = equipmentServiceImpl.update(modelMapper.map(createEquipmentDto, Equipment.class), id);
-        return new ResponseEntity<>(modelMapper.map(equipment, CreateEquipmentDto.class), HttpStatus.OK);
+        Equipment equipment = equipmentServiceImpl.update(modelMapper.map(equipmentCreateDto, Equipment.class), id);
+        return modelMapper.map(equipment, EquipmentCreateDto.class);
     }
 }

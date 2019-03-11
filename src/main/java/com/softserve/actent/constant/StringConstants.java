@@ -33,4 +33,14 @@ public class StringConstants {
     public static final String DESCRIPTION_SHOULD_NOT_BE_BLANK = "Description can`t be blank";
     public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can`t be blank";
 
+    public static final String IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK = "Image file path shouldn't be empty";
+    public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
+    public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
+
+    public static final String MESSAGE_SHOULD_NOT_BE_BLANK = "Message can't be blank";
+    public static final String CHAT_ID_MUST_BE_GREATER_THAN_ZERO = "Chat id must be greater than zero";
+    public static final String SENDER_ID_MUST_BE_GREATER_THAN_ZERO = "Sender id must be greater than zero";
+    public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
+    public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
+
 }

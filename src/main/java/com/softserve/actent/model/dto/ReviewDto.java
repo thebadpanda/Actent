@@ -9,6 +9,9 @@ import lombok.NonNull;
 public class ReviewDto {
 
     @NonNull
+    private Long id;
+
+    @NonNull
     private String text;
 
     @NonNull

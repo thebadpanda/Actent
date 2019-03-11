@@ -1,10 +1,14 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.AddImageDto;
 import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.service.ImageService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @RestController
 @RequestMapping("/api/v1")
 public class ImageController {
 
     private final ImageService imageService;
-
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -32,10 +36,23 @@ public class ImageController {
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addImage(@RequestBody AddImageDto addImageDto) {
 
-        Image image = modelMapper.map(addImageDto, Image.class);
-        image = imageService.add(image);
+        if (addImageDto.getHash().length() != 64) {
 
-        return new IdDto(image.getId());
+            log.error(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH);
+            throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else if (addImageDto.getFilePath().isEmpty()) {
+
+            log.error(ExceptionMessages.NO_IMAGE_FILEPATH);
+            throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else {
+
+            Image image = modelMapper.map(addImageDto, Image.class);
+            image = imageService.add(image);
+
+            return new IdDto(image.getId());
+        }
     }
 
     @GetMapping(value = "/images/{id}")
@@ -72,8 +89,21 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public ImageDto updateImage(@RequestBody AddImageDto addImageDto, @PathVariable Long id) {
 
-        Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
-        return modelMapper.map(image, ImageDto.class);
+        if (addImageDto.getHash().length() != 64) {
+
+            log.error(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH);
+            throw new IncorrectStringException(ExceptionMessages.INAPPROPRIATE_HASH_LENGTH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else if (addImageDto.getFilePath().isEmpty()) {
+
+            log.error(ExceptionMessages.NO_IMAGE_FILEPATH);
+            throw new IncorrectStringException(ExceptionMessages.NO_IMAGE_FILEPATH,
+                    ExceptionCode.INCORRECT_STRING);
+        } else {
+
+            Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
+            return modelMapper.map(image, ImageDto.class);
+        }
     }
 
     @DeleteMapping(value = "/images/{id}")
