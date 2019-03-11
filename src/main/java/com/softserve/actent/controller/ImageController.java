@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -66,8 +67,9 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public List<ImageDto> getImages(@RequestParam(value = "url", required = false) String url) {
 
-        List<ImageDto> imagesDto = new ArrayList<>();
         if (url != null) {
+
+            List<ImageDto> imagesDto = new ArrayList<>();
 
             Image image = imageService.getImageByFilePath(url);
             imagesDto.add(modelMapper.map(image, ImageDto.class));
@@ -77,11 +79,9 @@ public class ImageController {
 
             List<Image> images = imageService.getAll();
 
-            for (Image image : images) {
-                imagesDto.add(modelMapper.map(image, ImageDto.class));
-            }
-
-            return imagesDto;
+            return images.stream()
+                    .map(image -> modelMapper.map(image, ImageDto.class))
+                    .collect(Collectors.toList());
         }
     }
 
