@@ -39,28 +39,28 @@ public class User {
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_FIRST_NAME)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String firstName;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_LAST_NAME)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String lastName;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 30)
     private String login;
 
     @NotNull
     @NotBlank(message = StringConstants.EMPTY_USER_EMAIL)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 40)
     @Email
     private String email;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String password;
 
     @NonNull
@@ -109,5 +109,6 @@ public class User {
     private List<Chat> bannedChats;
     
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private Role role;
 }
