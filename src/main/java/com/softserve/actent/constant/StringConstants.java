@@ -40,7 +40,7 @@ public class StringConstants {
     public static final String MESSAGE_SHOULD_NOT_BE_BLANK = "Message can't be blank";
     public static final String CHAT_ID_MUST_BE_GREATER_THAN_ZERO = "Chat id must be greater than zero";
     public static final String SENDER_ID_MUST_BE_GREATER_THAN_ZERO = "Sender id must be greater than zero";
-    public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "Chat id can't be null";
-    public static final String SENDER_SHOULD_NOT_BE_NULL = "Sender id can't be null";
+    public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
+    public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
 
 }
