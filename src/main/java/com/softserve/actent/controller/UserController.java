@@ -1,5 +1,6 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.RegisterUserDto;
 import com.softserve.actent.model.dto.UserDto;
 import com.softserve.actent.model.dto.UserSettingsDto;
@@ -38,10 +39,9 @@ public class UserController {
 
     @PostMapping(value = "/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto addUser(@RequestBody RegisterUserDto registerUserDto) {
+    public IdDto addUser(@RequestBody RegisterUserDto registerUserDto) {
         User user = userService.add(registerUserDtoToEntity(registerUserDto));
-        UserDto userDto = registerUserEntityToDto(user);
-        return userDto;
+        return new IdDto(user.getId());
     }
 
     @PutMapping(value = "/users/{id}")
