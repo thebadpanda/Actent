@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class CategoryController {
 
     @GetMapping(value = "/categories/subcategories/{parentId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ShowCategoryDto> getSubCategoriesById(@PathVariable @NotNull @Min(value = 1, message = "should be more than 0") Long parentId) {
+    public List<ShowCategoryDto> getSubCategoriesById(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long parentId) {
         Category parent = categoryService.getParent(parentId);
         List<Category> subcategories = categoryService.getSubcategories(parent);
         return subcategories.stream()
@@ -82,20 +83,20 @@ public class CategoryController {
 
     @GetMapping(value = "/categories/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto getCategoryById(@PathVariable @NotNull @Min(value = 1, message = "should be more than 0") Long id) {
+    public CategoryDto getCategoryById(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id) {
         Category category = categoryService.get(id);
         return modelMapper.map(category, CategoryDto.class);
     }
 
     @DeleteMapping(value = "/categories/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategoryById(@PathVariable @NotNull @Min(value = 1, message = "should be more than 0") Long id) {
+    public void deleteCategoryById(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id) {
         Category category = categoryService.get(id);
         categoryService.delete(id);
     }
 
     @PutMapping(value = "/categories/{id}")
-    public CategoryDto update(@PathVariable @NotNull @Min(value = 1, message = "should be more than 0") Long id, @RequestBody @Validated CreateCategoryDto createCategoryDto) {
+    public CategoryDto update(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id, @RequestBody @Validated CreateCategoryDto createCategoryDto) {
         Category parent = categoryService.getParent(createCategoryDto.getParentId());
         Category newCategory = new Category(createCategoryDto.getName(), parent);
         categoryService.update(newCategory, id);
