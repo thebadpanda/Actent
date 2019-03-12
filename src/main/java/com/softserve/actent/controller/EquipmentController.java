@@ -54,7 +54,8 @@ public class EquipmentController {
 
     @GetMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EquipmentDto getEquipmentById(@PathVariable @NotNull @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
+    public EquipmentDto getEquipmentById(@PathVariable @NotNull
+                                         @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         Equipment equipment = equipmentServiceImpl.get(id);
         return modelMapper.map(equipment, EquipmentDto.class);
@@ -70,14 +71,17 @@ public class EquipmentController {
 
     @DeleteMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEquipmentById(@PathVariable @NotNull @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
+    public void deleteEquipmentById(@PathVariable @NotNull
+                                    @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         equipmentServiceImpl.delete(id);
     }
 
     @PutMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EquipmentCreateDto updateEquipmentById(@PathVariable Long id, @Validated @RequestBody EquipmentCreateDto equipmentCreateDto) {
+    public EquipmentCreateDto updateEquipmentById(@PathVariable @NotNull
+                                                  @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id,
+                                                  @Validated @RequestBody EquipmentCreateDto equipmentCreateDto) {
 
         Equipment equipment = equipmentServiceImpl.update(modelMapper.map(equipmentCreateDto, Equipment.class), id);
         return modelMapper.map(equipment, EquipmentCreateDto.class);

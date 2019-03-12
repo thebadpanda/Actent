@@ -13,12 +13,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CreateReviewDto {
 
-    @NotBlank(message = ExceptionMessages.NO_REVIEW_TEXT)
+    @NotBlank(message = ExceptionMessages.REVIEW_NO_TEXT)
     private String text;
 
-    @NotNull(message = ExceptionMessages.NO_REVIEW_SCORE)
-    // TODO: use constants
-    @Min(value = NumberConstants.MIN_SCORE_VALUE, message = ExceptionMessages.BAD_REVIEW_SCORE)
-    @Max(value = NumberConstants.MAX_SCORE_VALUE, message = ExceptionMessages.BAD_REVIEW_SCORE)
+    @NotNull(message = ExceptionMessages.REVIEW_NO_SCORE)
+    @Min(value = NumberConstants.MIN_SCORE_VALUE, message = ExceptionMessages.REVIEW_BAD_SCORE)
+    @Max(value = NumberConstants.MAX_SCORE_VALUE, message = ExceptionMessages.REVIEW_BAD_SCORE)
     private Integer score;
 }
