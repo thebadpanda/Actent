@@ -44,17 +44,8 @@ public class UserController {
 
     @PostMapping(value = "/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public IdDto addUser(@Validated @RequestBody RegisterUserDto registerUserDto, BindingResult bindingResult) {
+    public IdDto addUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
 
-        // TODO: change to better practise
-        if (bindingResult.hasErrors()){
-            List<String> errorList = new ArrayList<>();
-            for (int error = 0; error < bindingResult.getErrorCount(); error++){
-                String errorMessage = bindingResult.getAllErrors().get(error).getDefaultMessage();
-                errorList.add(errorMessage);
-            }
-            System.out.println(errorList);
-        }
         User user = userService.add(registerUserDtoToEntity(registerUserDto));
         return new IdDto(user.getId());
     }
