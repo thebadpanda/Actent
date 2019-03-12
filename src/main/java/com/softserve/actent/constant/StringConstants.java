@@ -23,6 +23,14 @@ public class StringConstants {
     public static final String EMAIL_NOT_VALID = "Email is not valid";
     public static final String EMPTY_USER_PASSWORD = "User password can not be empty.";
     public static final String USER_PASSWORD_LENGTH_RANGE = "Password should be from 2 up to 20 symbols";
+    public static final String WRONG_DATE_FORMAT = "Wrong LocalDate format";
+    public static final String BIRTHDAY_CANNOT_BE_FUTURE_DATE = "Birthday cannot be future date";
+    public static final String BIO_TOO_LONG = "Bio must be not longer than 500 symbols";
+    public static final String SEX_TOO_LONG = "Sex must be not longer than 20 symbols";
+    public static final String EMPTY_USER_ID = "User id should not be null";
+    public static final String USER_ID_NEGATIVE_NUMBER = "User id should not be negative number";
+    public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more that 50 symbols";
+    public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
 
     public static final String COUNTRY_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
     public static final String LOCATION_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
@@ -32,12 +40,13 @@ public class StringConstants {
     public static final String REGION_NO_LONGER_THAN_THIRTY_SYMBOLS ="Region shouldn`t be longer than 30";
     public static final String COUNTRY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Country shouldn`t be longer than 30";
 
-    public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
     public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
+    public static final String DESCRIPTION_SHOULD_NOT_BE_BLANK = "Description can`t be blank";
+    public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can`t be blank";
+    public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
     public static final String START_DATE_CAN_NOT_BE_NULL = "Start date can not be null";
     public static final String DURATION_CAN_NOT_BE_NULL = "Duration can not be null";
     public static final String DURATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Duration must be positive and greater than zero";
-    public static final String DESCRIPTION_SHOULD_NOT_BE_BLANK = "Description can`t be blank";
     public static final String DESCRIPTION_SHOULD_BE_BETWEEN_MIN_AND_MAX_VALUE = "Description should be between 0 and 350 symbols";
     public static final String CREATOR_ID_CAN_NOT_BE_NULL = "Creator id can not be null";
     public static final String CREATOR_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Creator id must be positive and greater than zero";
