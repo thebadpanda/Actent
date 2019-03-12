@@ -18,7 +18,7 @@ public class CreateCategoryDto {
             message = StringConstants.CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS)
     private String name;
 
-    @Min(value = 0, message = StringConstants.CATEGORY_MESSAGE)
+    @Min(value = NumberConstants.DEFAULT_MIN_VALUE_FOR_CATEGORY_ID, message = StringConstants.CATEGORY_MESSAGE)
     private Long parentId;
 
 }
