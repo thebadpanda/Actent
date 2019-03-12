@@ -42,6 +42,8 @@ public enum ExceptionCode {
 
     VALIDATION_FAILED(1000),
 
+    DUPLICATE_VALUE(1001),
+
     /*-
      * Code template: 108*
      * Purpose: String validation Inherits
