@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}")
-    @ResponseStatus(HttpStatus.RESET_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public UserDto updateUserById(@Validated @RequestBody UserSettingsDto userSettingsDto, @PathVariable @NotNull @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
 
@@ -61,16 +61,16 @@ public class UserController {
 
     @GetMapping(value = "/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getUsers(@RequestParam(value = "email", required = false) @NotNull @Max(NumberConstants.USER_EMAIL_MAX_LENGTH) String email) {
+    public List<UserSettingsDto> getUsers(@RequestParam(value = "email", required = false) @Max(value = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE) String email) {
         if (email == null) {
-            List<UserDto> userDtoList = new ArrayList<>();
+            List<UserSettingsDto> userDtoList = new ArrayList<>();
             for (User user : userService.getAll()) {
-                userDtoList.add(userSettingsEntityToDto(user));
+                userDtoList.add(userEntityToSettingDto(user));
             }
             return userDtoList;
         }
-        List<UserDto> userDtoList = new ArrayList<>();
-        UserDto userDto = userSettingsEntityToDto(userService.getUserByEmail(email));
+        List<UserSettingsDto> userDtoList = new ArrayList<>();
+        UserSettingsDto userDto = userEntityToSettingDto(userService.getUserByEmail(email));
         userDtoList.add(userDto);
         return userDtoList;
     }
@@ -97,6 +97,10 @@ public class UserController {
 
     private UserDto userSettingsEntityToDto(User entity) {
         return modelMapper.map(entity, UserDto.class);
+    }
+
+    private UserSettingsDto userEntityToSettingDto(User user){
+        return modelMapper.map(user, UserSettingsDto.class);
     }
 
 }
