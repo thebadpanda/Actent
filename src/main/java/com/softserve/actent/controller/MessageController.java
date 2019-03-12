@@ -1,5 +1,6 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.model.dto.converter.ViewMessageConverter;
 import com.softserve.actent.model.dto.message.CreateImageMessageDto;
 import com.softserve.actent.model.dto.message.CreateTextMessageDto;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 public class MessageController {
@@ -77,14 +81,16 @@ public class MessageController {
 
     @GetMapping(value = "/messages/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ViewMessageDto> getMessagesByChatId(@PathVariable Long id) {
+    public List<ViewMessageDto> getMessagesByChatId(@PathVariable @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
+                                                    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         return viewMessageConverter.convertToDto(messageService.getAllMessagesByChatId(id));
     }
 
     @PutMapping(value = "/messages/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ViewMessageDto updateMessage(@PathVariable Long id,
+    public ViewMessageDto updateMessage(@PathVariable @NotNull
+                                        @Positive(message = StringConstants.MESSAGE_ID_SHOULD_BE_POSITIVE) Long id,
                                         @Validated @RequestBody CreateTextMessageDto createMessageDto) {
 
         Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
@@ -95,7 +101,8 @@ public class MessageController {
 
     @DeleteMapping(value = "/textMessages/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMessageById(@PathVariable Long id) {
+    public void deleteMessageById(@PathVariable @NotNull
+                                  @Positive(message = StringConstants.MESSAGE_ID_SHOULD_BE_POSITIVE) Long id) {
 
         messageService.delete(id);
 

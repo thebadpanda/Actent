@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public abstract class ViewMessageDto {
 
+    private Long id;
+
     private String sendTime;
 
     private String senderFirstName;
