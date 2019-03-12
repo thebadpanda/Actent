@@ -1,8 +1,8 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
-import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.DuplicateValueException;
+import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.repository.CountryRepository;
@@ -45,7 +45,7 @@ public class CountryServiceImpl implements CountryService {
                 country.setId(countryId);
                 return countryRepository.save(country);
             } else {
-                throw new DataNotFoundException(
+                throw new ResourceNotFoundException(
                         ExceptionMessages.COUNTRY_NOT_FOUND,
                         ExceptionCode.NOT_FOUND);
             }
@@ -54,7 +54,7 @@ public class CountryServiceImpl implements CountryService {
 
     public Country get(Long countryId) {
         return countryRepository.findById(countryId)
-                .orElseThrow(() -> new DataNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         ExceptionMessages.COUNTRY_NOT_FOUND,
                         ExceptionCode.NOT_FOUND));
     }
@@ -64,7 +64,7 @@ public class CountryServiceImpl implements CountryService {
         List<Country> countries = countryRepository.findAll();
 
         if (countries.isEmpty()) {
-            throw new DataNotFoundException(
+            throw new ResourceNotFoundException(
                     ExceptionMessages.NO_COUNTRIES_IN_BASE,
                     ExceptionCode.NOT_FOUND);
         }
@@ -79,7 +79,7 @@ public class CountryServiceImpl implements CountryService {
         if (country.isPresent()) {
             countryRepository.deleteById(countryId);
         } else {
-            throw new DataNotFoundException(
+            throw new ResourceNotFoundException(
                     ExceptionMessages.COUNTRY_NOT_FOUND,
                     ExceptionCode.NOT_FOUND);
         }
