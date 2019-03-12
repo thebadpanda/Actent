@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @Data
 public class UserDto {
     @NotNull(message = StringConstants.EMPTY_USER_ID)
-    @Positive(message = StringConstants.USER_ID_NEGATIVE_NUMBER)
+    @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO)
     private Long id;
 
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
