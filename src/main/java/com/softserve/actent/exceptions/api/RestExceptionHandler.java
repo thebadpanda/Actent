@@ -32,31 +32,24 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Main exception handler for all expected exceptions in TravelStoryAPI
+     * Main exception handler for all expected exceptions
      *
      * @param ex      exception
      * @param request web request
      * @return the ResponseEntity
      */
     @ExceptionHandler(ActentAppException.class)
-    protected ResponseEntity<HashMap<String, Object>> handleCustomRuntimeException(ActentAppException ex,
+    protected ResponseEntity<Object> handleCustomRuntimeException(ActentAppException ex,
                                                                                    WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-        if (responseStatus != null) {
-            apiError.setStatus(responseStatus.code());
-        }
+        apiError.setStatus(responseStatus.code());
         log.error(ex.getMessage(), ex);
 
         apiError.setDebugMessage(ex.getMessage());
         apiError.setExceptionCode(ex.getExceptionCode().exceptionCode);
-        apiError.setTimestamp(LocalDateTime.now());
 
-        HashMap<String, Object> jsonBody = new HashMap<String, Object>();
-        jsonBody.put("error", apiError);
-
-        return new ResponseEntity<HashMap<String, Object>>(jsonBody, apiError.getStatus());
-
+        return buildResponseEntity(apiError);
     }
 
     /**
@@ -104,7 +97,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handle MethodArgumentNotValidException. Triggered when an object fails @Valid validation.
+     * Handle MethodArgumentNotValidException. Triggered when an object fails @Validated validation.
      *
      * @param ex      the MethodArgumentNotValidException that is thrown when @Valid validation fails
      * @param headers HttpHeaders
@@ -121,16 +114,31 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
-        apiError.setTimestamp(LocalDateTime.now());
 
         log.error("Validation error in handleMethodArgumentNotValid exception handler");
         log.error(ex.getMessage());
 
-        HashMap<String, Object> jsonBody = new HashMap<String, Object>();
-        jsonBody.put("error", apiError);
+        return buildResponseEntity(apiError);
+    }
 
-        return new ResponseEntity<>(jsonBody, apiError.getStatus());
+    /**
+     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
+     *
+     * @param ex the ConstraintViolationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(javax.validation.ConstraintViolationException ex) {
+        ApiError apiError = new ApiError();
+        apiError.setStatus(BAD_REQUEST);
+        apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
+        apiError.setDebugMessage("Validation error");
+        apiError.addValidationErrors(ex.getConstraintViolations());
 
+        log.error("Validation error in handleConstraintViolation exception handler");
+        log.error(ex.getMessage());
+
+        return buildResponseEntity(apiError);
     }
 
 
@@ -171,7 +179,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<Object>(apiError, apiError.getStatus());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        HashMap<String, ApiError> errorBody = new HashMap<>();
+        errorBody.put("error", apiError);
+
+        return new ResponseEntity<>(errorBody, apiError.getStatus());
     }
 
 
