@@ -21,14 +21,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     private final EquipmentRepository equipmentRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public EquipmentServiceImpl(EquipmentRepository equipmentRepository, EventRepository eventRepository, UserRepository userRepository, UserServiceImpl userServiceImpl) {
+    public EquipmentServiceImpl(EquipmentRepository equipmentRepository, EventRepository eventRepository, UserRepository userRepository) {
         this.equipmentRepository = equipmentRepository;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
-        this.userServiceImpl = userServiceImpl;
     }
 
     @Transactional
