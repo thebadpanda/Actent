@@ -10,7 +10,6 @@ import com.softserve.actent.model.entity.MessageType;
 import com.softserve.actent.repository.MessageRepository;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.Optional;
 
 import static com.softserve.actent.exceptions.codes.ExceptionCode.MESSAGE_NOT_FOUND;
 
-@Log4j2
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -28,7 +26,6 @@ public class MessageServiceImpl implements MessageService {
     MessageRepository messageRepository;
 
     private final ImageService imageService;
-
 
     @Autowired
     public MessageServiceImpl(MessageRepository messageRepository, ImageService imageService) {
