@@ -4,8 +4,8 @@ import com.softserve.actent.model.dto.CountryDto;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.service.CountryService;
 import com.softserve.actent.constant.StringConstants;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,11 +25,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class CountryController {
 
     private final CountryService countryService;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    public CountryController(CountryService countryService, ModelMapper modelMapper) {
+        this.countryService = countryService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value = "/countries/{id}")
     @ResponseStatus(HttpStatus.OK)
