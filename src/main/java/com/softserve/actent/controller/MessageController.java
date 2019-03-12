@@ -11,6 +11,7 @@ import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,7 @@ public class MessageController {
 
     @PostMapping(value = "/textMessages")
     @ResponseStatus(HttpStatus.CREATED)
-    public ViewMessageDto addMessage(@RequestBody CreateTextMessageDto createMessageDto) {
+    public ViewMessageDto addMessage(@Validated @RequestBody CreateTextMessageDto createMessageDto) {
 
         Message message = modelMapper.map(createMessageDto, Message.class);
         message.setSender(userService.get(createMessageDto.getSenderId()));
@@ -66,8 +67,7 @@ public class MessageController {
 
     @PostMapping(value = "/imageMessages")
     @ResponseStatus(HttpStatus.CREATED)
-    public ViewMessageDto addImage(@RequestBody CreateImageMessageDto createImageMessageDto) {
-
+    public ViewMessageDto addImage(@Validated @RequestBody CreateImageMessageDto createImageMessageDto) {
         Message message = modelMapper.map(createImageMessageDto, Message.class);
         message.setSender(userService.get(createImageMessageDto.getSenderId()));
         message.setChat(chatService.getChatById(createImageMessageDto.getChatId()));
@@ -85,7 +85,7 @@ public class MessageController {
     @PutMapping(value = "/messages/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ViewMessageDto updateMessage(@PathVariable Long id,
-                                        @RequestBody CreateTextMessageDto createMessageDto) {
+                                        @Validated @RequestBody CreateTextMessageDto createMessageDto) {
 
         Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
         message.setSender(userService.get(createMessageDto.getSenderId()));
