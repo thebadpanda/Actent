@@ -9,4 +9,8 @@ import lombok.NonNull;
 public class CountryDto {
     @NonNull
     private String name;
+
+    @NonNull
+    private Long id;
+
 }
