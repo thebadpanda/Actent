@@ -1,6 +1,5 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
@@ -21,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,7 @@ public class EquipmentController {
     @GetMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipmentDto getEquipmentById(@PathVariable @NotNull
-                                         @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
+                                         @Positive(message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         Equipment equipment = equipmentServiceImpl.get(id);
         return modelMapper.map(equipment, EquipmentDto.class);
@@ -72,7 +71,7 @@ public class EquipmentController {
     @DeleteMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEquipmentById(@PathVariable @NotNull
-                                    @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
+                                    @Positive(message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id) {
 
         equipmentServiceImpl.delete(id);
     }
@@ -80,7 +79,7 @@ public class EquipmentController {
     @PutMapping("/equipments/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipmentCreateDto updateEquipmentById(@PathVariable @NotNull
-                                                  @Min(value = NumberConstants.ID_MIN_VALUE, message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id,
+                                                  @Positive(message = StringConstants.EQUIPMENT_ID_SHOULD_BE_POSITIVE) Long id,
                                                   @Validated @RequestBody EquipmentCreateDto equipmentCreateDto) {
 
         Equipment equipment = equipmentServiceImpl.update(modelMapper.map(equipmentCreateDto, Equipment.class), id);
