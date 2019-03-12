@@ -99,5 +99,4 @@ public class StringConstants {
     public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
     public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
     public static final String MESSAGE_ID_SHOULD_BE_POSITIVE = "Message id should be positive";
-    public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can not be blank";
 }
