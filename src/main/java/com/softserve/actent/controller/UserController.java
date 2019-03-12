@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +64,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserSettingsDto> getUsers(@RequestParam(value = "email", required = false)
                                           @Email(message = StringConstants.USER_EMAIL_NOT_VALID)
-                                          @Max(value = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE)
+                                          @Size(max = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE)
                                                   String email) {
         if (email == null) {
             List<UserSettingsDto> userDtoList = new ArrayList<>();
