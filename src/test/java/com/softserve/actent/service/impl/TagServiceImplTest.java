@@ -35,20 +35,22 @@ public class TagServiceImplTest {
     private final Long nonExistingTagId = 99L;
     private final String firstTagText = "beer";
     private final String secondTagText = "football";
-    private final int tagsCount = 2;
+    private Tag firstTag;
+    private Tag secondTag;
+    private List<Tag> tags;
 
     @Before
     public void setUp() {
 
-        Tag firstTag = new Tag();
+        firstTag = new Tag();
         firstTag.setId(firstTagId);
         firstTag.setText(firstTagText);
 
-        Tag secondTag = new Tag();
+        secondTag = new Tag();
         secondTag.setId(secondTagId);
         secondTag.setText(secondTagText);
 
-        List<Tag> tags = Arrays.asList(firstTag, secondTag);
+        tags = Arrays.asList(firstTag, secondTag);
 
         Mockito.when(tagRepository.findById(firstTagId)).thenReturn(Optional.of(firstTag));
         Mockito.when(tagRepository.findById(secondTagId)).thenReturn(Optional.of(secondTag));
@@ -75,7 +77,7 @@ public class TagServiceImplTest {
     @Test
     public void whenGetAll_thenListOfTagsShouldBeReturned() {
 
-        assertThat(tagService.getAll().size()).isEqualTo(tagsCount);
+        assertThat(tagService.getAll().size()).isEqualTo(tags.size());
         assertThat(tagService.getAll().get(0).getText()).isEqualTo(firstTagText);
         assertThat(tagService.getAll().get(1).getText()).isEqualTo(secondTagText);
     }
@@ -83,31 +85,19 @@ public class TagServiceImplTest {
     @Test
     public void whenAddTag_thenTagShouldBeReturned() {
 
-        Tag tag = new Tag();
-        tag.setId(firstTagId);
-        tag.setText(firstTagText);
-
-        assertThat(tagService.add(tag)).isEqualTo(tag);
+        assertThat(tagService.add(firstTag)).isEqualTo(firstTag);
     }
 
     @Test
     public void whenUpdateTagWithExistingId_thenTagShouldBeReturned() {
 
-        Tag tag = new Tag();
-        tag.setId(secondTagId);
-        tag.setText(secondTagText);
-
-        assertThat(tagService.update(tag, secondTagId).getText()).isEqualTo(secondTagText);
+        assertThat(tagService.update(secondTag, secondTagId).getText()).isEqualTo(secondTagText);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void whenUpdateTagWithNonExistingId_thenExceptionShouldBeThrown() {
 
-        Tag tag = new Tag();
-        tag.setId(secondTagId);
-        tag.setText(secondTagText);
-
-        tagService.update(tag, nonExistingTagId);
+        tagService.update(firstTag, nonExistingTagId);
     }
 
     @Test
@@ -115,7 +105,7 @@ public class TagServiceImplTest {
 
         tagService.delete(firstTagId);
     }
-    
+
     @Test(expected = ResourceNotFoundException.class)
     public void whenDeleteTagWithNonExistingId_thenExceptionShouldBeThrown() {
 
