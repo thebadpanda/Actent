@@ -1,41 +1,55 @@
 package com.softserve.actent.model.dto.event;
 
+import com.softserve.actent.constant.NumberConstants;
+import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
-import java.util.List;
+import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
 public class EventCreationDto {
 
-    @NonNull
+    @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
+    @Length(max = NumberConstants.TITLE_MAX_LENGTH, message = StringConstants.TITLE_LENGTH_IS_TO_LONG)
     private String title;
 
+    @NotBlank(message = StringConstants.DESCRIPTION_SHOULD_NOT_BE_BLANK)
+    @Length(min = NumberConstants.MIN_VALUE_FOR_DESCRIPTION,
+            max = NumberConstants.MAX_VALUE_FOR_DESCRIPTION,
+            message = StringConstants.DESCRIPTION_SHOULD_BE_BETWEEN_MIN_AND_MAX_VALUE)
     private String description;
 
-    @NonNull
+    @Min(value = NumberConstants.MIN_VALUE_FOR_START_DATE)
+    @NotNull(message = StringConstants.START_DATE_CAN_NOT_BE_NULL)
     private Long startDate;
 
-    @NonNull
+    @NotNull(message = StringConstants.DURATION_CAN_NOT_BE_NULL)
+    @Positive(message = StringConstants.DURATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
     private Long duration;
 
-    @NonNull
+    @NotNull(message = StringConstants.CREATOR_ID_CAN_NOT_BE_NULL)
+    @Positive(message = StringConstants.CREATOR_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
     private Long creatorId;
 
+    @Positive(message = StringConstants.IMAGE_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO_ALSO_IT_CAN_BE_NULL)
     private Long imageId;
 
+    @Positive(message = StringConstants.CAPACITY_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO_ALSO_IT_CAN_BE_NULL)
     private Integer capacity;
 
-    @NonNull
-    private LocationForEventDto locationForEventDto;
+    @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
+    @Positive(message = StringConstants.LOCATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
+    private Long locationId;
 
-    private List<EquipmentForEventDto> equipmentDtoList;
-
-    @NonNull
+    @NotBlank(message = StringConstants.ACCESS_TYPE_CAN_NOT_BE_NULL_OR_EMPTY)
     private String accessType;
 
-    @NonNull
+    @NotNull(message = StringConstants.CATEGORY_ID_CAN_NOT_BE_NULL)
+    @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
     private Long categoryId;
 }
