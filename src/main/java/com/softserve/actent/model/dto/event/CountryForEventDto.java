@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class LocationForEventDto {
+public class CountryForEventDto {
 
     private Long id;
-    private String address;
+    private String name;
 
-    @JsonProperty("Country")
-    private CountryForEventDto countryForEventDto;
+    @JsonProperty("Region")
+    private RegionForEventDto regionForEventDto;
 }

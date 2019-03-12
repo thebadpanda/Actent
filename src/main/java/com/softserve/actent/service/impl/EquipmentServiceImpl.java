@@ -4,7 +4,6 @@ import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Equipment;
-import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.EquipmentRepository;
 import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.UserRepository;
@@ -22,12 +21,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     private final EquipmentRepository equipmentRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public EquipmentServiceImpl(EquipmentRepository equipmentRepository, EventRepository eventRepository, UserRepository userRepository) {
+    public EquipmentServiceImpl(EquipmentRepository equipmentRepository, EventRepository eventRepository, UserRepository userRepository, UserServiceImpl userServiceImpl) {
         this.equipmentRepository = equipmentRepository;
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Transactional
@@ -37,10 +38,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         if (entity.getAssignedEvent() == null) {
 
             throw new ResourceNotFoundException(
-                    ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND,
+                    ExceptionMessages.ASSIGNED_EVENT_EMPTY,
                     ExceptionCode.NOT_FOUND
             );
-            // TODO: create exception for nullable = false column
         } else if (!eventRepository.existsById(entity.getAssignedEvent().getId())) {
 
             throw new ResourceNotFoundException(
@@ -133,29 +133,5 @@ public class EquipmentServiceImpl implements EquipmentService {
                     ExceptionCode.NOT_FOUND
             );
         }
-    }
-
-    @Override
-    public Boolean setSatisfied(Long id) {
-
-        Equipment equipment = get(id);
-        equipment.setSatisfied(true);
-        return update(equipment, id).getSatisfied();
-    }
-
-    @Override
-    public Boolean setUnsatisfied(Long id) {
-
-        Equipment equipment = get(id);
-        equipment.setSatisfied(false);
-        return update(equipment, id).getSatisfied();
-    }
-
-    @Override
-    public Equipment assignUser(User user, Long id) {
-
-        Equipment equipment = get(id);
-        equipment.setAssignedUser(user);
-        return update(equipment, id);
     }
 }

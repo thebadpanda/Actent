@@ -10,11 +10,11 @@ import javax.validation.constraints.Positive;
 @Data
 public class CreateTextMessageDto {
 
-    @Positive(message = StringConstants.SENDER_ID_MUST_BE_GREATER_THAN_ZERO)
+    @Positive(message = StringConstants.SENDER_ID_SHOULD_BE_POSITIVE)
     @NotNull(message = StringConstants.SENDER_SHOULD_NOT_BE_NULL)
     private Long senderId;
 
-    @Positive(message = StringConstants.CHAT_ID_MUST_BE_GREATER_THAN_ZERO)
+    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE)
     @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
     private Long chatId;
 
