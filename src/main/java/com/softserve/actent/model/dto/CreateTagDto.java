@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class CreateTagDto {
 
-    @NotBlank(message = ExceptionMessages.NO_TAG_TEXT)
-    @Size(min = NumberConstants.TAG_TEXT_MIN_LENGTH, message = ExceptionMessages.TOO_SHORT_TAG_TEXT)
+    @NotBlank(message = ExceptionMessages.TAG_NO_TEXT)
+    @Size(min = NumberConstants.TAG_TEXT_MIN_LENGTH, message = ExceptionMessages.TAG_TOO_SHORT_TEXT)
     private String text;
 }
