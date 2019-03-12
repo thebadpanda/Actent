@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,16 +28,15 @@ public class Equipment {
 
     @NonNull
     @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
-    @Column(nullable = false)
+    @Column(nullable = false, length = NumberConstants.TITLE_MAX_LENGTH)
     private String title;
 
     @NonNull
-    @NotBlank(message = StringConstants.DESCRIPTION_SHOULD_NOT_BE_BLANK)
-    @Column(nullable = false)
+    @Column(length = NumberConstants.DESCRIPTION_MAX_LENGTH)
     private String description;
 
     @NonNull
-    private boolean satisfied;
+    private Boolean satisfied;
 
     @NonNull
     @ManyToOne
@@ -46,5 +46,4 @@ public class Equipment {
     @JoinColumn(nullable = false)
     @ManyToOne
     private Event assignedEvent;
-
 }
