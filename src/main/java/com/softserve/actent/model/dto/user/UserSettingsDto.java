@@ -1,9 +1,9 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.user;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.model.dto.user.UserLocationDto;
 import com.softserve.actent.model.entity.Image;
-import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.model.entity.Role;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
