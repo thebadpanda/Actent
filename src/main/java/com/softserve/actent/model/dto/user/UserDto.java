@@ -1,4 +1,4 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.user;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
