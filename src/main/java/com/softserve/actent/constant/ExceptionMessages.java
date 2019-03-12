@@ -28,4 +28,6 @@ public class ExceptionMessages {
 
     public static final String YOU_CAN_NOT_CHANGE_THIS_MESSAGE = "You can't change this message";
     public static final String MESSAGE_NOT_FOUND = "Message not found";
+
+    public static final String ASSIGNED_EVENT_EMPTY = "Assigned event is empty";
 }
