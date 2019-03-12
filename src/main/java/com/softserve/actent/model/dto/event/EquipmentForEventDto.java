@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-class EquipmentForEventDto {
+public class EquipmentForEventDto {
 
     @NonNull
     private String title;
@@ -15,5 +15,5 @@ class EquipmentForEventDto {
     private String description;
 
     @NonNull
-    private boolean satisfied;
+    private Boolean satisfied;
 }

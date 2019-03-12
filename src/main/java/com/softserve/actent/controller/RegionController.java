@@ -1,14 +1,27 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.model.dto.RegionDto;
+import com.softserve.actent.model.dto.RegionUpdateDto;
 import com.softserve.actent.model.entity.Region;
-import com.softserve.actent.service.CountryService;
 import com.softserve.actent.service.RegionService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,76 +30,63 @@ import java.util.stream.Collectors;
 public class RegionController {
 
     private final RegionService regionService;
-
-    private final CountryService countryService;
-
     private final ModelMapper modelMapper;
 
-    public RegionController(RegionService regionService, CountryService countryService, ModelMapper modelMapper) {
+    @Autowired
+    public RegionController(RegionService regionService, ModelMapper modelMapper) {
         this.regionService = regionService;
-        this.countryService = countryService;
         this.modelMapper = modelMapper;
     }
 
-
     @GetMapping(value = "/regions/{id}")
-    public ResponseEntity<RegionDto> get(@PathVariable Long id) {
-        if (id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public RegionDto get(@PathVariable @NotNull(message = StringConstants.REGION_ID_NOT_NULL)
+                         @Positive(message = StringConstants.REGION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
         Region region = regionService.get(id);
-        if (region == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        RegionDto regionDto = modelMapper.map(region, RegionDto.class);
-        return new ResponseEntity<>(regionDto, HttpStatus.OK);
+        return modelMapper.map(region, RegionDto.class);
     }
 
-
     @GetMapping(value = "/regions")
-    public ResponseEntity<List<RegionDto>> getAll(@RequestParam(value = "countryId", required = false) Long countryId) {
+    @ResponseStatus(HttpStatus.OK)
+    public List<RegionDto> getAll(@RequestParam(value = "countryId", required = false)
+                                  @Positive(message = StringConstants.COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long countryId) {
         List<Region> regions;
         List<RegionDto> regionDtos;
         if (countryId == null) {
             regions = regionService.getAll();
         } else {
             regions = regionService.getByCountryId(countryId);
-            if (regions.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
         }
         regionDtos = regions.stream()
                 .map(region -> modelMapper.map(region, RegionDto.class))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(regionDtos, HttpStatus.CREATED);
+        return regionDtos;
     }
 
     @PostMapping(value = "/regions")
-    public ResponseEntity<RegionDto> add(@RequestBody RegionDto regionDto) {
-        Region newRegion = modelMapper.map(regionDto, Region.class);
-        newRegion.setName(regionDto.getName());
-        newRegion.setCountry(countryService.get(regionDto.getCountryId()));
+    @ResponseStatus(HttpStatus.CREATED)
+    public RegionDto add(@Validated @RequestBody RegionDto regionDto) {
 
-        Region region = regionService.add(newRegion);
-        regionDto = modelMapper.map(region, RegionDto.class);
-        regionDto.setName(region.getName());
-        regionDto.setCountryId(region.getCountry().getId());
-        return new ResponseEntity<>(regionDto, HttpStatus.CREATED);
+        Region region = modelMapper.map(regionDto, Region.class);
+        regionService.add(region);
+        return regionDto;
+
     }
 
     @PutMapping(value = "/regions/{id}")
-    public ResponseEntity<RegionDto> update(@PathVariable Long id, @RequestBody RegionDto regionDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public RegionUpdateDto update(@PathVariable Long id,
+                                  @Validated @RequestBody RegionUpdateDto regionDto) {
         Region region = regionService.update(modelMapper.map(regionDto, Region.class), id);
-        return new ResponseEntity<>(modelMapper.map(region, RegionDto.class), HttpStatus.OK);
+        return modelMapper.map(region, RegionUpdateDto.class);
     }
 
+
     @DeleteMapping(value = "/regions/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Region region = regionService.get(id);
-        if (region == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable @NotNull(message = StringConstants.COUNTRY_ID_NOT_NULL)
+                       @Positive(message = StringConstants.COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
         regionService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
+
