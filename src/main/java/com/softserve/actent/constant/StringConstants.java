@@ -25,9 +25,11 @@ public class StringConstants {
     public static final String BIO_TOO_LONG = "Bio must be not longer than 500 symbols";
     public static final String SEX_TOO_LONG = "Sex must be not longer than 20 symbols";
     public static final String EMPTY_USER_ID = "User id should not be null";
-    public static final String USER_ID_NEGATIVE_NUMBER = "User id should not be negative number";
-    public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more that 50 symbols";
+    public static final String USER_ID_SHOULD_BE_GREATER_THAN_ZERO = "User id should be greater than zero";
+    public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more than 50 symbols";
     public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
+    public static final String USER_ROLE_TOO_LONG = "User role should not be more than 20 symbols";
+    public static final String USER_AVATAR_ID_SHOULD_BE_GREATER_THAN_ZERO = "User avatar id should be greater than zero";
 
     public static final String EMPTY_COUNTRY = "Country can't be empty ";
     public static final String EMPTY_REGION = "Region can't be empty";
@@ -97,5 +99,4 @@ public class StringConstants {
     public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
     public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
     public static final String MESSAGE_ID_SHOULD_BE_POSITIVE = "Message id should be positive";
-    public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can not be blank";
 }
