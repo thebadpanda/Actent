@@ -29,14 +29,20 @@ public class StringConstants {
     public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more that 50 symbols";
     public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
 
-    public static final String EMPTY_COUNTRY ="Country can't be empty ";
-    public static final String EMPTY_REGION ="Region can't be empty";
-    public static final String EMPTY_CITY ="City can't be empty";
-    public static final String EMPTY_LOCATION ="Location can't be empty";
+    public static final String EMPTY_COUNTRY = "Country can't be empty ";
+    public static final String EMPTY_REGION = "Region can't be empty";
+    public static final String EMPTY_CITY = "City can't be empty";
+    public static final String EMPTY_LOCATION = "Location can't be empty";
+
+    public static final String COUNTRY_ID_NOT_NULL = "Country id can not be null";
+    public static final String REGION_ID_NOT_NULL = "Region id can not be null";
+    public static final String COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Country id must be positive and greater than zero";
+    public static final String REGION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Region id must be positive and greater than zero";
+    public static final String LOCATION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Location id must be positive and greater than zero";
 
     public static final String COUNTRY_LENGTH_BETWEEN_THREE_AND_THIRTY_SYMBOLS = "Country should be between 3 and 30 symbols";
     public static final String REGION_LENGTH_BETWEEN_FIRE_AND_THIRTY_SYMBOLS = "Region should be between 5 and 30 symbols";
-    public static final String CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS = "City should be be between 4 and 30 symbols";
+    public static final String CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS = "City should be between 4 and 30 symbols";
     public static final String LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
 
     public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
@@ -70,10 +76,11 @@ public class StringConstants {
     public static final String TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS = "Title should be between 6 and 100 symbols";
     public static final String DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS = "Descriptions should be between 6 and 1000 symbols";
     public static final String EQUIPMENT_ID_SHOULD_BE_POSITIVE = "Equipment id should be positive";
-  
+
     public static final String MESSAGE_SHOULD_NOT_BE_BLANK = "Message can't be blank";
-    public static final String CHAT_ID_MUST_BE_GREATER_THAN_ZERO = "Chat id must be greater than zero";
-    public static final String SENDER_ID_MUST_BE_GREATER_THAN_ZERO = "Sender id must be greater than zero";
+    public static final String CHAT_ID_SHOULD_BE_POSITIVE = "Chat id should be positive";
+    public static final String SENDER_ID_SHOULD_BE_POSITIVE = "Sender id should be positive";
     public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
     public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
+    public static final String MESSAGE_ID_SHOULD_BE_POSITIVE = "Message id should be positive";
 }
