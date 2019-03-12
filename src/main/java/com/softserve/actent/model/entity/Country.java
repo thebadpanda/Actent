@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,9 +28,13 @@ public class Country {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.COUNTRY_SHOULD_NOT_BE_BLANK)
-    @Length(max = 30, message = StringConstants.COUNTRY_NO_LONGER_THAN_THIRTY_SYMBOLS)
-    @Column(unique = true, nullable = false, length = 30)
+    @NotBlank(message = StringConstants.EMPTY_COUNTRY)
+    @Length(min = NumberConstants.COUNTRY_MIN_LENGTH,
+            max = NumberConstants.COUNTRY_MAX_LENGTH,
+            message = StringConstants.COUNTRY_LENGTH_BETWEEN_THREE_AND_THIRTY_SYMBOLS)
+    @Column(unique = true,
+            nullable = false,
+            length = NumberConstants.COUNTRY_MAX_LENGTH)
     private String name;
 
     @NonNull
