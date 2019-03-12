@@ -16,7 +16,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -40,7 +39,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(ActentAppException.class)
     protected ResponseEntity<Object> handleCustomRuntimeException(ActentAppException ex,
-                                                                                   WebRequest request) {
+                                                                  WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
         apiError.setStatus(responseStatus.code());
@@ -50,6 +49,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setExceptionCode(ex.getExceptionCode().exceptionCode);
 
         return buildResponseEntity(apiError);
+
     }
 
     /**
@@ -99,7 +99,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle MethodArgumentNotValidException. Triggered when an object fails @Validated validation.
      *
-     * @param ex      the MethodArgumentNotValidException that is thrown when @Valid validation fails
+     * @param ex      the MethodArgumentNotValidException that is thrown when @Validated validation fails
      * @param headers HttpHeaders
      * @param status  HttpStatus
      * @param request WebRequest
@@ -122,7 +122,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
+     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails(e. g. on parameter).
      *
      * @param ex the ConstraintViolationException
      * @return the ApiError object
@@ -154,9 +154,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-        String errorText = "Malformed JSON request";
-        return buildResponseEntity(new ApiError(BAD_REQUEST, ExceptionCode.JSON_IS_MALFORMED.exceptionCode, errorText));
+
+        ApiError apiError = new ApiError();
+        apiError.setStatus(BAD_REQUEST);
+        apiError.setDebugMessage("Malformed JSON request");
+        apiError.setExceptionCode(ExceptionCode.JSON_IS_MALFORMED.exceptionCode);
+
+        log.error("Malformed JSON request error in handleHttpMessageNotReadable exception handler");
+        log.error(ex.getMessage());
+
+        return buildResponseEntity(apiError);
     }
 
     /**
@@ -179,13 +186,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+
         apiError.setTimestamp(LocalDateTime.now());
 
-        HashMap<String, ApiError> errorBody = new HashMap<>();
+        HashMap<String, Object> errorBody = new HashMap<>();
         errorBody.put("error", apiError);
 
         return new ResponseEntity<>(errorBody, apiError.getStatus());
     }
-
 
 }
