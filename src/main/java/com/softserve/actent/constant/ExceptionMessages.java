@@ -36,9 +36,6 @@ public class ExceptionMessages {
 
     public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
     public static final String USER_NOT_REGISTRED = "User not registered!";
-  
-    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
-    public static final String USER_NOT_REGISTRED = "User not registered!";
 
     public static final String COUNTRY_NOT_FOUND = "Not found country with this id";
     public static final String REGION_NOT_FOUND = "Not found region with  this id";
