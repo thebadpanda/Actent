@@ -1,10 +1,11 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.NumberConstants;
+import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.model.dto.IdDto;
-import com.softserve.actent.model.dto.UserRegistrationDto;
-import com.softserve.actent.model.dto.UserDto;
-import com.softserve.actent.model.dto.UserSettingsDto;
+import com.softserve.actent.model.dto.user.UserRegistrationDto;
+import com.softserve.actent.model.dto.user.UserDto;
+import com.softserve.actent.model.dto.user.UserSettingsDto;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -22,8 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,37 +50,48 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}")
-    @ResponseStatus(HttpStatus.RESET_CONTENT)
-    public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto updateUserById(@Validated @RequestBody UserSettingsDto userSettingsDto,
+                                  @PathVariable
+                                  @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                  @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
+
         return userSettingsEntityToDto(user);
     }
 
     @GetMapping(value = "/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getUsers(@RequestParam(value = "email", required = false) String email) {
+    public List<UserSettingsDto> getUsers(@RequestParam(value = "email", required = false)
+                                          @Email(message = StringConstants.USER_EMAIL_NOT_VALID)
+                                          @Size(max = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE)
+                                                  String email) {
         if (email == null) {
-            List<UserDto> userDtoList = new ArrayList<>();
+            List<UserSettingsDto> userDtoList = new ArrayList<>();
             for (User user : userService.getAll()) {
-                userDtoList.add(userSettingsEntityToDto(user));
+                userDtoList.add(userEntityToSettingDto(user));
             }
             return userDtoList;
         }
-        List<UserDto> userDtoList = new ArrayList<>();
-        UserDto userDto = userSettingsEntityToDto(userService.getUserByEmail(email));
+        List<UserSettingsDto> userDtoList = new ArrayList<>();
+        UserSettingsDto userDto = userEntityToSettingDto(userService.getUserByEmail(email));
         userDtoList.add(userDto);
         return userDtoList;
     }
 
     @GetMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUserById(@PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
+    public UserDto getUserById(@PathVariable
+                               @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                               @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
         return userSettingsEntityToDto(userService.get(id));
     }
 
     @DeleteMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
+    public void deleteUserById(@PathVariable
+                               @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                               @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
         userService.delete(id);
     }
 
@@ -94,6 +105,10 @@ public class UserController {
 
     private UserDto userSettingsEntityToDto(User entity) {
         return modelMapper.map(entity, UserDto.class);
+    }
+
+    private UserSettingsDto userEntityToSettingDto(User user) {
+        return modelMapper.map(user, UserSettingsDto.class);
     }
 
 }

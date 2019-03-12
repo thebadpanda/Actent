@@ -1,15 +1,12 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.constant.StringConstants;
-import com.softserve.actent.exceptions.codes.ExceptionCode;
-import com.softserve.actent.exceptions.validation.IncorrectInputDataException;
 import com.softserve.actent.model.dto.RegionDto;
 import com.softserve.actent.model.dto.RegionUpdateDto;
 import com.softserve.actent.model.entity.Region;
 import com.softserve.actent.service.RegionService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,11 +27,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class RegionController {
 
     private final RegionService regionService;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    public RegionController(RegionService regionService, ModelMapper modelMapper) {
+        this.regionService = regionService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value = "/regions/{id}")
     @ResponseStatus(HttpStatus.OK)
