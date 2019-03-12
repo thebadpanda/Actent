@@ -7,9 +7,6 @@ public class StringConstants {
 
     public static final String NO_TAG_TEXT = "Tag text can not be empty.";
 
-    public static final String CITY_SHOULD_NOT_BE_BLANK = "City can`t be blank";
-    public static final String REGION_SHOULD_NOT_BE_BLANK = "Region can`t be blank";
-
     public static final String TOO_LONG = "Too long";
 
     public static final String EMPTY_USER_FIRST_NAME = "User first name can not be empty.";
@@ -21,13 +18,15 @@ public class StringConstants {
     public static final String EMPTY_USER_LOCATION = "User location can not be empty.";
     public static final String EMPTY_USER_SEX = "User sex can not be empty.";
 
-    public static final String COUNTRY_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
-    public static final String LOCATION_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
+    public static final String EMPTY_COUNTRY ="Country can't be empty ";
+    public static final String EMPTY_REGION ="Region can't be empty";
+    public static final String EMPTY_CITY ="City can't be empty";
+    public static final String EMPTY_LOCATION ="Location can't be empty";
 
-    public static final String LOCATION_NO_LONGER_THAN_FIFTY_SYMBOLS ="Location shouldn`t be longer than 50";
-    public static final String CITY_NO_LONGER_THAN_THIRTY_SYMBOLS ="City shouldn`t be longer than 30";
-    public static final String REGION_NO_LONGER_THAN_THIRTY_SYMBOLS ="Region shouldn`t be longer than 30";
-    public static final String COUNTRY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Country shouldn`t be longer than 30";
+    public static final String COUNTRY_LENGTH_BETWEEN_THREE_AND_THIRTY_SYMBOLS = "Country should be between 3 and 30 symbols";
+    public static final String REGION_LENGTH_BETWEEN_FIRE_AND_THIRTY_SYMBOLS = "Region should be between 5 and 30 symbols";
+    public static final String CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS = "City should be be between 4 and 30 symbols";
+    public static final String LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
 
     public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
     public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
