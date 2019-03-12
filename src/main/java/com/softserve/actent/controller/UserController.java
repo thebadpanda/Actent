@@ -45,7 +45,6 @@ public class UserController {
     @PostMapping(value = "/users")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addUser(@Validated @RequestBody RegisterUserDto registerUserDto) {
-
         User user = userService.add(registerUserDtoToEntity(registerUserDto));
         return new IdDto(user.getId());
     }
