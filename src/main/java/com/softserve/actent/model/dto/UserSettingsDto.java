@@ -45,7 +45,7 @@ public class UserSettingsDto {
 
     private Image avatar;
 
-    private Location location;
+    private UserLocationDto location;
 
     @Length(max = NumberConstants.USER_BIO_MAX_LENGTH, message = StringConstants.BIO_TOO_LONG)
     private String bio;
