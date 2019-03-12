@@ -1,7 +1,6 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.exceptions.codes.ExceptionCode;
-import com.softserve.actent.exceptions.validation.ValidationException;
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.UserRegistrationDto;
 import com.softserve.actent.model.dto.UserDto;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,11 +52,9 @@ public class UserController {
 
     @PutMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.RESET_CONTENT)
-    public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
-        checkUserIdNotNull(id);
+    public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
-        UserDto userDto = userSettingsEntityToDto(user);
-        return userDto;
+        return userSettingsEntityToDto(user);
     }
 
     @GetMapping(value = "/users")
@@ -76,15 +75,13 @@ public class UserController {
 
     @GetMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUserById(@PathVariable Long id) {
-        checkUserIdNotNull(id);
+    public UserDto getUserById(@PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
         return userSettingsEntityToDto(userService.get(id));
     }
 
     @DeleteMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable Long id) {
-        checkUserIdNotNull(id);
+    public void deleteUserById(@PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {
         userService.delete(id);
     }
 
@@ -100,13 +97,4 @@ public class UserController {
         return modelMapper.map(entity, UserDto.class);
     }
 
-    private UserDto registerUserEntityToDto(User entity) {
-        return modelMapper.map(entity, UserDto.class);
-    }
-
-    private void checkUserIdNotNull(Long id) {
-        if (id == null) {
-            throw new ValidationException("User id not defined", ExceptionCode.VALIDATION_FAILED);
-        }
-    }
 }
