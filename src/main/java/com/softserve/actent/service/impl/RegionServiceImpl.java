@@ -7,7 +7,7 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Region;
 import com.softserve.actent.repository.RegionRepository;
 import com.softserve.actent.service.RegionService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,11 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
     private final CountryServiceImpl countryService;
+
+    @Autowired
+    public RegionServiceImpl(RegionRepository regionRepository, CountryServiceImpl countryService) {
+        this.regionRepository = regionRepository;
+        this.countryService = countryService;
+    }
 
     @Transactional
     @Override

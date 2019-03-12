@@ -15,5 +15,5 @@ public class EquipmentForEventDto {
     private String description;
 
     @NonNull
-    private boolean satisfied;
+    private Boolean satisfied;
 }
