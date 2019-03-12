@@ -12,6 +12,20 @@ public class NumberConstants {
     public static final short DESCRIPTION_MIN_LENGTH = 6;
     public static final short TITLE_MIN_LENGTH = 6;
 
+    public static final short USER_FIRST_NAME_MAX_LENGTH = 30;
+    public static final short USER_FIRST_NAME_MIN_LENGTH = 2;
+    public static final short USER_LAST_NAME_MAX_LENGTH = 30;
+    public static final short USER_LAST_NAME_MIN_LENGTH = 2;
+    public static final short USER_LOGIN_MAX_LENGTH = 30;
+    public static final short USER_LOGIN_MIN_LENGTH = 5;
+    public static final short USER_EMAIL_MAX_LENGTH = 40;
+    public static final short USER_PASSWORD_MAX_LENGTH = 30;
+    public static final short USER_PASSWORD_MIN_LENGTH = 6;
+    public static final short USER_ROLE_MAX_LENGTH = 20;
+    public static final short USER_BIO_MAX_LENGTH = 500;
+    public static final short USER_SEX_MAX_LENGTH = 30;
+    public static final short USER_ADDRESS_MAX_LENGTH = 50;
+
     public static final short TAG_TEXT_MIN_LENGTH = 3;
 
     public static final short HASH_LENGTH = 64;

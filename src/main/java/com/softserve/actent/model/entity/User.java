@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,31 +38,30 @@ public class User {
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_FIRST_NAME)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = NumberConstants.USER_FIRST_NAME_MAX_LENGTH)
     private String firstName;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_LAST_NAME)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = NumberConstants.USER_LAST_NAME_MAX_LENGTH)
     private String lastName;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
-    @Column(unique = true, nullable = false, length = 30)
+    @Column(unique = true, nullable = false, length = NumberConstants.USER_LOGIN_MAX_LENGTH)
     private String login;
 
     @NotNull
     @NotBlank(message = StringConstants.EMPTY_USER_EMAIL)
-    @Column(unique = true, nullable = false, length = 40)
+    @Column(unique = true, nullable = false, length = NumberConstants.USER_EMAIL_MAX_LENGTH)
     @Email
     private String email;
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = NumberConstants.USER_PASSWORD_MAX_LENGTH)
     private String password;
 
-    @NonNull
     @Column
     private LocalDate birthDate;
 
@@ -74,8 +74,8 @@ public class User {
     private Location location;
 
     @NonNull
-    @Length(max = 500)
-    @Column(length = 500)
+    @Length(max = NumberConstants.USER_BIO_MAX_LENGTH)
+    @Column(length = NumberConstants.USER_BIO_MAX_LENGTH)
     private String bio;
 
     @NonNull
@@ -107,6 +107,6 @@ public class User {
     private List<Chat> bannedChats;
     
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = NumberConstants.USER_ROLE_MAX_LENGTH)
     private Role role;
 }
