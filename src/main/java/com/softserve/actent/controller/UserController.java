@@ -6,13 +6,11 @@ import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.UserRegistrationDto;
 import com.softserve.actent.model.dto.UserDto;
 import com.softserve.actent.model.dto.UserSettingsDto;
-import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -46,26 +43,16 @@ public class UserController {
 
     @PostMapping(value = "/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public IdDto addUser(@Validated @RequestBody UserRegistrationDto registerUserDto, BindingResult bindingResult) {
-
-        // TODO: change to better practise
-        if (bindingResult.hasErrors()){
-            List<String> errorList = new ArrayList<>();
-            for (int error = 0; error < bindingResult.getErrorCount(); error++){
-                String errorMessage = bindingResult.getAllErrors().get(error).getDefaultMessage();
-                errorList.add(errorMessage);
-            }
-            System.out.println(errorList);
-        }
-        User user = userService.add(userRegistrationDtoToEntity(registerUserDto));
+    public IdDto addUser(@Validated @RequestBody UserRegistrationDto userRegistrationDto) {
+        User user = userService.add(userRegistrationDtoToEntity(userRegistrationDto));
         return new IdDto(user.getId());
     }
 
+
     @PutMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.RESET_CONTENT)
-    public UserDto updateUserById(@Validated @RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
+    public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable Long id) {
         checkUserIdNotNull(id);
-        System.out.println(userSettingsDto.getLocation().getAddress());
         User user = userService.update(userSettingsToEntity(userSettingsDto), id);
         UserDto userDto = userSettingsEntityToDto(user);
         return userDto;
@@ -101,8 +88,8 @@ public class UserController {
         userService.delete(id);
     }
 
-    private User userRegistrationDtoToEntity(UserRegistrationDto registerUserDto) {
-        return modelMapper.map(registerUserDto, User.class);
+    private User userRegistrationDtoToEntity(UserRegistrationDto userRegistrationDto) {
+        return modelMapper.map(userRegistrationDto, User.class);
     }
 
     private User userSettingsToEntity(UserSettingsDto userSettingsDto) {
@@ -113,12 +100,12 @@ public class UserController {
         return modelMapper.map(entity, UserDto.class);
     }
 
-    private UserDto userRegistrationEntityToDto(User entity) {
+    private UserDto registerUserEntityToDto(User entity) {
         return modelMapper.map(entity, UserDto.class);
     }
 
-    private void checkUserIdNotNull(Long id){
-        if (id == null){
+    private void checkUserIdNotNull(Long id) {
+        if (id == null) {
             throw new ValidationException("User id not defined", ExceptionCode.VALIDATION_FAILED);
         }
     }

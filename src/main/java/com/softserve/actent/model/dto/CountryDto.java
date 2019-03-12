@@ -7,10 +7,10 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 public class CountryDto {
-
     @NonNull
     private String name;
 
     @NonNull
     private Long id;
+
 }
