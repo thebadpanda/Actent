@@ -7,7 +7,7 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.repository.LocationRepository;
 import com.softserve.actent.service.LocationService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,11 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
     private final CityServiceImpl cityService;
+
+    @Autowired
+    public LocationServiceImpl(LocationRepository locationRepository, CityServiceImpl cityService) {
+        this.locationRepository = locationRepository;
+        this.cityService = cityService;
+    }
 
     @Transactional
     @Override

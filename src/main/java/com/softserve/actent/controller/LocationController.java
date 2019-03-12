@@ -5,8 +5,8 @@ import com.softserve.actent.model.dto.LocationDto;
 import com.softserve.actent.model.dto.LocationUpdateDto;
 import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.service.LocationService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,11 +27,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class LocationController {
 
     private final LocationService locationService;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    public LocationController(LocationService locationService, ModelMapper modelMapper) {
+        this.locationService = locationService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value = "/locations/{id}")
     @ResponseStatus(HttpStatus.OK)
