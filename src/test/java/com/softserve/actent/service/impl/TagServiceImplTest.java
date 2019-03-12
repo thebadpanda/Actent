@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static junit.framework.TestCase.assertNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -134,5 +135,9 @@ public class TagServiceImplTest {
 
     @After
     public void tearDown() {
+        firstTag = null;
+        secondTag = null;
+        assertNull(firstTag);
+        assertNull(secondTag);
     }
 }
