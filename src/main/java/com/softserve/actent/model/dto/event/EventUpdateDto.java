@@ -12,7 +12,7 @@ import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
-public class EventCreationDto {
+public class EventUpdateDto {
 
     @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
     @Length(max = NumberConstants.TITLE_MAX_LENGTH, message = StringConstants.TITLE_LENGTH_IS_TO_LONG)
@@ -32,24 +32,9 @@ public class EventCreationDto {
     @Positive(message = StringConstants.DURATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
     private Long duration;
 
-    @NotNull(message = StringConstants.CREATOR_ID_CAN_NOT_BE_NULL)
-    @Positive(message = StringConstants.CREATOR_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
-    private Long creatorId;
-
-    @Positive(message = StringConstants.IMAGE_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO_ALSO_IT_CAN_BE_NULL)
-    private Long imageId;
-
     @Positive(message = StringConstants.CAPACITY_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO_ALSO_IT_CAN_BE_NULL)
     private Integer capacity;
 
-    @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
-    @Positive(message = StringConstants.LOCATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
-    private Long locationId;
-
     @NotBlank(message = StringConstants.ACCESS_TYPE_CAN_NOT_BE_NULL_OR_EMPTY)
     private String accessType;
-
-    @NotNull(message = StringConstants.CATEGORY_ID_CAN_NOT_BE_NULL)
-    @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
-    private Long categoryId;
 }

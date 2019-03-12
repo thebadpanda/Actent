@@ -1,27 +1,19 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.user;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
-import com.softserve.actent.model.entity.Image;
-import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.model.entity.Role;
+import com.softserve.actent.model.entity.Sex;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 import java.time.LocalDate;
 
 @Data
-public class UserDto {
-    @NotNull(message = StringConstants.EMPTY_USER_ID)
-    @Positive(message = StringConstants.USER_ID_NEGATIVE_NUMBER)
-    private Long id;
+public class UserSettingsDto {
 
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
     @Length(max = NumberConstants.USER_LOGIN_MAX_LENGTH, min = NumberConstants.USER_LOGIN_MIN_LENGTH, message = StringConstants.USER_LOGIN_LENGTH_RANGE)
@@ -45,19 +37,18 @@ public class UserDto {
     private String password;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future(message = StringConstants.BIRTHDAY_CANNOT_BE_FUTURE_DATE)
+    @Past(message = StringConstants.BIRTHDAY_CANNOT_BE_FUTURE_DATE)
     private LocalDate birthDate;
 
-    private Image avatar;
+    @Positive(message = StringConstants.USER_AVATAR_ID_SHOULD_BE_GREATER_THAN_ZERO)
+    private Long avatarId;
 
-    private Location location;
+    private UserLocationDto location;
 
     @Length(max = NumberConstants.USER_BIO_MAX_LENGTH, message = StringConstants.BIO_TOO_LONG)
     private String bio;
 
-    @Length(max = NumberConstants.USER_SEX_MAX_LENGTH, message = StringConstants.SEX_TOO_LONG)
-    private String sex;
+    private Sex sex;
 
     private Role role;
-
 }

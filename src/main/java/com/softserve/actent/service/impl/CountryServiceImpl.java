@@ -7,8 +7,8 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.repository.CountryRepository;
 import com.softserve.actent.service.CountryService;
-import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,10 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
     private final CountryRepository countryRepository;
+
+    @Autowired
+    public CountryServiceImpl(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
 
     @Transactional
     @Override
