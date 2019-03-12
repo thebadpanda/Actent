@@ -40,6 +40,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category get(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            return category;
+        } else {
+            Category category = new Category();
+            return category;
+        }
+    }
+
+    @Override
+    public Category getParent(Long id) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
         return optionalCategory.orElse(null);
     }
 
