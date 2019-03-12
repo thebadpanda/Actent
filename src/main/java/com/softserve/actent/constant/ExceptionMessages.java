@@ -21,12 +21,19 @@ public class ExceptionMessages {
     public static final String NO_IMAGE_WITH_HASH = "Image with requested hash was not found.";
     public static final String NO_IMAGE_WITH_PATH = "Image with requested path was not found.";
 
+    public static final String NO_TAG_TEXT = "You need to provide tag text.";
     public static final String TOO_SHORT_TAG_TEXT = "Tag must be at least three symbols long.";
     public static final String NO_TAG_WITH_ID = "Tag with requested id was not found.";
     public static final String NO_TAG_WITH_TEXT = "Tag with requested text was not found.";
 
+    public static final String CHAT_BY_THIS_ID_IS_NOT_FOUND = "Chat by this id is not found";
+    public static final String ACTIVE_BY_THIS_TYPE_IS_NOT_FOUND = "While adding chat to active. Active by this type is not found";
+  
     public static final String YOU_CAN_NOT_CHANGE_THIS_MESSAGE = "You can't change this message";
     public static final String MESSAGE_NOT_FOUND = "Message not found";
+  
+    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
+    public static final String USER_NOT_REGISTRED = "User not registered!";
 
     public static final String COUNTRY_NOT_FOUND = "Not found country with this id";
     public static final String REGION_NOT_FOUND = "Not found region with  this id";
