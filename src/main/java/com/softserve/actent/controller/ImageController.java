@@ -17,10 +17,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 public class ImageController {
@@ -46,7 +50,8 @@ public class ImageController {
 
     @GetMapping(value = "/images/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ImageDto getImageById(@PathVariable Long id) {
+    public ImageDto getImageById(@PathVariable @NotNull(message = ExceptionMessages.IMAGE_NO_ID)
+                                 @Positive(message = ExceptionMessages.IMAGE_INNAPPROPRIATE_ID) Long id) {
 
         Image image = imageService.get(id);
         return modelMapper.map(image, ImageDto.class);
@@ -76,7 +81,9 @@ public class ImageController {
 
     @PutMapping(value = "/images/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ImageDto updateImage(@Validated @RequestBody AddImageDto addImageDto, @PathVariable Long id) {
+    public ImageDto updateImage(@Validated @RequestBody AddImageDto addImageDto,
+                                @PathVariable @NotNull(message = ExceptionMessages.IMAGE_NO_ID)
+                                @Positive(message = ExceptionMessages.IMAGE_INNAPPROPRIATE_ID) Long id) {
 
         Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
         return modelMapper.map(image, ImageDto.class);
@@ -84,7 +91,8 @@ public class ImageController {
 
     @DeleteMapping(value = "/images/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteImage(@PathVariable Long id) {
+    public void deleteImage(@PathVariable @NotNull(message = ExceptionMessages.IMAGE_NO_ID)
+                                @Positive(message = ExceptionMessages.IMAGE_INNAPPROPRIATE_ID) Long id) {
 
         imageService.delete(id);
     }

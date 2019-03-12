@@ -19,9 +19,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1")
 public class ReviewController {
@@ -47,7 +50,8 @@ public class ReviewController {
 
     @GetMapping(value = "/reviews/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewDto getReview(@PathVariable Long id) {
+    public ReviewDto getReview(@PathVariable @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
+                                   @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
 
         Review review = reviewService.get(id);
         return modelMapper.map(review, ReviewDto.class);
@@ -65,7 +69,9 @@ public class ReviewController {
 
     @PutMapping(value = "/reviews/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewDto updateReview(@Validated @RequestBody CreateReviewDto updateReviewDto, @PathVariable Long id) {
+    public ReviewDto updateReview(@Validated @RequestBody CreateReviewDto updateReviewDto,
+                                  @PathVariable @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
+                                  @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
 
         Review review = reviewService.update(modelMapper.map(updateReviewDto, Review.class), id);
         return modelMapper.map(review, ReviewDto.class);
@@ -73,7 +79,9 @@ public class ReviewController {
 
     @DeleteMapping(value = "/reviews/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable Long id) {
+    public void deleteUserById(@PathVariable
+                                   @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
+                                   @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
 
         reviewService.delete(id);
     }
