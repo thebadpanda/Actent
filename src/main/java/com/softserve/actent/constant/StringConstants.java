@@ -40,7 +40,6 @@ public class StringConstants {
     public static final String LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
 
     public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
-    public static final String DESCRIPTION_SHOULD_NOT_BE_BLANK = "Description can`t be blank";
     public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can`t be blank";
     public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
     public static final String START_DATE_CAN_NOT_BE_NULL = "Start date can not be null";
@@ -63,12 +62,14 @@ public class StringConstants {
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
     public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
 
+
     public static final String CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Category shouldn`t be longer than 30";
     public static final String CATEGORY_NOT_BE_BLANK = "Category can`t be blank";
     public static final String CATEGORY_MESSAGE = "Please enter 0 value if category doesn't have parent category";
     public static final String CATEGORY_ID_MUST_BE_POSITIVE = "Categoty id must be positive";
 
     public static final String SATISFIED_CAN_NOT_BE_NULL = "Satisfied can`t be null";
+
     public static final String ASSIGNED_USER_ID_MUST_BE_POSITIVE = "Assigned userId must be positive number";
     public static final String ASSIGNED_EVENT_ID_MUST_BE_POSITIVE = "Assigned eventId must be positive number";
     public static final String ASSIGNED_EVENT_ID_SHOULD_NOT_BE_NULL = "Assigned eventId shouldn`t be empty";

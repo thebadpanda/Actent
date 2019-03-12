@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,12 @@ public class City {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.CITY_SHOULD_NOT_BE_BLANK)
-    @Length(max = 30, message = StringConstants.CITY_NO_LONGER_THAN_THIRTY_SYMBOLS)
-    @Column(unique = true, nullable = false, length = 30)
+    @NotBlank(message = StringConstants.EMPTY_CITY)
+    @Length(min = NumberConstants.CITY_MIN_LENGTH,
+            max = NumberConstants.CITY_MAX_LENGTH,
+            message = StringConstants.CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS)
+    @Column(nullable = false,
+            length = NumberConstants.CITY_MAX_LENGTH)
     private String name;
 
     @NonNull

@@ -8,11 +8,10 @@ import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
-public class RegionDto {
+public class RegionUpdateDto {
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_REGION)
@@ -20,8 +19,4 @@ public class RegionDto {
             max = NumberConstants.REGION_MAX_LENGTH,
             message = StringConstants.REGION_LENGTH_BETWEEN_FIRE_AND_THIRTY_SYMBOLS)
     private String name;
-
-    @NonNull
-    @Positive
-    private Long countryId;
 }
