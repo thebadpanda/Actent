@@ -1,5 +1,6 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
@@ -7,26 +8,21 @@ import com.softserve.actent.exceptions.validation.IncorrectEmailException;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.UserService;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Slf4j
 @Service
 public class UserServiceImpl implements UserService{
 
-    @Autowired
-    ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    User user;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     @Override
@@ -34,8 +30,7 @@ public class UserServiceImpl implements UserService{
         if (!userRepository.existsByEmail(user.getEmail())) {
             return userRepository.save(user);
         } else {
-            log.error("There is a user with such email. Cannot register!");
-            throw new IncorrectEmailException("This email already used!", ExceptionCode.INCORRECT_EMAIL);
+            throw new IncorrectEmailException(ExceptionMessages.EMAIL_ALREADY_USED, ExceptionCode.INCORRECT_EMAIL);
         }
     }
 
@@ -46,7 +41,7 @@ public class UserServiceImpl implements UserService{
             user.setId(id);
             return userRepository.save(user);
         } else {
-            throw new AccessDeniedException("User not registered", ExceptionCode.NOT_FOUND);
+            throw new AccessDeniedException(ExceptionMessages.USER_NOT_REGISTRED, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -58,7 +53,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User get(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found", ExceptionCode.NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 
     @Override

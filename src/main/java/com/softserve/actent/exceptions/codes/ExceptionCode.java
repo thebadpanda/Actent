@@ -98,6 +98,8 @@ public enum ExceptionCode {
 
     TOO_LONG_MESSAGE_CONTENT(1093),
 
+    INCORRECT_ACTIVITY_TYPE(1806),
+
     /*-
      * +----------------------------------------------------------------------
      * ||
