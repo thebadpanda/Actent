@@ -10,4 +10,7 @@ public interface ChatService {
 
     void deleteChatById(Long chatId);
 
+    Chat banUserInChat(Long chatId, Long userId);
+
+    Chat updateChat(Chat chat, Long chatId);
 }
