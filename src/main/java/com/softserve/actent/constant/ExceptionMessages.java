@@ -30,4 +30,7 @@ public class ExceptionMessages {
     public static final String MESSAGE_NOT_FOUND = "Message not found";
 
     public static final String ASSIGNED_EVENT_EMPTY = "Assigned event is empty";
+
+    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
+    public static final String USER_NOT_REGISTRED = "User not registered!";
 }
