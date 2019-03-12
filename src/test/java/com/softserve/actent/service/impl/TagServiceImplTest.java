@@ -35,6 +35,7 @@ public class TagServiceImplTest {
     private final Long nonExistingTagId = 99L;
     private final String firstTagText = "beer";
     private final String secondTagText = "football";
+    private final String nonExistingText = "sport";
     private Tag firstTag;
     private Tag secondTag;
     private List<Tag> tags;
@@ -55,9 +56,16 @@ public class TagServiceImplTest {
         Mockito.when(tagRepository.findById(firstTagId)).thenReturn(Optional.of(firstTag));
         Mockito.when(tagRepository.findById(secondTagId)).thenReturn(Optional.of(secondTag));
         Mockito.when(tagRepository.findById(nonExistingTagId)).thenReturn(Optional.empty());
+
+        Mockito.when(tagRepository.findByText(firstTagText)).thenReturn(Optional.of(firstTag));
+        Mockito.when(tagRepository.findByText(secondTagText)).thenReturn(Optional.of(secondTag));
+        Mockito.when(tagRepository.findByText(nonExistingText)).thenReturn(Optional.empty());
+
         Mockito.when(tagRepository.findAll()).thenReturn(tags);
+
         Mockito.when(tagRepository.save(firstTag)).thenReturn(firstTag);
         Mockito.when(tagRepository.save(secondTag)).thenReturn(secondTag);
+
         Mockito.doNothing().when(tagRepository).deleteById(firstTagId);
         Mockito.doNothing().when(tagRepository).deleteById(secondTagId);
     }
@@ -72,6 +80,18 @@ public class TagServiceImplTest {
     public void whenNonExistingId_thenExceptionShouldBeThrown() {
 
         tagService.get(nonExistingTagId);
+    }
+
+    @Test
+    public void whenExistingName_thenTagShouldBeFound() {
+
+        assertThat(tagService.getByText(firstTagText)).isEqualTo(firstTag);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenNonExistingName_thenExceptionShouldBeThrown() {
+
+        tagService.getByText(nonExistingText);
     }
 
     @Test
