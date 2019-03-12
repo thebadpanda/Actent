@@ -28,4 +28,10 @@ public class NumberConstants {
 
 
 
+    public static final short TAG_TEXT_MIN_LENGTH = 3;
+
+    public static final short HASH_LENGTH = 64;
+
+    public static final short MIN_SCORE_VALUE = 1;
+    public static final short MAX_SCORE_VALUE = 5;
 }
