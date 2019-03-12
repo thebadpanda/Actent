@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-class EquipmentForEventDto {
+public class EquipmentForEventDto {
 
     @NonNull
     private String title;
