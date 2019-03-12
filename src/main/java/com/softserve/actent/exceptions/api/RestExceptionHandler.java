@@ -16,7 +16,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -32,7 +31,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
-     * Main exception handler for all expected exceptions in TravelStoryAPI
+     * Main exception handler for all expected exceptions
      *
      * @param ex      exception
      * @param request web request
@@ -43,14 +42,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-        if (responseStatus != null) {
-            apiError.setStatus(responseStatus.code());
-        }
+        apiError.setStatus(responseStatus.code());
         log.error(ex.getMessage(), ex);
 
         apiError.setDebugMessage(ex.getMessage());
         apiError.setExceptionCode(ex.getExceptionCode().exceptionCode);
-        apiError.setTimestamp(LocalDateTime.now());
 
         return buildResponseEntity(apiError);
 
@@ -101,9 +97,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handle MethodArgumentNotValidException. Triggered when an object fails @Valid validation.
+     * Handle MethodArgumentNotValidException. Triggered when an object fails @Validated validation.
      *
-     * @param ex      the MethodArgumentNotValidException that is thrown when @Valid validation fails
+     * @param ex      the MethodArgumentNotValidException that is thrown when @Validated validation fails
      * @param headers HttpHeaders
      * @param status  HttpStatus
      * @param request WebRequest
@@ -118,9 +114,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
-        apiError.setTimestamp(LocalDateTime.now());
 
         log.error("Validation error in handleMethodArgumentNotValid exception handler");
+        log.error(ex.getMessage());
+
+        return buildResponseEntity(apiError);
+    }
+
+    /**
+     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails(e. g. on parameter).
+     *
+     * @param ex the ConstraintViolationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(javax.validation.ConstraintViolationException ex) {
+        ApiError apiError = new ApiError();
+        apiError.setStatus(BAD_REQUEST);
+        apiError.setExceptionCode(ExceptionCode.VALIDATION_FAILED.exceptionCode);
+        apiError.setDebugMessage("Validation error");
+        apiError.addValidationErrors(ex.getConstraintViolations());
+
+        log.error("Validation error in handleConstraintViolation exception handler");
         log.error(ex.getMessage());
 
         return buildResponseEntity(apiError);
@@ -144,7 +159,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setStatus(BAD_REQUEST);
         apiError.setDebugMessage("Malformed JSON request");
         apiError.setExceptionCode(ExceptionCode.JSON_IS_MALFORMED.exceptionCode);
-        apiError.setTimestamp(LocalDateTime.now());
 
         log.error("Malformed JSON request error in handleHttpMessageNotReadable exception handler");
         log.error(ex.getMessage());
@@ -173,9 +187,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 
-        HashMap<String, Object> jsonBody = new HashMap<>();
-        jsonBody.put("error", apiError);
-        return new ResponseEntity<>(jsonBody, apiError.getStatus());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        HashMap<String, Object> errorBody = new HashMap<>();
+        errorBody.put("error", apiError);
+
+        return new ResponseEntity<>(errorBody, apiError.getStatus());
     }
 
 }
