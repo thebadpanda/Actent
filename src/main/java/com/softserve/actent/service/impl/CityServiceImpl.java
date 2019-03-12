@@ -7,7 +7,7 @@ import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.repository.CityRepository;
 import com.softserve.actent.service.CityService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,11 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final RegionServiceImpl regionService;
+
+    @Autowired
+    public CityServiceImpl(CityRepository cityRepository, RegionServiceImpl regionService) {
+        this.cityRepository = cityRepository;
+        this.regionService = regionService;
+    }
 
     @Transactional
     @Override
@@ -131,7 +136,7 @@ public class CityServiceImpl implements CityService {
         List<City> regions = new ArrayList<>();
 
         for (City city : cityRepository.findAll()) {
-            if (regionId.equals(getRegionIdInCity(city) )) {
+            if (regionId.equals(getRegionIdInCity(city))) {
                 regions.add(city);
             }
         }

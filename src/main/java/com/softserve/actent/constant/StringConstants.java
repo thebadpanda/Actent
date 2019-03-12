@@ -45,6 +45,7 @@ public class StringConstants {
     public static final String CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS = "City should be between 4 and 30 symbols";
     public static final String LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
 
+    public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can`t be blank";
     public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
     public static final String TITLE_SHOULD_NOT_BE_BLANK = "Title can`t be blank";
     public static final String START_DATE_CAN_NOT_BE_NULL = "Start date can not be null";
@@ -96,4 +97,5 @@ public class StringConstants {
     public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
     public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
     public static final String MESSAGE_ID_SHOULD_BE_POSITIVE = "Message id should be positive";
+    public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can not be blank";
 }
