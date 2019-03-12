@@ -1,22 +1,16 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.user;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
-import com.softserve.actent.model.entity.Image;
-import com.softserve.actent.model.entity.Location;
-import com.softserve.actent.model.entity.Role;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 
-import java.time.LocalDate;
 
 @Data
-public class UserSettingsDto {
+public class UserRegistrationDto {
 
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
     @Length(max = NumberConstants.USER_LOGIN_MAX_LENGTH, min = NumberConstants.USER_LOGIN_MIN_LENGTH, message = StringConstants.USER_LOGIN_LENGTH_RANGE)
@@ -38,20 +32,4 @@ public class UserSettingsDto {
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
     @Length(max = NumberConstants.USER_PASSWORD_MAX_LENGTH, min = NumberConstants.USER_PASSWORD_MIN_LENGTH, message = StringConstants.USER_PASSWORD_LENGTH_RANGE)
     private String password;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future(message = StringConstants.BIRTHDAY_CANNOT_BE_FUTURE_DATE)
-    private LocalDate birthDate;
-
-    private Image avatar;
-
-    private Location location;
-
-    @Length(max = NumberConstants.USER_BIO_MAX_LENGTH, message = StringConstants.BIO_TOO_LONG)
-    private String bio;
-
-    @Length(max = NumberConstants.USER_SEX_MAX_LENGTH, message = StringConstants.SEX_TOO_LONG)
-    private String sex;
-
-    private Role role;
 }
