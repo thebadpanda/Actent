@@ -21,6 +21,7 @@ public class ExceptionMessages {
     public static final String NO_IMAGE_WITH_HASH = "Image with requested hash was not found.";
     public static final String NO_IMAGE_WITH_PATH = "Image with requested path was not found.";
 
+    public static final String NO_TAG_TEXT = "You need to provide tag text.";
     public static final String TOO_SHORT_TAG_TEXT = "Tag must be at least three symbols long.";
     public static final String NO_TAG_WITH_ID = "Tag with requested id was not found.";
     public static final String NO_TAG_WITH_TEXT = "Tag with requested text was not found.";

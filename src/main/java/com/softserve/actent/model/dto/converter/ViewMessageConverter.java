@@ -30,8 +30,15 @@ public class ViewMessageConverter implements IModelMapperConverter<Message, View
 
     @Override
     public ViewMessageDto convertToDto(Message entity) {
+
         if (entity.getMessageType().equals(MessageType.TEXT)) {
-            return modelMapper.map(entity, ViewTextMessageDto.class);
+            ViewTextMessageDto viewTextMessageDto = modelMapper.map(entity, ViewTextMessageDto.class);
+
+            if (entity.getLastEditTime() != null) {
+                viewTextMessageDto.setSendTime(entity.getLastEditTime().toString());
+            }
+            return viewTextMessageDto;
+
         } else if (entity.getMessageType().equals(MessageType.IMAGE)) {
             return modelMapper.map(entity, ViewImageMessageDto.class);
         } else {
