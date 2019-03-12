@@ -1,7 +1,6 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.model.dto.CountryDto;
-import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.service.CountryService;
 import org.modelmapper.ModelMapper;
