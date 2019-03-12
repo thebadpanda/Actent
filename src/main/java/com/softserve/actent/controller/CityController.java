@@ -5,8 +5,8 @@ import com.softserve.actent.model.dto.CityDto;
 import com.softserve.actent.model.dto.CityUpdateDto;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.service.CityService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,11 +27,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@RequiredArgsConstructor
 public class CityController {
 
     private final CityService cityService;
     private final ModelMapper modelMapper;
+
+    @Autowired
+    public CityController(CityService cityService, ModelMapper modelMapper) {
+        this.cityService = cityService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping(value = "/cities/{id}")
     @ResponseStatus(HttpStatus.OK)
