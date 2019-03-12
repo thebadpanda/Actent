@@ -57,6 +57,7 @@ public class ChatServiceImpl implements ChatService {
                         ExceptionCode.CHAT_NOT_FOUND));
     }
 
+    @Transactional
     @Override
     public void deleteChatById(Long chatId) {
 
