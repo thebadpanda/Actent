@@ -93,7 +93,7 @@ public class EventConverter implements IModelMapperConverter<Event, EventDto> {
             return null;
         }
 
-        List<EventUserForEvenDto> eventUserForEvenDtos = new ArrayList<>(eventUserList.size());
+        List<EventUserForEventDto> eventUserForEvenDtos = new ArrayList<>(eventUserList.size());
 
         for (EventUser eventUser : eventUserList) {
             eventUserForEvenDtos.add(getEventUserForEventDto(eventUser));
@@ -102,9 +102,9 @@ public class EventConverter implements IModelMapperConverter<Event, EventDto> {
         return eventUserForEvenDtos;
     }
 
-    private EventUserForEvenDto getEventUserForEventDto(EventUser eventUser) {
+    private EventUserForEventDto getEventUserForEventDto(EventUser eventUser) {
 
-        EventUserForEvenDto eventUserForEvenDto = new EventUserForEvenDto();
+        EventUserForEventDto eventUserForEvenDto = new EventUserForEventDto();
         eventUserForEvenDto.setId(eventUser.getId());
         eventUserForEvenDto.setUserForEventDto(modelMapper.map(eventUser.getUser(), UserForEventDto.class));
         eventUserForEvenDto.setEventUserType(eventUser.getType());
