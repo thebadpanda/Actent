@@ -69,6 +69,14 @@ public class StringConstants {
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
     public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
 
+
+    public static final String CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Category shouldn`t be longer than 30";
+    public static final String CATEGORY_NOT_BE_BLANK = "Category can`t be blank";
+    public static final String CATEGORY_MESSAGE = "Please enter 0 value if category doesn't have parent category";
+    public static final String CATEGORY_ID_MUST_BE_POSITIVE = "Categoty id must be positive";
+
+    public static final String SATISFIED_CAN_NOT_BE_NULL = "Satisfied can`t be null";
+
     public static final String ASSIGNED_USER_ID_MUST_BE_POSITIVE = "Assigned userId must be positive number";
     public static final String ASSIGNED_EVENT_ID_MUST_BE_POSITIVE = "Assigned eventId must be positive number";
     public static final String ASSIGNED_EVENT_ID_SHOULD_NOT_BE_NULL = "Assigned eventId shouldn`t be empty";
@@ -82,5 +90,6 @@ public class StringConstants {
     public static final String CHAT_ID_SHOULD_NOT_BE_NULL = "You should provide chat id";
     public static final String SENDER_SHOULD_NOT_BE_NULL = "You should provide sender id";
     public static final String MESSAGE_ID_SHOULD_BE_POSITIVE = "Message id should be positive";
+
 
 }
