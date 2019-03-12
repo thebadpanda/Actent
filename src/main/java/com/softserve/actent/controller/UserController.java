@@ -49,7 +49,6 @@ public class UserController {
         return new IdDto(user.getId());
     }
 
-
     @PutMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.RESET_CONTENT)
     public UserDto updateUserById(@RequestBody UserSettingsDto userSettingsDto, @PathVariable @NotNull @Min(NumberConstants.ID_MIN_VALUE) Long id) {

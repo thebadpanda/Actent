@@ -32,7 +32,6 @@ public class StringConstants {
     public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more that 50 symbols";
     public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
 
-
     public static final String COUNTRY_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
     public static final String LOCATION_SHOULD_NOT_BE_BLANK ="Country can`t be blank";
 
