@@ -2,7 +2,7 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.model.dto.IdDto;
-import com.softserve.actent.model.dto.converter.EventsUsersConverter;
+import com.softserve.actent.model.dto.converter.EventUserConverter;
 import com.softserve.actent.model.dto.eventUser.EventUserDto;
 import com.softserve.actent.model.entity.EventUser;
 import com.softserve.actent.service.EventUserService;
@@ -28,12 +28,12 @@ import java.util.List;
 public class EventUserController {
 
     private final EventUserService eventUserService;
-    private final EventsUsersConverter eventsUsersConverter;
+    private final EventUserConverter eventsUsersConverter;
 
     @Autowired
-    public EventUserController(EventUserService eventUserService, EventsUsersConverter eventsUsersConverter) {
+    public EventUserController(EventUserService eventUserService, EventUserConverter eventUserConverter) {
         this.eventUserService = eventUserService;
-        this.eventsUsersConverter = eventsUsersConverter;
+        this.eventsUsersConverter = eventUserConverter;
     }
 
     @PostMapping(value = "/eventsUsers")
