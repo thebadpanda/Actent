@@ -59,8 +59,7 @@ public class ImageController {
 
     @GetMapping(value = "/images")
     @ResponseStatus(HttpStatus.OK)
-    public List<ImageDto> getImages(@RequestParam(value = "url", required = false)
-                                        @NotBlank(message = ExceptionMessages.IMAGE_NO_FILEPATH) String url) {
+    public List<ImageDto> getImages(@RequestParam(value = "url", required = false) String url) {
 
         if (url != null) {
 
