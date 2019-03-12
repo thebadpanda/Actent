@@ -26,8 +26,6 @@ public class NumberConstants {
     public static final short USER_SEX_MAX_LENGTH = 30;
     public static final short USER_ADDRESS_MAX_LENGTH = 50;
 
-
-
     public static final short TAG_TEXT_MIN_LENGTH = 3;
 
     public static final short HASH_LENGTH = 64;
