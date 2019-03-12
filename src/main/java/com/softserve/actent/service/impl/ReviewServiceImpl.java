@@ -36,8 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
 
         return optionalReview.orElseThrow(() -> {
-            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
-            return new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
+            log.error(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID + " Id: " + reviewId);
+            return new ResourceNotFoundException(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -56,8 +56,8 @@ public class ReviewServiceImpl implements ReviewService {
             review.setId(reviewId);
             return reviewRepository.save(review);
         } else {
-            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
-            throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
+            log.error(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID + " Id: " + reviewId);
+            throw new ResourceNotFoundException(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -69,8 +69,8 @@ public class ReviewServiceImpl implements ReviewService {
         if (optionalReview.isPresent()) {
             reviewRepository.deleteById(reviewId);
         } else {
-            log.error(ExceptionMessages.NO_REVIEW_WITH_ID + " Id: " + reviewId);
-            throw new ResourceNotFoundException(ExceptionMessages.NO_REVIEW_WITH_ID, ExceptionCode.NOT_FOUND);
+            log.error(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID + " Id: " + reviewId);
+            throw new ResourceNotFoundException(ExceptionMessages.REVIEW_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 }
