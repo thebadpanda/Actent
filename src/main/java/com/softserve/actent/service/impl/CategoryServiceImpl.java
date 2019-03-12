@@ -1,7 +1,6 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
-import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Category;
@@ -41,8 +40,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category get(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
-        return optionalCategory.orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CATEGORY_IS_NOT_FOUND,ExceptionCode.NOT_FOUND));
-        }
+        return optionalCategory.orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CATEGORY_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
+    }
 
     @Override
     public Category getParent(Long id) {
@@ -76,6 +75,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getParentByName(String name) {
-        return categoryRepository.findByName(name);
+        Category category = categoryRepository.findByName(name);
+        if (category == null) {
+            throw new ResourceNotFoundException(ExceptionMessages.NO_SUBCATEGORIES_FOUND, ExceptionCode.NOT_FOUND);
+        }
+        return category;
     }
 }

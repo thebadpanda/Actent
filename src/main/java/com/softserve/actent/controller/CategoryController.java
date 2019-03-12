@@ -1,10 +1,7 @@
 package com.softserve.actent.controller;
 
-import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
-import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.dto.category.CategoryDto;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.category.ShowCategoryDto;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -69,16 +65,13 @@ public class CategoryController {
 
     @GetMapping(value = "/categories/subcategories")
     @ResponseStatus(HttpStatus.OK)
-    public List<ShowCategoryDto> getSubCategoriesByName(@RequestParam @Size(min = NumberConstants.MIN_VALUE_FOR_CATEGORY_NAME, max = NumberConstants.MAX_VALUE_FOR_CATEGORY_NAME, message = StringConstants.CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS) String parentCategoryName) {
+    public List<ShowCategoryDto> getSubCategoriesByName(@RequestParam @Size(min = NumberConstants.MIN_VALUE_FOR_CATEGORY_NAME, max = NumberConstants.MAX_VALUE_FOR_CATEGORY_NAME,
+            message = StringConstants.CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS) String parentCategoryName) {
         Category parent = categoryService.getParentByName(parentCategoryName);
-        if (parent == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.NO_SUBCATEGORIES_FOUND, ExceptionCode.NOT_FOUND);
-        } else {
-            List<Category> subcategories = categoryService.getSubcategories(parent);
-            return subcategories.stream()
-                    .map(category -> modelMapper.map(category, ShowCategoryDto.class))
-                    .collect(Collectors.toList());
-        }
+        List<Category> subcategories = categoryService.getSubcategories(parent);
+        return subcategories.stream()
+                .map(category -> modelMapper.map(category, ShowCategoryDto.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/categories/{id}")
@@ -91,12 +84,12 @@ public class CategoryController {
     @DeleteMapping(value = "/categories/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id) {
-        Category category = categoryService.get(id);
         categoryService.delete(id);
     }
 
     @PutMapping(value = "/categories/{id}")
-    public CategoryDto update(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id, @RequestBody @Validated CreateCategoryDto createCategoryDto) {
+    public CategoryDto update(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id,
+                              @RequestBody @Validated CreateCategoryDto createCategoryDto) {
         Category parent = categoryService.getParent(createCategoryDto.getParentId());
         Category newCategory = new Category(createCategoryDto.getName(), parent);
         categoryService.update(newCategory, id);
