@@ -79,11 +79,4 @@ public class UserServiceImpl implements UserService {
 
         userRepository.deleteById(id);
     }
-
-//    public User uploadProfilePicture(UserPictureDto dto) {
-//        User user = userRepository.findById(dto.getId())
-//                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
-//        user.setAvatar(imageService.get(dto.getId()));
-//        return userRepository.save(user);
-//    }
 }
