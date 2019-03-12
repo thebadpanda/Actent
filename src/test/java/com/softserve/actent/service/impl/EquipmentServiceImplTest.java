@@ -1,3 +1,4 @@
+/*
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.model.entity.Equipment;
@@ -14,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +25,14 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+*/
 /**
 
-*/
+*//*
+
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class EquipmentServiceImplTest {
 
     @MockBean
@@ -42,13 +47,13 @@ public class EquipmentServiceImplTest {
     @MockBean
     private static UserServiceImpl userServiceImpl;
 
-    @TestConfiguration
-    static class EquipmentServiceImplTestContextConfiguration {
-        @Bean
-        public EquipmentService equipmentService() {
-            return new EquipmentServiceImpl(equipmentRepository, eventRepository, userRepository, userServiceImpl);
-        }
-    }
+//    @TestConfiguration
+//    static class EquipmentServiceImplTestContextConfiguration {
+//        @Bean
+//        public EquipmentService equipmentService() {
+//            return new EquipmentServiceImpl(equipmentRepository, eventRepository, userRepository, userServiceImpl);
+//        }
+//    }
 
     @Autowired
     private EquipmentService equipmentService;
@@ -62,6 +67,7 @@ public class EquipmentServiceImplTest {
 
         Mockito.when(equipmentRepository.findById(1L))
                 .thenReturn(Optional.of(equipment));
+
     }
 
     @Test
@@ -87,4 +93,4 @@ public class EquipmentServiceImplTest {
     @Test
     public void delete() {
     }
-}
+}*/
