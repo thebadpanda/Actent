@@ -1,13 +1,19 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
+import com.softserve.actent.exceptions.validation.ValidationException;
+import com.softserve.actent.model.dto.CreateTagDto;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.TagDto;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.service.TagService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +24,6 @@ import java.util.stream.Collectors;
 public class TagController {
 
     private final TagService tagService;
-
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -29,9 +34,9 @@ public class TagController {
 
     @PostMapping(value = "/tags")
     @ResponseStatus(HttpStatus.CREATED)
-    public IdDto addTag(@RequestBody TagDto tagDto) {
+    public IdDto addTag(@Validated @RequestBody CreateTagDto createTagDto) {
 
-        Tag tag = modelMapper.map(tagDto, Tag.class);
+        Tag tag = modelMapper.map(createTagDto, Tag.class);
         tag = tagService.add(tag);
 
         return new IdDto(tag.getId());
@@ -50,16 +55,15 @@ public class TagController {
     public List<TagDto> getTags() {
 
         List<Tag> tags = tagService.getAll();
-        List<TagDto> imagesDto = tags.stream()
+
+        return tags.stream()
                 .map(image -> modelMapper.map(image, TagDto.class))
                 .collect(Collectors.toList());
-
-        return imagesDto;
     }
 
     @PutMapping(value = "/tags/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TagDto updateTagById(@RequestBody TagDto tagDto, @PathVariable Long id) {
+    public TagDto updateTagById(@Validated @RequestBody CreateTagDto tagDto, @PathVariable Long id) {
 
         Tag tag = tagService.update(modelMapper.map(tagDto, Tag.class), id);
         return modelMapper.map(tag, TagDto.class);

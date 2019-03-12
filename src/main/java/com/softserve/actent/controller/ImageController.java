@@ -1,24 +1,31 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.validation.IncorrectStringException;
+import com.softserve.actent.exceptions.validation.ValidationException;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.AddImageDto;
 import com.softserve.actent.model.dto.ImageDto;
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.service.ImageService;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
 public class ImageController {
 
     private final ImageService imageService;
-
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -29,7 +36,7 @@ public class ImageController {
 
     @PostMapping(value = "/images")
     @ResponseStatus(HttpStatus.CREATED)
-    public IdDto addImage(@RequestBody AddImageDto addImageDto) {
+    public IdDto addImage(@Validated @RequestBody AddImageDto addImageDto) {
 
         Image image = modelMapper.map(addImageDto, Image.class);
         image = imageService.add(image);
@@ -49,8 +56,9 @@ public class ImageController {
     @ResponseStatus(HttpStatus.OK)
     public List<ImageDto> getImages(@RequestParam(value = "url", required = false) String url) {
 
-        List<ImageDto> imagesDto = new ArrayList<>();
         if (url != null) {
+
+            List<ImageDto> imagesDto = new ArrayList<>();
 
             Image image = imageService.getImageByFilePath(url);
             imagesDto.add(modelMapper.map(image, ImageDto.class));
@@ -60,17 +68,15 @@ public class ImageController {
 
             List<Image> images = imageService.getAll();
 
-            for (Image image : images) {
-                imagesDto.add(modelMapper.map(image, ImageDto.class));
-            }
-
-            return imagesDto;
+            return images.stream()
+                    .map(image -> modelMapper.map(image, ImageDto.class))
+                    .collect(Collectors.toList());
         }
     }
 
     @PutMapping(value = "/images/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ImageDto updateImage(@RequestBody AddImageDto addImageDto, @PathVariable Long id) {
+    public ImageDto updateImage(@Validated @RequestBody AddImageDto addImageDto, @PathVariable Long id) {
 
         Image image = imageService.update(modelMapper.map(addImageDto, Image.class), id);
         return modelMapper.map(image, ImageDto.class);

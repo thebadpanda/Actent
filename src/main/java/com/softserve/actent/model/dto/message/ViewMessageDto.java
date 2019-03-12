@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ViewMessageDto {
+public abstract class ViewMessageDto {
+
+    private Long id;
 
     private String sendTime;
 
