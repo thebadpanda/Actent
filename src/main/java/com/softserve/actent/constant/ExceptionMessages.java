@@ -10,6 +10,7 @@ public class ExceptionMessages {
 
     public static final String USER_BY_THIS_ID_IS_NOT_FOUND = "User by this id is not found";
 
+
     public static final String NO_SUBCATEGORIES_FOUND = "There is no subcategories in parent category you are looking for";
     public static final String CATEGORY_IS_NOT_FOUND = "Category with this id isn't exist";
 
@@ -29,12 +30,38 @@ public class ExceptionMessages {
     public static final String NO_TAG_WITH_ID = "Tag with requested id was not found.";
     public static final String NO_TAG_WITH_TEXT = "Tag with requested text was not found.";
 
+    public static final String REVIEW_NO_ID = "You need to provide review id.";
+    public static final String REVIEW_ID = "You need to provide review id.";
+    public static final String REVIEW_NO_TEXT = "You need to provide review text.";
+    public static final String REVIEW_NO_SCORE = "You need to provide review score.";
+    public static final String REVIEW_BAD_SCORE = "Review score must be in range from 1 to 5.";
+    public static final String REVIEW_NOT_FOUND_WITH_ID = "Review with requested id was not found.";
+    public static final String REVIEW_INNAPPROPRIATE_ID = "Review id should be number greater than zero.";
+
+    public static final String IMAGE_NO_ID = "You need to provide image id.";
+    public static final String IMAGE_NO_HASH = "You need to provide image hash.";
+    public static final String IMAGE_NO_FILEPATH = "You need to provide image url.";
+    public static final String IMAGE_INAPPROPRIATE_HASH_LENGTH = "SHA256 hash must be exactly 64 symbols in length.";
+    public static final String IMAGE_NOT_FOUND_WITH_ID = "Image with requested id was not found.";
+    public static final String IMAGE_NOT_FOUND_WITH_HASH = "Image with requested hash was not found.";
+    public static final String IMAGE_NOT_FOUND_WITH_PATH = "Image with requested path was not found.";
+    public static final String IMAGE_INNAPPROPRIATE_ID = "Image id should be number greater than zero.";
+
+    public static final String TAG_NO_ID = "You need to provide tag id.";
+    public static final String TAG_NO_TEXT = "You need to provide tag text.";
+    public static final String TAG_TOO_SHORT_TEXT = "Tag must be at least three symbols long.";
+    public static final String TAG_NOT_FOUND_WITH_ID = "Tag with requested id was not found.";
+    public static final String TAG_NOT_FOUND_WITH_TEXT = "Tag with requested text was not found.";
+    public static final String TAG_INNAPPROPRIATE_ID = "Tag id should be number greater than zero.";
+
     public static final String CHAT_BY_THIS_ID_IS_NOT_FOUND = "Chat by this id is not found";
     public static final String ACTIVE_BY_THIS_TYPE_IS_NOT_FOUND = "While adding chat to active. Active by this type is not found";
   
     public static final String YOU_CAN_NOT_CHANGE_THIS_MESSAGE = "You can't change this message";
     public static final String MESSAGE_NOT_FOUND = "Message not found";
-  
+
+    public static final String ASSIGNED_EVENT_EMPTY = "Assigned event is empty";
+
     public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
     public static final String USER_NOT_REGISTRED = "User not registered!";
 
