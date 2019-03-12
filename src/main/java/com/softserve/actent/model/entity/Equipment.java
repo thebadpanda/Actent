@@ -31,14 +31,11 @@ public class Equipment {
     @Column(nullable = false, length = NumberConstants.TITLE_MAX_LENGTH)
     private String title;
 
-    @NonNull
     @Column(length = NumberConstants.DESCRIPTION_MAX_LENGTH)
     private String description;
 
-    @NonNull
     private Boolean satisfied;
 
-    @NonNull
     @ManyToOne
     private User assignedUser;
 

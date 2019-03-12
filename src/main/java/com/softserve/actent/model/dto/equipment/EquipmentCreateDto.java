@@ -21,7 +21,6 @@ public class EquipmentCreateDto {
     @Length(min = NumberConstants.DESCRIPTION_MIN_LENGTH, max = NumberConstants.DESCRIPTION_MAX_LENGTH, message = StringConstants.DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS)
     private String description;
 
-    @NotNull(message = StringConstants.SATISFIED_CAN_NOT_BE_NULL)
     private Boolean satisfied;
 
     @Positive(message = StringConstants.ASSIGNED_USER_ID_MUST_BE_POSITIVE)
