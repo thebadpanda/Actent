@@ -85,15 +85,13 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "interests_id")})
     private List<Category> interests;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = NumberConstants.USER_SEX_MAX_LENGTH)
+    private Sex sex;
 
     @NonNull
-    public enum sex {
-        MALE, FEMALE
-    }
-
-    @NonNull
-    @ManyToMany
-    private List<Event> events;
+    @OneToMany(mappedBy = "user")
+    private List<EventUser> eventUsers;
 
     @NonNull
     @OneToMany
