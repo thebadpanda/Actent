@@ -134,28 +134,4 @@ public class EquipmentServiceImpl implements EquipmentService {
             );
         }
     }
-
-    @Override
-    public Boolean setSatisfied(Long equipmentId) {
-
-        Equipment equipment = get(equipmentId);
-        equipment.setSatisfied(true);
-        return update(equipment, equipmentId).getSatisfied();
-    }
-
-    @Override
-    public Boolean setUnsatisfied(Long equipmentId) {
-
-        Equipment equipment = get(equipmentId);
-        equipment.setSatisfied(false);
-        return update(equipment, equipmentId).getSatisfied();
-    }
-
-    @Override
-    public Equipment assignUser(Long userId, Long equipmentId) {
-
-        Equipment equipment = get(equipmentId);
-        equipment.setAssignedUser(userServiceImpl.get(userId));
-        return update(equipment, equipmentId);
-    }
 }
