@@ -1,5 +1,6 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,8 @@ public class Category {
     private Long id;
 
     @NotBlank(message = StringConstants.CATEGORY_NOT_BE_BLANK)
-    @Length(max = 30, message = StringConstants.CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS)
-    @Column(unique = true, nullable = false, length = 30)
+    @Length(max = NumberConstants.MAX_VALUE_FOR_CATEGORY_NAME, message = StringConstants.CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS)
+    @Column(unique = true, nullable = false, length = NumberConstants.MAX_VALUE_FOR_CATEGORY_NAME)
     private String name;
 
     @ManyToOne
