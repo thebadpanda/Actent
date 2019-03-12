@@ -9,7 +9,11 @@ import javax.validation.constraints.NotBlank;
 
 
 @Data
+<<<<<<< HEAD
 public class UserRegistrationDto {
+=======
+public class RegisterUserDto {
+>>>>>>> user_chain
 
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
     @Length(max = 20, min = 5, message = StringConstants.USER_LOGIN_LENGTH_RANGE)

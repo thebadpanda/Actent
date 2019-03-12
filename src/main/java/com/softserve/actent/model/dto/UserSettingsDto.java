@@ -1,21 +1,29 @@
 package com.softserve.actent.model.dto;
 
+<<<<<<< HEAD
 import com.softserve.actent.constant.StringConstants;
+=======
+>>>>>>> user_chain
 import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.model.entity.Role;
 import lombok.Data;
+<<<<<<< HEAD
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
+=======
+
+>>>>>>> user_chain
 import java.time.LocalDate;
 
 @Data
 public class UserSettingsDto {
 
+<<<<<<< HEAD
     @NotBlank(message = StringConstants.EMPTY_USER_LOGIN)
     @Length(max = 20, min = 5, message = StringConstants.USER_LOGIN_LENGTH_RANGE)
     private String login;
@@ -51,6 +59,18 @@ public class UserSettingsDto {
     @Length(max = 20, message = StringConstants.SEX_TOO_LONG)
     private String sex;
 
+=======
+    private String login;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private LocalDate birthDate;
+    private Image avatar;
+    private Location location;
+    private String bio;
+    private String sex;
+>>>>>>> user_chain
     private Role role;
 
 }
