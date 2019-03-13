@@ -97,4 +97,22 @@ public class ChatServiceImpl implements ChatService {
             return chat;
         }
     }
+
+    @Override
+    public Chat unBanUserFromChat(Long chatId, Long userId) {
+
+        User user = userService.get(userId);
+        Chat chat = getChatById(chatId);
+
+        if(chat.getBannedUsers().contains(user)){
+
+            chat.getBannedUsers().remove(user);
+            chat = updateChat(chat, chatId);
+
+            return chat;
+        }else{
+            throw new ResourceNotFoundException(StringConstants.USER_BY_SUCH_ID_IS_NOT_BE_BANNED_IN_THIS_CHAT,
+                    ExceptionCode.NOT_FOUND);
+        }
+    }
 }

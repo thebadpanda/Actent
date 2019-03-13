@@ -50,12 +50,6 @@ public class ChatController {
         return new IdDto(chat.getId());
     }
 
-    @GetMapping(value = "/chats/{chatId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Chat getEventChat(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
-        return chatService.getChatById(chatId);
-    }
-
     @DeleteMapping(value = "/chats/{chatId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEventChatById(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
@@ -78,6 +72,15 @@ public class ChatController {
     @ResponseStatus(HttpStatus.OK)
     public ChatInfoDto getChatInfo(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
         ChatInfoDto chatInfoDto = chatInfoConverter.convertToDto(chatService.getChatById(chatId));
+        return chatInfoDto;
+    }
+
+    @PutMapping(value = "/chats/{chatId}/unban/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ChatInfoDto unBannedUserByChatId(@PathVariable(value = "chatId") @Positive @NotNull Long chatId,
+                                            @PathVariable(value = "userId") @Positive @NotNull Long userId){
+
+        ChatInfoDto chatInfoDto = chatInfoConverter.convertToDto(chatService.unBanUserFromChat(chatId, userId));
         return chatInfoDto;
     }
 
