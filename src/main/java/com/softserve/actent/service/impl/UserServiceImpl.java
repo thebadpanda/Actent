@@ -5,7 +5,6 @@ import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.exceptions.validation.IncorrectEmailException;
-import com.softserve.actent.model.dto.user.UserPictureDto;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.ImageService;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,11 +37,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User add(User user) {
-        if (!userRepository.existsByEmail(user.getEmail())) {
-            return userRepository.save(user);
-        } else {
-            throw new IncorrectEmailException(ExceptionMessages.EMAIL_ALREADY_USED, ExceptionCode.INCORRECT_EMAIL);
-        }
+//        if (!userRepository.existsByEmail(user.getEmail())) {
+            Optional<User> optionalUser = userRepository.findById(user.getId());
+            return optionalUser.orElseGet(()-> userRepository.save(user));
+//        } else {
+//            throw new IncorrectEmailException(ExceptionMessages.EMAIL_ALREADY_USED, ExceptionCode.INCORRECT_EMAIL);
+//        }
     }
 
     @Transactional
@@ -70,13 +71,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+        return userRepository.findUserByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_EMAIL_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 
     @Transactional
     @Override
     public void delete(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
 
-        userRepository.deleteById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+        }
     }
 }
