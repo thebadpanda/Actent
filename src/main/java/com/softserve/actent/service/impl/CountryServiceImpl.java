@@ -40,19 +40,22 @@ public class CountryServiceImpl implements CountryService {
     @Transactional
     @Override
     public Country update(Country country, Long countryId) {
-        if (isCountryAlreadyExistInDatabase(country.getName())) {
-            throw new DuplicateValueException(
-                    ExceptionMessages.COUNTRY_ALREADY_EXIST,
-                    ExceptionCode.DUPLICATE_VALUE);
-        } else {
-            if (countryRepository.existsById(countryId)) {
+        Optional<Country> countryOptional = countryRepository.findById(countryId);
+
+        if (countryOptional.isPresent()) {
+            if (isCountryAlreadyExistInDatabase(country.getName())) {
+                throw new DuplicateValueException(
+                        ExceptionMessages.COUNTRY_ALREADY_EXIST,
+                        ExceptionCode.DUPLICATE_VALUE);
+            } else {
                 country.setId(countryId);
                 return countryRepository.save(country);
-            } else {
-                throw new ResourceNotFoundException(
-                        ExceptionMessages.COUNTRY_NOT_FOUND,
-                        ExceptionCode.NOT_FOUND);
             }
+        } else {
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.COUNTRY_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND);
+
         }
     }
 
