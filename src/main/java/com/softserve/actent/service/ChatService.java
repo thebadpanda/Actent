@@ -13,4 +13,6 @@ public interface ChatService {
     Chat banUserInChat(Long chatId, Long userId);
 
     Chat updateChat(Chat chat, Long chatId);
+    
+    Chat unBanUserFromChat(Long chatId, Long userId);
 }

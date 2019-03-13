@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,6 @@ public class CountryServiceImplTest {
 
     @MockBean
     private CountryRepository countryRepository;
-
 
     private final Long firstId = 1L;
     private final Long secondId = 2L;
@@ -50,7 +50,7 @@ public class CountryServiceImplTest {
         secondCountry = createCountry(secondId, secondCountryName);
         thirdCountry = createCountry(thirdId, thirdCountryName);
 
-        countries = Arrays.asList(firstCountry, secondCountry,thirdCountry);
+        countries = Arrays.asList(firstCountry, secondCountry, thirdCountry);
 
         Mockito.when(countryRepository.findById(firstId)).thenReturn(Optional.of(firstCountry));
         Mockito.when(countryRepository.findById(secondId)).thenReturn(Optional.of(secondCountry));
@@ -86,15 +86,19 @@ public class CountryServiceImplTest {
         assertThat(countryService.getAll().get(2).getName()).isEqualTo(thirdCountryName);
     }
 
-    @Test(expected = DuplicateValueException.class)
-    public void testAddDuplicateCountryName_thenThrowException() {
-        firstCountry = createCountry(firstId, firstCountryName);
-        secondCountry = createCountry(secondId, firstCountryName);
-        assertThat(countryService.add(firstCountry)).isEqualTo(secondCountry);
+    @Test
+    public void testAddCountry() {
+        Mockito.when(countryRepository.findAll()).thenReturn(Collections.emptyList());
+        assertThat(countryService.add(firstCountry)).isEqualTo(firstCountry);
     }
 
     @Test(expected = DuplicateValueException.class)
-    public void testUpdateCountryIdWithDuplicateCountryName_thenThrowException() {
+    public void testAddDuplicateCountryName_thenThrowException() {
+        assertThat(countryService.add(firstCountry)).isEqualTo(firstCountry);
+    }
+
+    @Test(expected = DuplicateValueException.class)
+    public void testUpdateCountryIdWithDuplicateName_thenThrowException() {
         assertThat(countryService.update(secondCountry, secondId).getName()).isEqualTo(secondCountryName);
     }
 

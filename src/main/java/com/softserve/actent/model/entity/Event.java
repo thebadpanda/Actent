@@ -5,7 +5,9 @@ import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +41,7 @@ public class Event {
     @NonNull
     @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
     @Length(max = NumberConstants.TITLE_MAX_LENGTH, message = StringConstants.TITLE_LENGTH_IS_TO_LONG)
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = NumberConstants.TITLE_MAX_LENGTH)
     private String title;
 
     @Length(max = NumberConstants.MAX_VALUE_FOR_DESCRIPTION, message = StringConstants.DESCRIPTION_SHOULD_BE_BETWEEN_MIN_AND_MAX_VALUE)
@@ -81,12 +83,11 @@ public class Event {
     @Fetch(FetchMode.SUBSELECT)
     private List<Equipment> equipments;
 
-    @NonNull
     @Enumerated(value = EnumType.ORDINAL)
     @Column(nullable = false)
     private AccessType accessType;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventUser> eventUserList;
 
     @NonNull

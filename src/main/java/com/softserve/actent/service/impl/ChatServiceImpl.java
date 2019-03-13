@@ -14,6 +14,7 @@ import com.softserve.actent.service.ChatService;
 import com.softserve.actent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 
 @Service
@@ -94,6 +95,24 @@ public class ChatServiceImpl implements ChatService {
             chat = updateChat(chat, chatId);
 
             return chat;
+        }
+    }
+
+    @Override
+    public Chat unBanUserFromChat(Long chatId, Long userId) {
+
+        User user = userService.get(userId);
+        Chat chat = getChatById(chatId);
+
+        if(chat.getBannedUsers().contains(user)){
+
+            chat.getBannedUsers().remove(user);
+            chat = updateChat(chat, chatId);
+
+            return chat;
+        }else{
+            throw new ResourceNotFoundException(StringConstants.USER_BY_SUCH_ID_IS_NOT_BE_BANNED_IN_THIS_CHAT,
+                    ExceptionCode.NOT_FOUND);
         }
     }
 }

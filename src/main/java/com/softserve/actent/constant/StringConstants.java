@@ -103,4 +103,6 @@ public class StringConstants {
     public static final String INVALID_CHAT_TYPE = "invalid chat type.";
     public static final String USER_BY_SUCH_ID_IS_ALREADY_EXISTS_IN_LIST_OF_BANNED_USERS_IN_THIS_CHAT = "User by such " +
             "id is already exists in list of banned users in this chat.";
+    public static final String USER_BY_SUCH_ID_IS_NOT_BE_BANNED_IN_THIS_CHAT = "User by such id is not be banned in " +
+            "this chat";
 }

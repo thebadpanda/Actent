@@ -98,10 +98,7 @@ public class User {
     @JoinColumn
     private List<Review> reviews;
 
-    @ManyToMany
-    @JoinTable(name = "user_chat",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "chat_id")})
+    @ManyToMany(mappedBy = "bannedUsers")
     private List<Chat> bannedChats;
     
     @Enumerated(EnumType.STRING)
