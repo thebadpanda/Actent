@@ -14,24 +14,7 @@ public class ExceptionMessages {
     public static final String NO_SUBCATEGORIES_FOUND = "There is no subcategories in parent category you are looking for";
     public static final String CATEGORY_IS_NOT_FOUND = "Category with this id isn't exist";
 
-    public static final String NO_REVIEW_TEXT = "You need to provide review text.";
-    public static final String NO_REVIEW_SCORE = "You need to provide review score.";
-    public static final String BAD_REVIEW_SCORE = "Review score must be in range from 1 to 5.";
-    public static final String NO_REVIEW_WITH_ID = "Review with requested id was not found.";
-
-    public static final String NO_IMAGE_FILEPATH = "You need to provide image url.";
-    public static final String INAPPROPRIATE_HASH_LENGTH = "SHA256 hash must be exactly 64 symbols in length.";
-    public static final String NO_IMAGE_WITH_ID = "Image with requested id was not found.";
-    public static final String NO_IMAGE_WITH_HASH = "Image with requested hash was not found.";
-    public static final String NO_IMAGE_WITH_PATH = "Image with requested path was not found.";
-
-    public static final String NO_TAG_TEXT = "You need to provide tag text.";
-    public static final String TOO_SHORT_TAG_TEXT = "Tag must be at least three symbols long.";
-    public static final String NO_TAG_WITH_ID = "Tag with requested id was not found.";
-    public static final String NO_TAG_WITH_TEXT = "Tag with requested text was not found.";
-
     public static final String REVIEW_NO_ID = "You need to provide review id.";
-    public static final String REVIEW_ID = "You need to provide review id.";
     public static final String REVIEW_NO_TEXT = "You need to provide review text.";
     public static final String REVIEW_NO_SCORE = "You need to provide review score.";
     public static final String REVIEW_BAD_SCORE = "Review score must be in range from 1 to 5.";
@@ -62,7 +45,6 @@ public class ExceptionMessages {
 
     public static final String ASSIGNED_EVENT_EMPTY = "Assigned event is empty";
 
-    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
     public static final String USER_NOT_REGISTRED = "User not registered!";
 
     public static final String COUNTRY_NOT_FOUND = "Not found country with this id";
