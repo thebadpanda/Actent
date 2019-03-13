@@ -158,6 +158,16 @@ public class TagControllerTest {
     }
 
     @Test
+    public void whenGetTagByNonExistingId_thenReturnExceptionJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + nonExistingTagId;
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error.debugMessage").value(ExceptionMessages.TAG_NOT_FOUND_WITH_ID));
+    }
+
+    @Test
     public void whenGetAllTags_thenReturnTagsListJson() throws Exception {
 
         String url = UrlConstants.API_V1 + "/tags";
@@ -172,7 +182,7 @@ public class TagControllerTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         firstTag = null;
         secondTag = null;
         firstTagDto = null;
