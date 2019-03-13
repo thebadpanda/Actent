@@ -177,6 +177,8 @@ public class UserServiceImplTest {
 
         Mockito.when(imageRepository.findById(firstUserImageId)).thenReturn(Optional.of(firstUserAvatar));
         Mockito.when(imageRepository.findById(secondUserImageId)).thenReturn(Optional.of(secondUserAvatar));
+
+
     }
 
     @Test
@@ -188,6 +190,7 @@ public class UserServiceImplTest {
         assertThat(users.size()).isEqualTo(usersCount);
         assertThat(users.get(0).getFirstName()).isEqualTo(firstUserName);
         assertThat(users.get(1).getFirstName()).isEqualTo(secondUserName);
+
     }
 
     @Test
@@ -222,6 +225,7 @@ public class UserServiceImplTest {
         assertThat(user.getRole()).isEqualTo(secondUserRole);
         assertThat(user.getSex()).isEqualTo(secondUserSex);
         assertThat(user.getBio()).isEqualTo(secondUserBio);
+
     }
 
     @Test(expected = ResourceNotFoundException.class)
