@@ -92,8 +92,6 @@ public class TagControllerTest {
     private CreateTagDto firstCreateTagDto;
     private CreateTagDto secondCreateTagDto;
     private CreateTagDto createTagDtoWithTooShortText;
-    private IdDto firstIdDto;
-    private IdDto secondIdDto;
     private List<Tag> tags;
 
     @Before
@@ -119,9 +117,6 @@ public class TagControllerTest {
         firstCreateTagDto = new CreateTagDto(firstTagText);
         secondCreateTagDto = new CreateTagDto(secondTagText);
         createTagDtoWithTooShortText = new CreateTagDto(tooShortText);
-
-        firstIdDto = new IdDto(firstTagId);
-        secondIdDto = new IdDto(secondTagId);
 
         tags = Arrays.asList(firstTag, secondTag);
 
