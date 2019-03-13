@@ -1,9 +1,12 @@
 package com.softserve.actent.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.model.dto.CreateTagDto;
+import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.TagDto;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.repository.*;
@@ -25,9 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,49 +45,34 @@ public class TagControllerTest {
 
     @MockBean
     private TagService tagService;
-
     @MockBean
     private ModelMapper modelMapper;
-
     @MockBean
     private CategoryRepository categoryRepository;
-
     @MockBean
     private ChatRepository chatRepository;
-
     @MockBean
     private CityRepository cityRepository;
-
     @MockBean
     private CountryRepository countryRepository;
-
     @MockBean
     private EquipmentRepository equipmentRepository;
-
     @MockBean
     private EventRepository eventRepository;
-
     @MockBean
     private EventUserRepository eventUserRepository;
-
     @MockBean
     private ImageRepository imageRepository;
-
     @MockBean
     private LocationRepository locationRepository;
-
     @MockBean
     private MessageRepository messageRepository;
-
     @MockBean
     private RegionRepository regionRepository;
-
     @MockBean
     private ReviewRepository reviewRepository;
-
     @MockBean
     private TagRepository tagRepository;
-
     @MockBean
     private UserRepository userRepository;
 
@@ -93,10 +82,18 @@ public class TagControllerTest {
     private final String firstTagText = "beer";
     private final String secondTagText = "football";
     private final String nonExistingText = "sport";
+    private final String tooShortText = "hi";
     private Tag firstTag;
     private Tag secondTag;
+    private Tag firstTagWithoutId;
+    private Tag secondTagWithoutId;
     private TagDto firstTagDto;
     private TagDto secondTagDto;
+    private CreateTagDto firstCreateTagDto;
+    private CreateTagDto secondCreateTagDto;
+    private CreateTagDto createTagDtoWithTooShortText;
+    private IdDto firstIdDto;
+    private IdDto secondIdDto;
     private List<Tag> tags;
 
     @Before
@@ -110,13 +107,26 @@ public class TagControllerTest {
         secondTag.setId(secondTagId);
         secondTag.setText(secondTagText);
 
+        firstTagWithoutId = new Tag();
+        firstTagWithoutId.setText(firstTagText);
+
+        secondTagWithoutId = new Tag();
+        secondTagWithoutId.setText(secondTagText);
+
         firstTagDto = new TagDto(firstTagId, firstTagText);
         secondTagDto = new TagDto(secondTagId, secondTagText);
 
+        firstCreateTagDto = new CreateTagDto(firstTagText);
+        secondCreateTagDto = new CreateTagDto(secondTagText);
+        createTagDtoWithTooShortText = new CreateTagDto(tooShortText);
+
+        firstIdDto = new IdDto(firstTagId);
+        secondIdDto = new IdDto(secondTagId);
+
         tags = Arrays.asList(firstTag, secondTag);
 
-        given(tagService.add(firstTag)).willReturn(firstTag);
-        given(tagService.add(secondTag)).willReturn(secondTag);
+        given(tagService.add(firstTagWithoutId)).willReturn(firstTag);
+        given(tagService.add(secondTagWithoutId)).willReturn(secondTag);
 
         given(tagService.get(firstTagId)).willReturn(firstTag);
         given(tagService.get(secondTagId)).willReturn(secondTag);
@@ -130,27 +140,31 @@ public class TagControllerTest {
 
         given(tagService.getAll()).willReturn(tags);
 
-        given(tagService.update(firstTag, firstTagId)).willReturn(firstTag);
-        given(tagService.update(secondTag, secondTagId)).willReturn(secondTag);
-        given(tagService.update(firstTag, nonExistingTagId)).willThrow(new ResourceNotFoundException(
+        given(tagService.update(firstTagWithoutId, firstTagId)).willReturn(firstTag);
+        given(tagService.update(secondTagWithoutId, secondTagId)).willReturn(secondTag);
+        given(tagService.update(firstTagWithoutId, nonExistingTagId)).willThrow(new ResourceNotFoundException(
                 ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND));
-        given(tagService.update(secondTag, nonExistingTagId)).willThrow(new ResourceNotFoundException(
+        given(tagService.update(secondTagWithoutId, nonExistingTagId)).willThrow(new ResourceNotFoundException(
                 ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND));
 
         Mockito.doNothing().when(tagService).delete(firstTagId);
         Mockito.doNothing().when(tagService).delete(secondTagId);
+        Mockito.doThrow(new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND))
+                .when(tagService).delete(nonExistingTagId);
 
         given(modelMapper.map(firstTag, TagDto.class)).willReturn(firstTagDto);
         given(modelMapper.map(secondTag, TagDto.class)).willReturn(secondTagDto);
         given(modelMapper.map(firstTagDto, Tag.class)).willReturn(firstTag);
         given(modelMapper.map(secondTagDto, Tag.class)).willReturn(secondTag);
+        given(modelMapper.map(firstCreateTagDto, Tag.class)).willReturn(firstTagWithoutId);
+        given(modelMapper.map(secondCreateTagDto, Tag.class)).willReturn(secondTagWithoutId);
     }
 
     @Test
     public void whenGetTagByExistingId_thenReturnTagJson() throws Exception {
 
-        String url = UrlConstants.API_V1 + "/tags/" + firstTagId;
-        mvc.perform(get(url)
+        String uri = UrlConstants.API_V1 + "/tags/" + firstTagId;
+        mvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(firstTagId))
@@ -158,20 +172,20 @@ public class TagControllerTest {
     }
 
     @Test
-    public void whenGetTagByNonExistingId_thenReturnExceptionJson() throws Exception {
+    public void whenGetTagByNonExistingId_thenReturnErrorJson() throws Exception {
 
-        String url = UrlConstants.API_V1 + "/tags/" + nonExistingTagId;
-        mvc.perform(get(url)
+        String uri = UrlConstants.API_V1 + "/tags/" + nonExistingTagId;
+        mvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error.debugMessage").value(ExceptionMessages.TAG_NOT_FOUND_WITH_ID));
+                .andExpect(jsonPath("$.error.debugMessage", is(ExceptionMessages.TAG_NOT_FOUND_WITH_ID)));
     }
 
     @Test
     public void whenGetAllTags_thenReturnTagsListJson() throws Exception {
 
-        String url = UrlConstants.API_V1 + "/tags";
-        mvc.perform(get(url)
+        String uri = UrlConstants.API_V1 + "/tags";
+        mvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(tags.size())))
@@ -181,12 +195,104 @@ public class TagControllerTest {
                 .andExpect(jsonPath("$[1].text").value(secondTagText));
     }
 
+    @Test
+    public void whenAddTag_thenReturnIdJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags";
+        mvc.perform(post(url)
+                .content(asJsonString(firstCreateTagDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(firstTagId.toString()));
+    }
+
+    @Test
+    public void whenAddTagWithTooShortText_thenReturnTagJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/";
+        mvc.perform(post(url)
+                .content(asJsonString(createTagDtoWithTooShortText))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error.subErrors", hasSize(1)))
+                .andExpect(jsonPath("$.error.subErrors[0].message").value(ExceptionMessages.TAG_TOO_SHORT_TEXT));
+    }
+
+    @Test
+    public void whenUpdateTag_thenReturnTagJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + secondTagId;
+        mvc.perform(put(url)
+                .content(asJsonString(secondCreateTagDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(secondTagId))
+                .andExpect(jsonPath("$.text").value(secondTagText));
+    }
+
+    @Test
+    public void whenUpdateTagWithNonExistingId_thenReturnErrorTagJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + nonExistingTagId;
+        mvc.perform(put(url)
+                .content(asJsonString(secondCreateTagDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error.debugMessage").value(ExceptionMessages.TAG_NOT_FOUND_WITH_ID));
+    }
+
+    @Test
+    public void whenUpdateTagWithTooShortText_thenReturnTagJson() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + firstTagId;
+        mvc.perform(put(url)
+                .content(asJsonString(createTagDtoWithTooShortText))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error.subErrors", hasSize(1)))
+                .andExpect(jsonPath("$.error.subErrors[0].message").value(ExceptionMessages.TAG_TOO_SHORT_TEXT));
+    }
+
+    @Test
+    public void whenDeleteTag_thenReturnNoContent() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + firstTagId;
+        mvc.perform(delete(url)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void whenDeleteTagWithNonExistingId_thenReturnNoContent() throws Exception {
+
+        String url = UrlConstants.API_V1 + "/tags/" + nonExistingTagId;
+        mvc.perform(delete(url)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error.debugMessage").value(ExceptionMessages.TAG_NOT_FOUND_WITH_ID));
+    }
+
     @After
     public void tearDown() {
         firstTag = null;
         secondTag = null;
         firstTagDto = null;
         secondTagDto = null;
+        firstCreateTagDto = null;
+        secondCreateTagDto = null;
+        firstTagWithoutId = null;
+        secondTagWithoutId = null;
         tags = null;
+    }
+
+    private static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
