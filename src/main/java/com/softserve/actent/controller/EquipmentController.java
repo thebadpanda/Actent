@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
 import com.softserve.actent.model.dto.equipment.EquipmentDto;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
