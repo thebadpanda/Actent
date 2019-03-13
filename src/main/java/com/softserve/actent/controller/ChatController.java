@@ -3,7 +3,9 @@ package com.softserve.actent.controller;
 import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.chat.AddChatDto;
+import com.softserve.actent.model.dto.chat.ChatInfoDto;
 import com.softserve.actent.model.dto.chat.UserForChatDto;
+import com.softserve.actent.model.dto.converter.ChatInfoConverter;
 import com.softserve.actent.model.entity.Chat;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.service.ChatService;
@@ -31,11 +33,13 @@ import java.util.stream.Collectors;
 public class ChatController {
 
     private final ChatService chatService;
+    private final ChatInfoConverter chatInfoConverter;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ChatController(ChatService chatService, ModelMapper modelMapper) {
+    public ChatController(ChatService chatService, ChatInfoConverter chatInfoConverter, ModelMapper modelMapper) {
         this.chatService = chatService;
+        this.chatInfoConverter = chatInfoConverter;
         this.modelMapper = modelMapper;
     }
 
@@ -46,19 +50,13 @@ public class ChatController {
         return new IdDto(chat.getId());
     }
 
-    @GetMapping(value = "/chats/{chatId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Chat getEventChat(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
-        return chatService.getChatById(chatId);
-    }
-
     @DeleteMapping(value = "/chats/{chatId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEventChatById(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
         chatService.deleteChatById(chatId);
     }
 
-    @PutMapping(value = "chats/{chatId}/bannedUsers/{userId}")
+    @PutMapping(value = "/chats/{chatId}/bannedUsers/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<UserForChatDto> banUserByChatAndUserId(@PathVariable(value = "chatId") @NotNull @Positive Long chatId,
                                                        @PathVariable(value = "userId") @NotNull @Positive Long userId){
@@ -68,6 +66,22 @@ public class ChatController {
         return bannedUsers.stream()
                 .map(user -> modelMapper.map(user, UserForChatDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/chats/{chatId}/info")
+    @ResponseStatus(HttpStatus.OK)
+    public ChatInfoDto getChatInfo(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
+        ChatInfoDto chatInfoDto = chatInfoConverter.convertToDto(chatService.getChatById(chatId));
+        return chatInfoDto;
+    }
+
+    @PutMapping(value = "/chats/{chatId}/unban/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ChatInfoDto unBannedUserByChatId(@PathVariable(value = "chatId") @Positive @NotNull Long chatId,
+                                            @PathVariable(value = "userId") @Positive @NotNull Long userId){
+
+        ChatInfoDto chatInfoDto = chatInfoConverter.convertToDto(chatService.unBanUserFromChat(chatId, userId));
+        return chatInfoDto;
     }
 
 }
