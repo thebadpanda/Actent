@@ -6,7 +6,6 @@ import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.dto.CreateTagDto;
-import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.TagDto;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.repository.*;
@@ -28,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -173,7 +171,7 @@ public class TagControllerTest {
         mvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error.debugMessage", is(ExceptionMessages.TAG_NOT_FOUND_WITH_ID)));
+                .andExpect(jsonPath("$.error.debugMessage").value(ExceptionMessages.TAG_NOT_FOUND_WITH_ID));
     }
 
     @Test
