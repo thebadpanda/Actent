@@ -50,60 +50,128 @@ public class EquipmentServiceImplTest {
     private final Boolean satisfied = false;
     private final Integer equipmentCount = 2;
 
+    private Equipment equipment;
+    private Equipment equipmentWithNonExistUser;
+    private Equipment equipmentWithNonExistEvent;
+    private Equipment equipmentWithoutUser;
+    private Event existingEvent;
+    private Event nonExistingEvent;
+    private User existingUser;
+    private User nonExistingUser;
+
+    List<Equipment> allEquipments;
+
 
     @Before
     public void setUp() {
 
-        Event event = new Event();
-        User user = new User();
+        existingEvent = new Event();
+        existingEvent.setId(existingId);
+        existingUser = new User();
+        existingUser.setId(existingId);
 
-        Equipment equipment = new Equipment(existingId, title, description, satisfied, user, event);
-        Equipment secondEquipment = new Equipment(secondExistingId, secondTitle, description, satisfied, user, event);
+        nonExistingEvent = new Event();
+        nonExistingEvent.setId(nonExistingId);
+        nonExistingUser = new User();
+        nonExistingUser.setId(nonExistingId);
 
-        List<Equipment> allEquipments = Arrays.asList(equipment, secondEquipment);
+        equipment = new Equipment(existingId, title, description, satisfied, existingUser, existingEvent);
+        equipmentWithNonExistUser = new Equipment(secondExistingId, secondTitle, description, satisfied, nonExistingUser, existingEvent);
+        equipmentWithNonExistEvent = new Equipment(secondExistingId, secondTitle, description, satisfied, existingUser, nonExistingEvent);
+        equipmentWithoutUser = new Equipment(secondExistingId, secondTitle, description, satisfied, null, existingEvent);
 
-        Mockito.when(equipmentRepository.findById(existingId))
-                .thenReturn(Optional.of(equipment));
-        Mockito.when(equipmentRepository.findById(nonExistingId))
-                .thenReturn(Optional.empty());
-        Mockito.when(equipmentRepository.findAll())
-                .thenReturn(allEquipments);
+        allEquipments = Arrays.asList(equipment, equipmentWithoutUser);
+
+        Mockito.when(equipmentRepository.existsById(existingId)).thenReturn(true);
+        Mockito.when(equipmentRepository.existsById(nonExistingId)).thenReturn(false);
+        Mockito.when(equipmentRepository.findById(existingId)).thenReturn(Optional.of(equipment));
+        Mockito.when(equipmentRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        Mockito.when(equipmentRepository.findAll()).thenReturn(allEquipments);
+
+        Mockito.when(eventRepository.existsById(existingId)).thenReturn(true);
+        Mockito.when(userRepository.existsById(existingId)).thenReturn(true);
+        Mockito.when(eventRepository.existsById(nonExistingId)).thenReturn(false);
+        Mockito.when(userRepository.existsById(nonExistingId)).thenReturn(false);
+
+        Mockito.when(equipmentRepository.save(equipment)).thenReturn(equipment);
+        Mockito.when(equipmentRepository.save(equipmentWithoutUser)).thenReturn(equipmentWithoutUser);
+
+        Mockito.doNothing().when(equipmentRepository).deleteById(existingId);
+        Mockito.doNothing().when(equipmentRepository).deleteById(nonExistingId);
     }
 
     @Test
     public void whenValidId_thenEquipmentShouldBeFound() {
 
         Equipment found = equipmentService.get(existingId);
-        verifyFindByIdIsCalledOnce();
+        Mockito.verify(equipmentRepository, VerificationModeFactory.times(1)).findById(Mockito.anyLong());
+
         assertThat(found.getTitle()).isEqualTo(title);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void whenInValidId_thenEmployeeShouldNotBeFound(){
+    public void whenInValidId_thenExceptionShouldBeThrown() {
 
-        Equipment found = equipmentService.get(nonExistingId);
-        verifyFindByIdIsCalledOnce();
-        assertThat(found).isNull();
+        equipmentService.get(nonExistingId);
     }
 
     @Test
     public void whenGetAll_thenListOfEquipmentsShouldBeReturned() {
 
         List<Equipment> founds = equipmentService.getAll();
-        verifyFindAllEmployeesIsCalledOnce();
+        Mockito.verify(equipmentRepository, VerificationModeFactory.times(1)).findAll();
+
         assertThat(founds.size()).isEqualTo(equipmentCount);
         assertThat(founds.get(0).getTitle()).isEqualTo(title);
         assertThat(founds.get(1).getTitle()).isEqualTo(secondTitle);
-
     }
 
-    private void verifyFindByIdIsCalledOnce() {
+    @Test
+    public void whenAddEquipmentWithExistingUserAndEvent_thenEquipmentShouldBeReturned() {
 
-        Mockito.verify(equipmentRepository, VerificationModeFactory.times(1)).findById(Mockito.anyLong());
+        assertThat(equipmentService.add(equipment)).isEqualTo(equipment);
     }
 
-    private void verifyFindAllEmployeesIsCalledOnce() {
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenAddEquipmentWithNonExistingUserId_thenExceptionShouldBeThrown(){
 
-        Mockito.verify(equipmentRepository, VerificationModeFactory.times(1)).findAll();
+        equipmentService.add(equipmentWithNonExistUser);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenAddEquipmentWithNonExistingEventId_thenExceptionShouldBeThrown(){
+
+        equipmentService.add(equipmentWithNonExistEvent);
+    }
+
+    @Test
+    public void whenAddEquipmentWithoutUser_thenEquipmentWithoutUserShouldBeReturned() {
+
+        assertThat(equipmentService.add(equipmentWithoutUser)).isEqualTo(equipmentWithoutUser);
+    }
+
+    @Test
+    public void whenUpdateEquipmentWithExistingId_thenEquipmentShouldBeReturned(){
+
+        assertThat(equipmentService.update(equipmentWithoutUser, existingId).getTitle()).isEqualTo(secondTitle);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenUpdateEquipmentWithNonExistingId_thenExceptionShouldBeThrown(){
+
+        equipmentService.update(equipmentWithoutUser, nonExistingId);
+    }
+
+    @Test
+    public void whenDeleteTagWithExistingId_thenNothingShouldBeReturned() {
+
+        equipmentService.delete(existingId);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenDeleteTagWithNonExistingId_thenExceptionShouldBeThrown() {
+
+        equipmentService.delete(nonExistingId);
     }
 }
