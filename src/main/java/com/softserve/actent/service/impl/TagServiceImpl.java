@@ -43,7 +43,6 @@ public class TagServiceImpl implements TagService {
             tag.setId(id);
             return tagRepository.save(tag);
         } else {
-            log.error(ExceptionMessages.TAG_NOT_FOUND_WITH_ID + " Id: " + id);
             throw new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
@@ -51,10 +50,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag get(Long id) {
 
-        return tagRepository.findById(id).orElseThrow(() -> {
-            log.error(ExceptionMessages.TAG_NOT_FOUND_WITH_ID + " Id: " + id);
-            return new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
-        });
+        return tagRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -72,8 +68,14 @@ public class TagServiceImpl implements TagService {
         if (optionalReview.isPresent()) {
             tagRepository.deleteById(id);
         } else {
-            log.error(ExceptionMessages.TAG_NOT_FOUND_WITH_ID + " Id: " + id);
             throw new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
+    }
+
+    @Override
+    public Tag getByText(String name) {
+
+        return tagRepository.findByText(name).orElseThrow(() ->
+                new ResourceNotFoundException(ExceptionMessages.TAG_NOT_FOUND_WITH_TEXT, ExceptionCode.NOT_FOUND));
     }
 }
