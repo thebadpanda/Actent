@@ -45,7 +45,7 @@ public class ChatServiceImplTest {
     private Long nonExistingId = -1L;
 
     private Long existingUserId = 2L;
-    private Long nonExistingUserId = -1L;
+    private Long existingUserId3 = 3L;
     private ChatType chatType = ChatType.EVENT;
     private Message message1 = new Message();
     private Message message2 = new Message();
@@ -55,6 +55,7 @@ public class ChatServiceImplTest {
     private List<Message> messages;
     private List<User> bannedUsers;
     private List<User> bannedUserExists;
+    private List<User> unBannedUserExists;
     Chat chat = null;
 
     @Before
@@ -75,7 +76,7 @@ public class ChatServiceImplTest {
         user2.setLogin("loginValentyn2");
         user2.setPassword("passwordValentyn2");
 
-        user3.setId(3L);
+        user3.setId(existingUserId3);
         user3.setFirstName("Valentyn3");
         user3.setLastName("Yarmoshyk3");
         user3.setLogin("loginValentyn3");
@@ -84,6 +85,7 @@ public class ChatServiceImplTest {
         bannedUsers = new LinkedList<>(Arrays.asList(user1, user3));
         chat.setBannedUsers(bannedUsers);
         bannedUserExists = Arrays.asList(user1, user2, user3);
+        unBannedUserExists = Arrays.asList(user1);
 
         message1.setChat(chat);
         message1.setSender(user1);
@@ -112,6 +114,8 @@ public class ChatServiceImplTest {
                 .thenReturn(false);
         Mockito.when(userRepository.findById(existingUserId))
                 .thenReturn(Optional.of(user2));
+        Mockito.when(userRepository.findById(existingUserId3))
+                .thenReturn(Optional.of(user3));
     }
 
     @After
@@ -178,6 +182,20 @@ public class ChatServiceImplTest {
         Chat chat = chatService.banUserInChat(existingId, existingUserId);
         assertThat(chat.getBannedUsers().size())
                 .isEqualTo(bannedUserExists.size());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenDeleteBannedNonExistsUserFromChat_thenExceptionShouldBeThrown(){
+        Chat chat = chatService.unBanUserFromChat(existingId, existingUserId);
+        assertThat(chat.getBannedUsers().size())
+                .isEqualTo(unBannedUserExists.size());
+    }
+
+    @Test
+    public void whenDeleteBannedNonExistsUserFromChat_thenListBannedUsersShouldBeReturned(){
+        Chat chat = chatService.unBanUserFromChat(existingId, existingUserId3);
+        assertThat(chat.getBannedUsers().size())
+                .isEqualTo(unBannedUserExists.size());
     }
 
     private void verifyFindByIdIsCalledOnce() {
