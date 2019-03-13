@@ -1,5 +1,7 @@
 package com.softserve.actent.model.entity;
 
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,13 +28,14 @@ public class Image {
 
     @NonNull
     @NotBlank(message = StringConstants.IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK)
-    @Column(name = "file_path", nullable = false, length = 256)
-    @Length(max = 256, message = StringConstants.TOO_LONG)
+    @Column(name = "file_path", nullable = false)
+    @Length(message = StringConstants.TOO_LONG)
     private String filePath;
 
     @NonNull
     @NotBlank(message = StringConstants.IMAGE_HASH_SHOULD_NOT_BE_BLANK)
     @Column(nullable = false, unique = true, length = 64)
-    @Length(min = 64, max = 64, message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
+    @Length(min = NumberConstants.HASH_LENGTH, max = NumberConstants.HASH_LENGTH,
+            message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
     private String hash;
 }
