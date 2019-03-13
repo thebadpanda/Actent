@@ -26,7 +26,7 @@ public class Image {
 
     @NonNull
     @NotBlank(message = StringConstants.IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK)
-    @Column(name = "file_path", nullable = false,  unique = true, length = 256)
+    @Column(name = "file_path", nullable = false, length = 256)
     @Length(max = 256, message = StringConstants.TOO_LONG)
     private String filePath;
 
