@@ -8,6 +8,7 @@ import com.softserve.actent.repository.EquipmentRepository;
 import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.EquipmentService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -173,5 +173,15 @@ public class EquipmentServiceImplTest {
     public void whenDeleteTagWithNonExistingId_thenExceptionShouldBeThrown() {
 
         equipmentService.delete(nonExistingId);
+    }
+
+    @After
+    public void tearDown() {
+
+        equipment = null;
+        equipmentWithoutUser = null;
+        equipmentWithNonExistEvent = null;
+        equipmentWithNonExistUser = null;
+        allEquipments = null;
     }
 }
