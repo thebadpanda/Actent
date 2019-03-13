@@ -10,6 +10,7 @@ import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.UserService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -130,7 +131,7 @@ public class UserServiceImplTest {
         secondUserProfile.setLocation(secondUserLocation);
         secondUserProfile.setRole(secondUserRole);
 
-
+        Mockito.when()
 
     }
 
