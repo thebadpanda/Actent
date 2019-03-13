@@ -1,6 +1,7 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
@@ -37,8 +38,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User add(User user) {
-        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
-        return optionalUser.orElseGet(() -> userRepository.save(user));
+
+        if (!userRepository.existsByEmail(user.getEmail())) {
+            if (!userRepository.existsByLogin(user.getLogin())){
+                Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+                return optionalUser.orElseGet(() -> userRepository.save(user));
+            } else {
+                throw new DuplicateValueException(ExceptionMessages.USER_BY_THIS_LOGIN_ALREADY_EXIST, ExceptionCode.DUPLICATE_VALUE);
+            }
+        } else {
+            throw new IncorrectEmailException(ExceptionMessages.EMAIL_ALREADY_USED, ExceptionCode.INCORRECT_EMAIL);
+        }
     }
 
     @Transactional

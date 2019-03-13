@@ -10,6 +10,7 @@ public class ExceptionMessages {
 
     public static final String USER_BY_THIS_ID_IS_NOT_FOUND = "User by this id is not found";
     public static final String USER_BY_THIS_EMAIL_IS_NOT_FOUND = "User by this email is not found";
+    public static final String USER_BY_THIS_LOGIN_ALREADY_EXIST = "User by this login already exist";
 
     public static final String NO_SUBCATEGORIES_FOUND = "There is no subcategories in parent category you are looking for";
     public static final String CATEGORY_IS_NOT_FOUND = "Category with this id isn't exist";
