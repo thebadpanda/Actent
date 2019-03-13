@@ -34,7 +34,7 @@ public class Image {
 
     @NonNull
     @NotBlank(message = StringConstants.IMAGE_HASH_SHOULD_NOT_BE_BLANK)
-    @Column(nullable = false, unique = true, length = 64)
+    @Column(nullable = false, unique = true, length = NumberConstants.HASH_LENGTH)
     @Length(min = NumberConstants.HASH_LENGTH, max = NumberConstants.HASH_LENGTH,
             message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
     private String hash;
