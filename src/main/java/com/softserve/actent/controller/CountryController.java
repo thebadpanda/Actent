@@ -1,5 +1,6 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.CountryDto;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.service.CountryService;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class CountryController {
 
     private final CountryService countryService;
