@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.converter.ViewMessageConverter;
 import com.softserve.actent.model.dto.message.CreateImageMessageDto;
 import com.softserve.actent.model.dto.message.CreateTextMessageDto;
@@ -29,7 +30,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class MessageController {
 
     private final MessageService messageService;
