@@ -1,5 +1,6 @@
 package com.softserve.actent.service.impl;
 
+import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.model.entity.City;
@@ -177,6 +178,8 @@ public class UserServiceImplTest {
 
         Mockito.when(imageRepository.findById(firstUserImageId)).thenReturn(Optional.of(firstUserAvatar));
         Mockito.when(imageRepository.findById(secondUserImageId)).thenReturn(Optional.of(secondUserAvatar));
+
+
     }
 
     @Test
@@ -188,6 +191,7 @@ public class UserServiceImplTest {
         assertThat(users.size()).isEqualTo(usersCount);
         assertThat(users.get(0).getFirstName()).isEqualTo(firstUserName);
         assertThat(users.get(1).getFirstName()).isEqualTo(secondUserName);
+
     }
 
     @Test
@@ -222,19 +226,13 @@ public class UserServiceImplTest {
         assertThat(user.getRole()).isEqualTo(secondUserRole);
         assertThat(user.getSex()).isEqualTo(secondUserSex);
         assertThat(user.getBio()).isEqualTo(secondUserBio);
+
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void whenUserByEmailNotExist_thenExceptionShouldBeThrown() {
 
         userService.getUserByEmail(nonExistUserEmail);
-
-    }
-
-    @Test
-    public void whenAdd_thenUserShouldBeReturned() {
-
-        assertThat(userService.add(firstUser)).isEqualTo(firstUser);
 
     }
 

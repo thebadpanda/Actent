@@ -10,6 +10,7 @@ public class ExceptionMessages {
 
     public static final String USER_BY_THIS_ID_IS_NOT_FOUND = "User by this id is not found";
     public static final String USER_BY_THIS_EMAIL_IS_NOT_FOUND = "User by this email is not found";
+    public static final String USER_BY_THIS_LOGIN_ALREADY_EXIST = "User by this login already exist";
 
     public static final String NO_SUBCATEGORIES_FOUND = "There is no subcategories in parent category you are looking for";
     public static final String CATEGORY_IS_NOT_FOUND = "Category with this id isn't exist";
@@ -45,6 +46,7 @@ public class ExceptionMessages {
 
     public static final String ASSIGNED_EVENT_EMPTY = "Assigned event is empty";
 
+    public static final String EMAIL_ALREADY_USED = "There is a user with such email!";
     public static final String USER_NOT_REGISTRED = "User not registered!";
 
     public static final String COUNTRY_NOT_FOUND = "Not found country with this id";
