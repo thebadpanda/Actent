@@ -9,6 +9,7 @@ import com.softserve.actent.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +24,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public Category add(Category category) {
         return categoryRepository.save(category);
     }
 
     @Override
+    @Transactional
     public Category update(Category category, Long id) {
         if (categoryRepository.findById(id).isPresent()) {
             category.setId(id);
@@ -55,6 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if (optionalCategory.isPresent()) {
