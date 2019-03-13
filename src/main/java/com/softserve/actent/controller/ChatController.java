@@ -1,5 +1,6 @@
 package com.softserve.actent.controller;
 
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.chat.AddChatDto;
 import com.softserve.actent.model.dto.chat.UserForChatDto;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class ChatController {
 
     private final ChatService chatService;
