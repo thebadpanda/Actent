@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.RegionDto;
 import com.softserve.actent.model.dto.RegionUpdateDto;
 import com.softserve.actent.model.entity.Region;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class RegionController {
 
     private final RegionService regionService;

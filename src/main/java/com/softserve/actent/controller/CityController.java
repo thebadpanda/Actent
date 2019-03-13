@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.CityDto;
 import com.softserve.actent.model.dto.CityUpdateDto;
 import com.softserve.actent.model.entity.City;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class CityController {
 
     private final CityService cityService;

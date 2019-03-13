@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.validation.IncorrectInputDataException;
 import com.softserve.actent.exceptions.validation.IncorrectStringException;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class ReviewController {
 
     private final ReviewService reviewService;
