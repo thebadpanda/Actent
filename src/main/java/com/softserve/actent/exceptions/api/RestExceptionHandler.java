@@ -42,7 +42,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         ApiError apiError = new ApiError();
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-        apiError.setStatus(responseStatus.code());
+        if (responseStatus != null) {
+            apiError.setStatus(responseStatus.code());
+        }
         log.error(ex.getMessage(), ex);
 
         apiError.setDebugMessage(ex.getMessage());
@@ -69,31 +71,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(ex.getMessage());
         return buildResponseEntity(
                 new ApiError(BAD_REQUEST, ExceptionCode.MISSING_SERVLET_REQUEST_PARAMETER.exceptionCode, errorText));
-    }
-
-    /**
-     * Handle HttpMediaTypeNotSupportedException. This one triggers when JSON is invalid as well.
-     *
-     * @param ex      HttpMediaTypeNotSupportedException
-     * @param headers HttpHeaders
-     * @param status  HttpStatus
-     * @param request WebRequest
-     * @return the ApiError object
-     */
-    @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
-                                                                     HttpHeaders headers, HttpStatus status, WebRequest request) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(ex.getContentType());
-        builder.append(" media type is not supported. Supported media types are ");
-        ex.getSupportedMediaTypes().forEach(t -> builder.append(t).append(", "));
-        String errorText = builder.substring(0, builder.length() - 2);
-
-        log.error(errorText);
-        log.error(ex.getMessage());
-
-        return buildResponseEntity(new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-                ExceptionCode.UNSUPPORTED_MEDIA_TYPE.exceptionCode, errorText));
     }
 
     /**
@@ -140,7 +117,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return buildResponseEntity(apiError);
     }
-
 
     /**
      * Handle HttpMessageNotReadableException. Happens when request JSON is malformed.
@@ -189,7 +165,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         apiError.setTimestamp(LocalDateTime.now());
 
-        HashMap<String, Object> errorBody = new HashMap<>();
+        HashMap<String, ApiError> errorBody = new HashMap<>();
         errorBody.put("error", apiError);
 
         return new ResponseEntity<>(errorBody, apiError.getStatus());
