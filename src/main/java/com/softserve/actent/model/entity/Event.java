@@ -87,7 +87,7 @@ public class Event {
     @Column(nullable = false)
     private AccessType accessType;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventUser> eventUserList;
 
     @NonNull
