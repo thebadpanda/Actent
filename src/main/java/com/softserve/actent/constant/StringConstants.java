@@ -27,7 +27,6 @@ public class StringConstants {
     public static final String USER_ID_SHOULD_BE_GREATER_THAN_ZERO = "User id should be greater than zero";
     public static final String USER_LOCATION_LENGHT_RANGE = "Location should not be more than 50 symbols";
     public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
-    public static final String USER_ROLE_TOO_LONG = "User role should not be more than 20 symbols";
     public static final String USER_AVATAR_ID_SHOULD_BE_GREATER_THAN_ZERO = "User avatar id should be greater than zero";
     public static final String USER_EMAIL_NOT_VALID = "User's email not valid";
 
@@ -63,7 +62,6 @@ public class StringConstants {
     public static final String LOCATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Location must be positive and greater than zero";
     public static final String CITY_ID_CAN_NOT_BE_NULL = "City id can not be null";
     public static final String CITY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "City id must be positive and greater than zero";
-    public static final String ADDRESS_CAN_NOT_BE_NULL_OR_EMPTY = "Address can not be null or empty";
     public static final String ACCESS_TYPE_CAN_NOT_BE_NULL_OR_EMPTY = "Access type can not be null or empty";
     public static final String CATEGORY_ID_CAN_NOT_BE_NULL = "Category id can not be null";
     public static final String CATEGORY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Category id must be positive and greater than zero";
@@ -72,19 +70,15 @@ public class StringConstants {
     public static final String USER_ID_CAN_NOT_BE_NULL = "User id can not be null";
     public static final String USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "User id must be positive and greater than zero";
     public static final String EVENT_USER_ID_CAN_NOT_BE_NULL = "Event user id can not be null";
-    public static final String EVENT_USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Event user id must be positive and greater than zero";
 
     public static final String IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK = "Image file path shouldn't be empty";
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
     public static final String IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256 = "Hash must be of exact length 256";
 
-
     public static final String CATEGORY_NO_LONGER_THAN_THIRTY_SYMBOLS ="Category shouldn`t be longer than 30";
     public static final String CATEGORY_NOT_BE_BLANK = "Category can`t be blank";
     public static final String CATEGORY_MESSAGE = "Please enter 0 value if category doesn't have parent category";
     public static final String CATEGORY_ID_MUST_BE_POSITIVE = "Categoty id must be positive";
-
-    public static final String SATISFIED_CAN_NOT_BE_NULL = "Satisfied can`t be null";
 
     public static final String ASSIGNED_USER_ID_MUST_BE_POSITIVE = "Assigned userId must be positive number";
     public static final String ASSIGNED_EVENT_ID_MUST_BE_POSITIVE = "Assigned eventId must be positive number";
