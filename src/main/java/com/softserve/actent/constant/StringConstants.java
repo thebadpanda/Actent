@@ -19,8 +19,7 @@ public class StringConstants {
     public static final String USER_EMAIL_LENGTH_RANGE = "Email should not be longer than 30 symbols";
     public static final String EMAIL_NOT_VALID = "Email is not valid";
     public static final String EMPTY_USER_PASSWORD = "User password can not be empty.";
-    public static final String USER_PASSWORD_LENGTH_RANGE = "Password should be from 2 up to 20 symbols";
-    public static final String WRONG_DATE_FORMAT = "Wrong LocalDate format";
+    public static final String USER_PASSWORD_LENGTH_RANGE = "Password should be from 6 up to 30 symbols";
     public static final String BIRTHDAY_CANNOT_BE_FUTURE_DATE = "Birthday cannot be future date";
     public static final String BIO_TOO_LONG = "Bio must be not longer than 500 symbols";
     public static final String SEX_TOO_LONG = "Sex must be not longer than 20 symbols";

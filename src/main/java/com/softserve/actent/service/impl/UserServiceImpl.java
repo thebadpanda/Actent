@@ -37,12 +37,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User add(User user) {
-//        if (!userRepository.existsByEmail(user.getEmail())) {
-            Optional<User> optionalUser = userRepository.findById(user.getId());
-            return optionalUser.orElseGet(()-> userRepository.save(user));
-//        } else {
-//            throw new IncorrectEmailException(ExceptionMessages.EMAIL_ALREADY_USED, ExceptionCode.INCORRECT_EMAIL);
-//        }
+        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+        return optionalUser.orElseGet(() -> userRepository.save(user));
     }
 
     @Transactional
