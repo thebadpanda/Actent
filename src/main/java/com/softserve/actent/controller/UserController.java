@@ -2,6 +2,7 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.user.UserRegistrationDto;
 import com.softserve.actent.model.dto.user.UserDto;
@@ -29,7 +30,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class UserController {
 
     private final ModelMapper modelMapper;

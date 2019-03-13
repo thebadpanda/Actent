@@ -1,6 +1,7 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.validation.ValidationException;
 import com.softserve.actent.model.dto.IdDto;
@@ -31,7 +32,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class EventController {
 
     private final EventService eventService;

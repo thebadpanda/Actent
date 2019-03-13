@@ -2,6 +2,7 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.category.CategoryDto;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.category.ShowCategoryDto;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Validated
-@RequestMapping("/api/v1")
+@RequestMapping(UrlConstants.API_V1)
 public class CategoryController {
 
     private final CategoryService categoryService;
