@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Data
@@ -27,15 +28,14 @@ public class Image {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK)
+    @NotBlank(message = ExceptionMessages.IMAGE_NO_FILEPATH)
     @Column(name = "file_path", nullable = false)
-    @Length(message = StringConstants.TOO_LONG)
     private String filePath;
 
     @NonNull
-    @NotBlank(message = StringConstants.IMAGE_HASH_SHOULD_NOT_BE_BLANK)
+    @NotBlank(message = ExceptionMessages.IMAGE_NO_HASH)
     @Column(nullable = false, unique = true, length = NumberConstants.HASH_LENGTH)
-    @Length(min = NumberConstants.HASH_LENGTH, max = NumberConstants.HASH_LENGTH,
-            message = StringConstants.IMAGE_HASH_MUST_BE_OF_EXACT_LENGHT_256)
+    @Size(min = NumberConstants.HASH_LENGTH, max = NumberConstants.HASH_LENGTH,
+            message = ExceptionMessages.IMAGE_INAPPROPRIATE_HASH_LENGTH)
     private String hash;
 }
