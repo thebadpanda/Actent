@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public Image add(Image image) {
 
         Optional<Image> optionalImage = imageRepository.findByHash(image.getHash());
@@ -72,12 +74,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public List<Image> getAll() {
 
         return imageRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Image update(Image image, Long imageId) {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
@@ -92,6 +96,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public void delete(Long imageId) {
 
         Optional<Image> optionalImage = imageRepository.findById(imageId);
