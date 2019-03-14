@@ -1,6 +1,7 @@
 package com.softserve.actent.model.entity;
 
-import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.NumberConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -24,12 +27,14 @@ public class Review {
     private Long id;
 
     @NonNull
-    @NotBlank(message = StringConstants.EMPTY_REWIEW_TEXT)
+    @NotBlank(message = ExceptionMessages.REVIEW_NO_TEXT)
     @Column(nullable = false)
     private String text;
 
     @NonNull
-    @NotNull(message = StringConstants.NO_REVIEW_SCORE)
+    @NotNull(message = ExceptionMessages.REVIEW_NO_SCORE)
+    @Min(value = NumberConstants.MIN_SCORE_VALUE, message = ExceptionMessages.REVIEW_BAD_SCORE)
+    @Max(value = NumberConstants.MAX_SCORE_VALUE, message = ExceptionMessages.REVIEW_BAD_SCORE)
     @Column(nullable = false)
     private Integer score;
 }

@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public Review add(Review review) {
 
         return reviewRepository.save(review);
@@ -48,6 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public Review update(Review review, Long reviewId) {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
@@ -62,6 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public void delete(Long reviewId) {
 
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
