@@ -12,7 +12,7 @@ import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.model.entity.Review;
 import com.softserve.actent.model.entity.Tag;
 import com.softserve.actent.model.entity.User;
-import com.softserve.actent.repository.EventRepository;
+import com.softserve.actent.repository.*;
 import com.softserve.actent.service.EventService;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +49,11 @@ public class EventServiceImplTest {
     @Mock List<Tag> tags;
     @Mock List<Equipment> equipments;
 
+    @MockBean ChatRepository chatRepository;
+    @MockBean UserRepository userRepository;
+    @MockBean LocationRepository locationRepository;
+    @MockBean CategoryRepository categoryRepository;
+
     private final Long id = 1L;
     private final Long wrongId = 111L;
     private final String title = "Title";
@@ -69,6 +74,16 @@ public class EventServiceImplTest {
         when(event.getCreator()).thenReturn(user);
         when(event.getAddress()).thenReturn(location);
         when(event.getCategory()).thenReturn(category);
+
+        when(chatRepository.existsById(id)).thenReturn(true);
+        when(userRepository.existsById(id)).thenReturn(true);
+        when(locationRepository.existsById(id)).thenReturn(true);
+        when(categoryRepository.existsById(id)).thenReturn(true);
+
+        when(chatRepository.findById(id)).thenReturn(Optional.of(chat));
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+        when(locationRepository.findById(id)).thenReturn(Optional.of(location));
+        when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
 
         when(eventRepository.existsById(id)).thenReturn(true);
         when(eventRepository.existsById(wrongId)).thenReturn(false);
