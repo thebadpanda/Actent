@@ -83,5 +83,4 @@ public class ChatController {
         ChatInfoDto chatInfoDto = chatInfoConverter.convertToDto(chatService.unBanUserFromChat(chatId, userId));
         return chatInfoDto;
     }
-
 }
