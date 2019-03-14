@@ -1,12 +1,13 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.exceptions.ResourceNotFoundException;
-import com.softserve.actent.exceptions.validation.MessageValidationException;
+import com.softserve.actent.exceptions.validation.ValidationException;
 import com.softserve.actent.model.entity.Chat;
+import com.softserve.actent.model.entity.Image;
 import com.softserve.actent.model.entity.Message;
-import com.softserve.actent.model.entity.MessageType;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.MessageRepository;
+import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
 import org.junit.After;
 import org.junit.Before;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,9 @@ public class MessageServiceImplTest {
     private MessageService messageService;
 
     @MockBean
+    ImageService imageService;
+
+    @MockBean
     private MessageRepository messageRepository;
 
     private final Long firstId = 1L;
@@ -41,43 +46,49 @@ public class MessageServiceImplTest {
     private final int messageCount = 2;
     private final Long chatId = 1L;
     private final String firstMessageContent = "firstMessageContent";
-    private final String secondMessageContent = "secondMessageContent";
+    private final String imageHash = "6b86b273lf3bfc119d6b804eff5a3f5747ada4eaa22f1d49r0we52ddb7875b41";
+    private final String imageFilePath = "imageFilePath";
     List<Message> messages;
+    private Message messageWithText;
+    private Message messageWithImage;
     private User user;
     private Chat chat;
-
+    private Image image;
 
     @Before
     public void setUp() {
 
-        Message firstMessage = new Message();
-        firstMessage.setId(firstId);
-        firstMessage.setMessageContent(firstMessageContent);
-        firstMessage.setMessageType(MessageType.TEXT);
+        messageWithText = new Message();
+        messageWithImage = new Message();
+        messageWithText.setId(firstId);
+        messageWithText.setMessageContent(firstMessageContent);
+        messageWithImage.setId(secondId);
 
+
+        image = new Image();
         user = new User();
         chat = new Chat();
         user.setId(firstId);
         chat.setId(firstId);
+        image.setFilePath(imageFilePath);
+        image.setHash(imageHash);
 
-        firstMessage.setSender(user);
-        firstMessage.setChat(chat);
+        messageWithText.setSender(user);
+        messageWithText.setChat(chat);
+        messageWithImage.setSender(user);
+        messageWithImage.setChat(chat);
+        messageWithImage.setImage(image);
 
-        Message secondMessage = new Message();
-        secondMessage.setId(secondId);
-        secondMessage.setMessageContent(secondMessageContent);
-        secondMessage.setMessageType(MessageType.TEXT);
+        messages = Arrays.asList(messageWithText, messageWithImage);
 
-        messages = Arrays.asList(firstMessage, secondMessage);
-
-        Mockito.when(messageRepository.findById(firstId)).thenReturn(Optional.of(firstMessage));
+        Mockito.when(messageRepository.findById(firstId)).thenReturn(Optional.of(messageWithText));
         Mockito.when(messageRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
         Mockito.when(messageRepository.findAllByChatId(chatId)).thenReturn(messages);
-
-        Mockito.when(messageRepository.save(firstMessage)).thenReturn(firstMessage);
-        Mockito.when(messageRepository.save(secondMessage)).thenReturn(secondMessage);
-
+        Mockito.when(messageRepository.findAll()).thenReturn(messages);
+        Mockito.when(messageRepository.save(messageWithText)).thenReturn(messageWithText);
+        Mockito.when(messageRepository.save(messageWithImage)).thenReturn(messageWithImage);
+        Mockito.when(imageService.add(image)).thenReturn(image);
         Mockito.doNothing().when(messageRepository).deleteById(firstId);
         Mockito.doNothing().when(messageRepository).deleteById(secondId);
 
@@ -85,8 +96,8 @@ public class MessageServiceImplTest {
 
     @Test
     public void whenValidId_thenMessageShouldBeFound() {
-        Message message = messageService.get(firstId);
-        assertThat(message.getMessageContent()).isEqualTo(firstMessageContent);
+
+        assertThat(messageWithText).isEqualTo(messageService.get(firstId));
 
     }
 
@@ -101,43 +112,48 @@ public class MessageServiceImplTest {
     }
 
     @Test
-    public void whenAddMessage_thenMessageShouldBeReturned() {
-        Message message = new Message();
-        message.setId(secondId);
-        message.setMessageContent(secondMessageContent);
-        assertThat(messageService.add(message)).isEqualTo(message);
+    public void given2Messages_findAll_thenReturn2Records() {
+        assertThat(messageService.getAll().size()).isEqualTo(messageCount);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenFindAllIsEmpty_thenExceptionShouldBeThrown() {
+        Mockito.when(messageRepository.findAll()).thenReturn(Collections.emptyList());
+        assertThat(messageService.getAll().size()).isEqualTo(messageCount);
     }
 
     @Test
-    public void whenUpdateMessage_thenMessageShouldBeReturned() {
-        Message message = new Message();
-        message.setId(firstId);
-        message.setMessageContent(firstMessageContent);
-
-        user = new User();
-        chat = new Chat();
-        user.setId(firstId);
-        chat.setId(firstId);
-
-        message.setSender(user);
-        message.setChat(chat);
-        assertThat(messageService.update(message, firstId)).isEqualTo(message);
+    public void whenAddMessage_thenMessageShouldBeReturned() {
+        assertThat(messageService.add(messageWithText)).isEqualTo(messageWithText);
     }
 
-    @Test(expected = MessageValidationException.class)
+    @Test
+    public void whenAddImageMessage_thenMessageShouldBeReturned() {
+
+        assertThat(messageService.add(messageWithImage)).isEqualTo(messageWithImage);
+    }
+
+
+    @Test
+    public void whenUpdateMessage_thenMessageShouldBeReturned() {
+
+        assertThat(messageService.update(messageWithText, firstId)).isEqualTo(messageWithText);
+    }
+
+    @Test(expected = ValidationException.class)
     public void whenUpdateMessage_thenExceptionShouldBeThrown() {
-        Message message = new Message();
-        message.setId(firstId);
-        message.setMessageContent(firstMessageContent);
+        Message newMessage = new Message();
+        newMessage.setId(firstId);
+        newMessage.setMessageContent(firstMessageContent);
 
-        user = new User();
-        chat = new Chat();
-        user.setId(firstId);
-        chat.setId(secondId);
+        Chat newChat = new Chat();
+        User newUser = new User();
+        newUser.setId(firstId);
+        newChat.setId(secondId);
 
-        message.setSender(user);
-        message.setChat(chat);
-        assertThat(messageService.update(message, firstId)).isEqualTo(message);
+        newMessage.setSender(newUser);
+        newMessage.setChat(newChat);
+        assertThat(messageService.update(newMessage, firstId)).isEqualTo(newMessage);
     }
 
     @Test
@@ -156,8 +172,14 @@ public class MessageServiceImplTest {
     public void tearDown() {
         user = null;
         chat = null;
+        messageWithText = null;
+        messageWithImage = null;
+        image = null;
         assertNull(user);
         assertNull(chat);
+        assertNull(messageWithText);
+        assertNull(messageWithImage);
+
     }
 
 }
