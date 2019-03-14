@@ -21,6 +21,8 @@ public class ChatInfoDto {
     @NotBlank(message = StringConstants.CHAT_TYPE_NOT_BE_BLANK)
     private ChatType chatType;
 
+    private Long countOfMessages;
+
     private List<UserForChatDto> bannedUserInChatDto;
 
 }
