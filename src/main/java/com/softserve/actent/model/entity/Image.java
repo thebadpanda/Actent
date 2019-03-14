@@ -2,11 +2,9 @@ package com.softserve.actent.model.entity;
 
 import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.constant.NumberConstants;
-import com.softserve.actent.constant.StringConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
