@@ -143,6 +143,7 @@ public class EventServiceImpl implements EventService {
         }
 
         event.setCreationDate(eventFromBase != null ? eventFromBase.getCreationDate() : null);
+        event.setAccessType(eventFromBase != null ? eventFromBase.getAccessType() : null);
         event.setId(id);
 
         return event;
