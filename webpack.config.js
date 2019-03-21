@@ -4,7 +4,7 @@ const path = require('path');
 const config = {
     entry:   path.join(__dirname, 'src/main/resources/static/src/app.js'),
     output: {
-        path: path.join(__dirname,'src/main/resources/public'),
+        path: path.join(__dirname,'src/main/resources/static'),
         filename: 'bundle.js'
     },
     resolve: {
@@ -15,7 +15,7 @@ const config = {
     module: {
         rules:  [
             {
-                test: /\.js$/,
+                test: /\.jsx?/,
                 exclude: /node_modules/,
                 use: ["babel-loader"]
             },

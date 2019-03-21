@@ -5,6 +5,7 @@ export default class Hallo extends React.Component{
         return (
                 <div>
                     <h1>Hallo</h1>
+                    <h3>Actent is ready</h3>
                 </div>
         );
     }
