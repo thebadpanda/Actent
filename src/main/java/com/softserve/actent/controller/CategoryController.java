@@ -39,9 +39,8 @@ public class CategoryController {
     @PostMapping(value = "/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addCategory(@RequestBody @Validated CreateCategoryDto createCategoryDto) {
-        Category category = modelMapper.map(createCategoryDto, Category.class);
         Category parent = categoryService.getParent(createCategoryDto.getParentId());
-        category = categoryService.add(new Category(createCategoryDto.getName(), parent));
+        Category category = categoryService.add(new Category(createCategoryDto.getName(), parent));
         return new IdDto(category.getId());
     }
 
