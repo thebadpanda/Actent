@@ -1,6 +1,5 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.model.entity.City;
