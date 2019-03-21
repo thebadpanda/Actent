@@ -115,6 +115,7 @@ public class TagServiceImplTest {
         assertThat(tagService.update(secondTag, secondTagId).getText()).isEqualTo(secondTagText);
     }
 
+
     @Test(expected = ResourceNotFoundException.class)
     public void whenUpdateTagWithNonExistingId_thenExceptionShouldBeThrown() {
 
