@@ -1,12 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Hallo from "./component/Hallo";
+import LoginForm from "./component/LoginForm";
 
 class App extends React.Component {
     render() {
         return (
            <div>
-               <Hallo />
+               <div>
+                   <Hallo />
+                   <LoginForm />
+               </div>
            </div>
         );
     }
