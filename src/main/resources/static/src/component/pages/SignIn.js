@@ -1,15 +1,17 @@
-import React from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import axios from "axios";
-import '../styles/login.css';
+import axios from 'axios';
 
-export default class Login extends React.Component{
+export default class SignIn extends React.Component{
 
-    state = {
-        email: undefined,
-        password: undefined,
-        user: undefined
+    constructor(){
+        super();
+        state = {
+          email: undefined,
+          password: undefined
+        };
     };
 
     handleEmail = (event) => {
@@ -17,41 +19,38 @@ export default class Login extends React.Component{
     };
 
     handlePassword = (event) => {
-        this.setState({password: event.target.value})
+        this.setState({ password: event.target.value})
     };
 
     sendData = (event) => {
+
         event.preventDefault();
 
-        console.log(this.state.email + " " + this.state.password);
-
-        axios.get('http://localhost/api/v1/users?email='+this.state.email)
+        axios.get(`http://localhost/api/v1/users?email=${this.state.email}`)
             .then(res => {
-                console.log(res);
                 console.log(res.data);
-                const user = res.data;
-                this.setState( {user} );
             })
     };
-
+    
     isValid = () => {
-        if(this.state.email && this.state.email.length > 5){
+        if(this.state.email && this.state.email > 5){
             return true;
-        }else{
+        }else {
             return false;
         }
     };
 
-    render(){
+    render() {
+
         return(
-            <div className="container">
-                <div className="loginForm">
-                    <div className="signIn">Sign in</div>
-                    <div className="fields">
+
+            <div className="FormCenter">
+                <form className="FormFields">
+                    <div className="FormField">
                         <TextField
                             id="outlined-email-input"
                             label="Email"
-                            className="textField"
+                            className="FormField__Input"
                             type="email"
                             name="email"
                             autoComplete="email"
@@ -59,10 +58,12 @@ export default class Login extends React.Component{
                             variant="outlined"
                             onChange={this.handleEmail}
                         />
+                    </div>
+                    <div className="FormField">
                         <TextField
                             id="outlined-password-input"
                             label="Password"
-                            className="textField"
+                            className="FormField__Input"
                             type="password"
                             autoComplete="current-password"
                             margin="normal"
@@ -70,11 +71,19 @@ export default class Login extends React.Component{
                             onChange={this.handlePassword}
                         />
                     </div>
-                    <Button className="loginButton" variant="contained" color="primary" disabled={!this.isValid()} onClick={this.sendData}>
-                        Sign in
-                    </Button>
-                </div>
+
+                    <div className="FromField">
+                        <Button className="FormField__Button" variant="contained" color="primary" disabled={!this.isValid()} onClick={this.sendData}>
+                            Sign in
+                        </Button>
+                        <Link to="/sign-up" className="FormField__Link">Create an account</Link>
+                    </div>
+
+                </form>
             </div>
+
         );
+
     }
+
 }

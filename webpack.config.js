@@ -12,6 +12,9 @@ const config = {
             src: path.join(__dirname, 'src/main/resources/static/src')
         }
     },
+    performance: {
+        hints: false
+    },
     module: {
         rules:  [
             {
