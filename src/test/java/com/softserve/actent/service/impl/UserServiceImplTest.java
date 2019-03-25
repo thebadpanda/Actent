@@ -25,10 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static junit.framework.TestCase.assertNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,7 +129,7 @@ public class UserServiceImplTest {
         firstUser.setBio(firstUserBio);
         firstUser.setSex(firstUserSex);
         firstUser.setLocation(firstUserLocation);
-        firstUser.setRole(firstUserRole);
+        firstUser.setRoleset(Collections.singleton(firstUserRole));
 
         secondUser.setId(secondUserId);
         secondUser.setEmail(secondUserEmail);
@@ -145,7 +142,7 @@ public class UserServiceImplTest {
         secondUser.setBio(secondUserBio);
         secondUser.setSex(secondUserSex);
         secondUser.setLocation(secondUserLocation);
-        secondUser.setRole(secondUserRole);
+        secondUser.setRoleset(Collections.singleton(secondUserRole));
 
         users = Arrays.asList(firstUser, secondUser);
 
@@ -203,7 +200,7 @@ public class UserServiceImplTest {
         assertThat(user.getEmail()).isEqualTo(firstUserEmail);
         assertThat(user.getLogin()).isEqualTo(firstUserLogin);
         assertThat(user.getBirthDate()).isEqualTo(firstUserBirthDate);
-        assertThat(user.getRole()).isEqualTo(firstUserRole);
+        assertThat(user.getRoleset()).contains(firstUserRole);
         assertThat(user.getSex()).isEqualTo(firstUserSex);
         assertThat(user.getBio()).isEqualTo(firstUserBio);
     }
@@ -223,7 +220,7 @@ public class UserServiceImplTest {
         assertThat(user.getEmail()).isEqualTo(secondUserEmail);
         assertThat(user.getLogin()).isEqualTo(secondUserLogin);
         assertThat(user.getBirthDate()).isEqualTo(secondUserBirthDate);
-        assertThat(user.getRole()).isEqualTo(secondUserRole);
+        assertThat(user.getRoleset()).contains(secondUserRole);
         assertThat(user.getSex()).isEqualTo(secondUserSex);
         assertThat(user.getBio()).isEqualTo(secondUserBio);
 
