@@ -6,12 +6,9 @@ import axios from 'axios';
 
 export default class SignIn extends React.Component{
 
-    constructor(){
-        super();
-        state = {
-          email: undefined,
-          password: undefined
-        };
+    state = {
+        email: undefined,
+        password: undefined
     };
 
     handleEmail = (event) => {
@@ -33,7 +30,7 @@ export default class SignIn extends React.Component{
     };
     
     isValid = () => {
-        if(this.state.email && this.state.email > 5){
+        if(this.state.email && this.state.email.length > 5){
             return true;
         }else {
             return false;
