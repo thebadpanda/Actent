@@ -98,4 +98,7 @@ public class StringConstants {
             "id is already exists in list of banned users in this chat.";
     public static final String USER_BY_SUCH_ID_IS_NOT_BE_BANNED_IN_THIS_CHAT = "User by such id is not be banned in " +
             "this chat";
+
+    public static final String BEARER = "Bearer";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 }
