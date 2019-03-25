@@ -1,16 +1,15 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link, NavLink, Switch, Redirect } from "react-router-dom";
+import {BrowserRouter as Router, Route, Link, NavLink, Switch, Redirect} from "react-router-dom";
 import '../styles/loginRegistrationForm.css';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import LoginForm from './LoginForm';
 
-export default class SignInUp extends Component {
+export default class SignInUp extends React.Component {
     render() {
         return (
             <Router>
                 <div className="App">
-                    <div className="App__Aside"></div>
                     <div className="App__Form">
 
                         <div className="FormTitle">
@@ -23,7 +22,7 @@ export default class SignInUp extends Component {
                             <Route exact path="/" component={LoginForm}/>
                             <Route path="/sign-up" component={SignUp}/>
                             <Route path="/sign-in" component={SignIn}/>
-                            <Redirect path="*" to="/sign-in" />
+                            <Redirect path='*' to="/sign-in"/>
                         </Switch>
                     </div>
                 </div>
