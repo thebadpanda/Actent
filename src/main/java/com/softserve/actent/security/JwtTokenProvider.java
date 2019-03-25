@@ -1,5 +1,6 @@
 package com.softserve.actent.security;
 
+import com.softserve.actent.security.model.UserPrincipal;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
