@@ -8,10 +8,10 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Data
-public class UserLocationDto {
+public class UserCityDto {
 
     @Size(max = NumberConstants.USER_ADDRESS_MAX_LENGTH, message = StringConstants.USER_LOCATION_LENGHT_RANGE)
-    private String address;
+    private String cityName;
 
     @Positive(message = StringConstants.USER_CITY_ID_NEGATIVE_NUMBER)
     private Long cityId;
