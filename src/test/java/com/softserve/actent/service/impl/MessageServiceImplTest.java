@@ -71,7 +71,7 @@ public class MessageServiceImplTest {
         user.setId(firstId);
         chat.setId(firstId);
         image.setFilePath(imageFilePath);
-        image.setHash(imageHash);
+//        image.setHash(imageHash);
 
         messageWithText.setSender(user);
         messageWithText.setChat(chat);
