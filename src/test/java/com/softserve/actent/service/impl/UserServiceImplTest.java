@@ -101,11 +101,11 @@ public class UserServiceImplTest {
         region.setName(cityName);
 
         firstUserAvatar.setFilePath(firstUserImagePath);
-        firstUserAvatar.setHash(firstUserImageHash);
+//        firstUserAvatar.setHash(firstUserImageHash);
         firstUserAvatar.setId(firstUserImageId);
 
         secondUserAvatar.setFilePath(secondUserImagePath);
-        secondUserAvatar.setHash(secondUserImageHash);
+//        secondUserAvatar.setHash(secondUserImageHash);
         secondUserAvatar.setId(secondUserImageId);
 
         firstUserLocation.setId(firstUserLocationId);

@@ -13,6 +13,8 @@ public class UserLocationDto {
     @Size(max = NumberConstants.USER_ADDRESS_MAX_LENGTH, message = StringConstants.USER_LOCATION_LENGHT_RANGE)
     private String name;
 
+    private Long id;
+
     private String regionName;
 
     private String regionCountryName;
