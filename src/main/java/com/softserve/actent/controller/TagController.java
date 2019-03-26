@@ -42,7 +42,7 @@ public class TagController {
     }
 
     @PostMapping(value = "/tags")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addTag(@Validated @RequestBody CreateTagDto createTagDto) {
 
