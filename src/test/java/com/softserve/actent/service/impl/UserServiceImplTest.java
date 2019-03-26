@@ -49,7 +49,7 @@ public class UserServiceImplTest {
     private final String firstUserBio = "About first user";
     private final Sex firstUserSex = Sex.MALE;
     private final Location firstUserLocation = new Location();
-    private final Role firstUserRole = Role.USER;
+    private final Role firstUserRole = Role.ROLE_USER;
     private final String firstUserImagePath = "D:IMG-7033";
     private final String firstUserImageHash = "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
     private final Long firstUserImageId = 1L;
@@ -67,7 +67,7 @@ public class UserServiceImplTest {
     private final String secondUserBio = "About kozak Mamay";
     private final Sex secondUserSex = Sex.MALE;
     private final Location secondUserLocation = new Location();
-    private final Role secondUserRole = Role.USER;
+    private final Role secondUserRole = Role.ROLE_USER;
     private final String secondUserImagePath = "D:IMG-7035";
     private final String secondUserImageHash = "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4a";
     private final Long secondUserImageId = 2L;

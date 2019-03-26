@@ -65,7 +65,7 @@ public class AuthController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = Role.USER;
+        Role userRole = Role.ROLE_USER;
 
         user.setRoleset(Collections.singleton(userRole));
 
