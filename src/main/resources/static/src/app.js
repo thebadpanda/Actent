@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import SignInUp from './component/SignUpInForm';
+import RenderEventFilterPage from './component/EventFilter/RenderEventFilterPage';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 import './styles/index.css';
 
-ReactDOM.render(<SignInUp />, document.getElementById('root'));
+ReactDOM.render(<RenderEventFilterPage />, document.getElementById('root'));
