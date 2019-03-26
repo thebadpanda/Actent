@@ -30,6 +30,7 @@ class FilterButtoms extends Component {
                 </MDBBtn>
                 <MDBCollapse id="category" isOpen={this.state.collapseID}>
                     <div className="container">
+                        <div>sdfas</div>
                         <CategoryList/>
                     </div>
                 </MDBCollapse>

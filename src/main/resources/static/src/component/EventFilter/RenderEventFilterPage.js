@@ -1,18 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import FullPageIntroWithFixedTransparentNavbar from "./Header";
 import FilterBody from "./FilterBody";
 import CardExample from './Cart';
 import { BrowserRouter } from 'react-router-dom';
+import CategoryList from './CategoryList';
 import axios from 'axios';
-import "babel-polyfill";
+import JumbotronPage from './AdriyComponent';
+
 
 const cartStyle ={
     paddingTop: '2rem'
 };
 
-class RenderEventFilterPage extends Component {
+class RenderEventFilterPage extends React.Component {
 
     state={
+        categories1:[],
         events:[],
         categories:[],
         id: 0,
@@ -20,7 +23,26 @@ class RenderEventFilterPage extends Component {
         description: undefined
     };
 
-    getEvents = () => {
+    componentDidMount(){
+        this.getEvents();
+        this. getCategories();
+    };
+    
+    getCategories = () => {
+      
+        console.log("zdarova");
+        
+        axios.get(`http://localhost:8080/api/v1/categories`)
+            .then(res=>{
+                console.log("zdarova1");
+                const categories = res.data;
+                this.setState({categories1:categories});
+                console.log(categories);
+            })
+            // this.state.categories1.map(category)
+    };
+
+    getEvents() {
         axios.get(`http://localhost:8080/api/v1/events/all`)
             .then(res => {
                 console.log("hi");
@@ -31,21 +53,25 @@ class RenderEventFilterPage extends Component {
                     title: res.data['title'],
                     description: res.data['description']
                 });
-            })
+            }) .catch(function(error) {
+            console.log(error);
+        });
     };
 
 
     render() {
+        console.log("Hell22");
         return (
             <div>
                 <BrowserRouter>
                 <FullPageIntroWithFixedTransparentNavbar/>
                 </BrowserRouter>
                 <div className="container">
-                    <div>aaaa</div>
+                <JumbotronPage/>
                     <FilterBody/>
                     <div className="row">
-                        <div className="row align-items-center">
+                        {console.log("aaaaas")}
+                        <div className="row align-items-center" >
                             {
                                 this.state.events.map(event=>{
                                         return(
