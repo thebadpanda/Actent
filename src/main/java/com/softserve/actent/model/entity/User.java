@@ -2,29 +2,22 @@ package com.softserve.actent.model.entity;
 
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -59,7 +52,7 @@ public class User {
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
-    @Column(nullable = false, length = NumberConstants.USER_PASSWORD_MAX_LENGTH)
+    @Column(nullable = false)
     private String password;
 
     @Column
@@ -100,8 +93,10 @@ public class User {
 
     @ManyToMany(mappedBy = "bannedUsers")
     private List<Chat> bannedChats;
-    
+
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(length = NumberConstants.USER_ROLE_MAX_LENGTH)
-    private Role role;
+    private Set<Role> roleset;
 }
