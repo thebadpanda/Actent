@@ -8,6 +8,7 @@ import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.exceptions.validation.IncorrectEmailException;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.UserRepository;
+import com.softserve.actent.service.CityService;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.LocationService;
 import com.softserve.actent.service.UserService;
@@ -22,16 +23,16 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final LocationService locationService;
+    private final CityService cityService;
     private final ImageService imageService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           LocationService locationService,
+                           CityService cityService,
                            ImageService imageService) {
 
         this.userRepository = userRepository;
-        this.locationService = locationService;
+        this.cityService = cityService;
         this.imageService = imageService;
     }
 
@@ -56,8 +57,12 @@ public class UserServiceImpl implements UserService {
     public User update(User user, Long id) {
         if (userRepository.existsById(id)) {
             user.setId(id);
-            user.setLocation(locationService.get(user.getLocation().getId()));
-            user.setAvatar(imageService.get(user.getAvatar().getId()));
+            if (user.getLocation() != null){
+                user.setLocation(cityService.get(user.getLocation().getId()));
+            }
+            if (user.getAvatar() != null){
+                user.setAvatar(imageService.get(user.getAvatar().getId()));
+            }
             return userRepository.save(user);
         } else {
             throw new AccessDeniedException(ExceptionMessages.USER_NOT_REGISTRED, ExceptionCode.NOT_FOUND);
