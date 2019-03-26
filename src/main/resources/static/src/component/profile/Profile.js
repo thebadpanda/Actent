@@ -38,17 +38,14 @@ export default class Profile extends React.Component {
         };
     }
 
-    // // TODO: unsafe !!
     // componentWillReceiveProps(nextProps, nextContext) {
     //     //TODO: check if my profile
     //     this.getProfile();
     // }
 
-    // TODO: unsafe !!
     componentDidMount() {
-        this.getProfile(event);
+        this.getProfile();
     }
-
 
     handleFirstName = (event) => this.setState({firstName: event.target.value});
 
@@ -85,14 +82,11 @@ export default class Profile extends React.Component {
 
 
     getProfile = () => {
-        // event.preventDefault();
-
         const profileUrl = apiUrl + "/users/" + this.state.userId;
 
         axios.get(profileUrl).then(response => {
 
             console.log(response.data);
-            console.log(response.data['firstName']);
 
             this.setState({
                 userId: response.data['id'],
