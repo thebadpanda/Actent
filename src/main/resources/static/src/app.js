@@ -13,8 +13,6 @@ class App extends React.Component {
     render() {
         return (
                 <div>
-                    <Hallo/>
-                    <LoginForm/>
                     <Profile/>
                     <Link to="/users/1" className="FormField__Link">Profile</Link>
                 </div>
