@@ -30,8 +30,9 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public Image add(Image image) {
 
-        Optional<Image> optionalImage = imageRepository.findByHash(image.getHash());
-        return optionalImage.orElseGet(() -> imageRepository.save(image));
+//        Optional<Image> optionalImage = imageRepository.findByHash(image.getHash());
+//        return optionalImage.orElseGet(() -> imageRepository.save(image));
+        return imageRepository.save(image);
     }
 
     @Override
