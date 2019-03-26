@@ -1,4 +1,4 @@
-package com.softserve.actent.repository;findByLoginOrEmail
+package com.softserve.actent.repository;
 
 import com.softserve.actent.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
