@@ -48,4 +48,6 @@ public class NumberConstants {
     public static final short MAX_VALUE_FOR_CATEGORY_NAME = 30;
     public static final short DEFAULT_MIN_VALUE_FOR_CATEGORY_ID = 0;
 
+    public static final short SHOW_THIRTY_MESSAGES_PER_PAGE = 30;
+
 }
