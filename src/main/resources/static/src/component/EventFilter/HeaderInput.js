@@ -5,38 +5,52 @@ import axios from 'axios';
 const style ={
     height: 'calc(1.5em + 1.75rem + 2px)'
 };
-export default class SearchField extends Component{
+export default class HeaderInput extends Component{
 
     state = {
         findEvent: '',
       }
 
     handleChange = event => {
-        this.setState({ findEvent: event.target.value });
+      this.setState({findEvent: event.target.value});
+
     }
 
-    handleSubmit = event => {
-        event.preventDefault();
 
-        const serchEvent = {
-            findEvent: this.state.findEvent
-          };
+    getData = () => {
 
-          axios.get(`http://localhost:8080/api/v1/events/title/Super%20party`)
+
+
+          axios.get(`http://localhost:8080/api/v1/events/title/${this.state.findEvent}`)
           .then(res => {
             console.log(res);
             console.log(res.data);
           }).catch(error => {
-            console.log(error.response)
+            console.log(this.state.findEvent);
+            console.log(error.response);
         });
+      }
+    enterPressed = (event) => {
+      let code = event.keyCode || event.which;
+      console.log(code);
+      if(code === 13) { //13 is the enter keycode
+        this.props.setFilter(this.state.findEvent);
+        this.getData()//Do stuff in here
       } 
+    }
+
+      
 
     render(){
         return (
             <MDBCol md="6">
-            <form onSubmit={this.handleSubmit}>
-                <input style={style} name ="findEvent" className="form-control form-control-lg" type="text" placeholder="Find an event" aria-label="Search" />
-            </form>
+
+                <input style={style}
+                 name ="findEvent" 
+                 onChange={this.handleChange}
+                 onKeyPress={this.enterPressed}
+                   className="form-control form-control-lg" type="text" placeholder="Find an event" aria-label="Search" />
+
             </MDBCol>
         );
     }

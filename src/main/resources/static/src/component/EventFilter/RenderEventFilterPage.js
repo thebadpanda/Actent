@@ -1,5 +1,5 @@
 import React from 'react';
-import FullPageIntroWithFixedTransparentNavbar from "./Header";
+import Header from "./Header";
 import FilterBody from "./FilterBody";
 import CardExample from './Cart';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,14 +18,17 @@ class RenderEventFilterPage extends React.Component {
         events:[],
         id: 0,
         title: undefined,
-        description: undefined
+        description: undefined,
+        filter: undefined
     };
 
     componentDidMount(){
         this.getEvents();
         this.getCategories();
     };
-    
+    setFilter = (name) =>{
+        this.setState({filter:name});
+    }
     getCategories = () => {
         axios.get(`http://localhost:8080/api/v1/categories`)
             .then(res=>{
@@ -67,19 +70,23 @@ class RenderEventFilterPage extends React.Component {
 
 
     render() {
+
+        let events = this.state.events;
+        if (this.state.filter !== undefined){
+            events = events.filter(event => event.title.includes(this.state.filter))
+        }
         return (
             <div>
                 <BrowserRouter>
-                <FullPageIntroWithFixedTransparentNavbar/>
+                <Header setFilter={this.setFilter}/>
                 </BrowserRouter>
                 <div className="container">
                     <FilterBody
                         categories = {this.state.categories}
                     />
                     <div className="row">
-                        <div className="row align-items-center" >
                             {
-                                this.state.events.map(event=>{
+                                events.map(event=>{
                                         return(
                                             <div key={event.id} className="col-md-4 col-sm-12 align-self-center cart" style={cartStyle}>
                                                 <CardExample
@@ -92,7 +99,6 @@ class RenderEventFilterPage extends React.Component {
                                 )
                             }
                         </div>
-                    </div>
                 </div>
             </div>
         );
