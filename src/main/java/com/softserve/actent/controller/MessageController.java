@@ -14,15 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -82,10 +74,11 @@ public class MessageController {
 
     @GetMapping(value = "/messages/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ViewMessageDto> getMessagesByChatId(@PathVariable @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
-                                                    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id) {
+    public List<ViewMessageDto> getCurrentMessagesByChatId(@PathVariable @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
+                                                    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id,
+                                                    @RequestParam("pageNumber") int pageNumber) {
 
-        return viewMessageConverter.convertToDto(messageService.getAllMessagesByChatId(id));
+        return viewMessageConverter.convertToDto(messageService.getNextThirtyMessagesByChatId(id, pageNumber));
     }
 
     @PutMapping(value = "/messages/{id}")
