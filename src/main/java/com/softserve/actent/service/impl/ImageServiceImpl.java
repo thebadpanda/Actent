@@ -29,9 +29,6 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional
     public Image add(Image image) {
-
-//        Optional<Image> optionalImage = imageRepository.findByHash(image.getHash());
-//        return optionalImage.orElseGet(() -> imageRepository.save(image));
         return imageRepository.save(image);
     }
 
@@ -56,23 +53,6 @@ public class ImageServiceImpl implements ImageService {
             return new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_PATH, ExceptionCode.NOT_FOUND);
         });
     }
-
-//    @Override
-//    public Image getImageByHash(String hash) {
-//
-//        if (hash.length() != 64) {
-//            log.error(ExceptionMessages.IMAGE_INAPPROPRIATE_HASH_LENGTH);
-//            throw new IncorrectStringException(ExceptionMessages.IMAGE_INAPPROPRIATE_HASH_LENGTH,
-//                    ExceptionCode.INCORRECT_STRING);
-//        }
-//
-//        Optional<Image> optionalImage = imageRepository.findByHash(hash);
-//
-//        return optionalImage.orElseThrow(() -> {
-//            log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_HASH);
-//            return new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_HASH, ExceptionCode.NOT_FOUND);
-//        });
-//    }
 
     @Override
     @Transactional
