@@ -73,7 +73,7 @@ public class TagController {
     }
 
     @PutMapping(value = "/tags/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public TagDto updateTagById(@Validated @RequestBody CreateTagDto tagDto,
                                 @PathVariable @NotNull(message = ExceptionMessages.TAG_NO_ID)
@@ -84,7 +84,7 @@ public class TagController {
     }
 
     @DeleteMapping(value = "/tags/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTagById(@PathVariable @NotNull(message = ExceptionMessages.TAG_NO_ID)
                                   @Positive(message = ExceptionMessages.TAG_INNAPPROPRIATE_ID) Long id) {
