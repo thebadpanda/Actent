@@ -8,6 +8,6 @@ public interface MessageService extends BaseCrudService<Message>{
 
     Message addImageMessage(Message message);
 
-    List<Message> getAllMessagesByChatId(Long chatId);
+    List<Message> getNextThirtyMessagesByChatId(Long chatId, int pageNumber);
 
 }
