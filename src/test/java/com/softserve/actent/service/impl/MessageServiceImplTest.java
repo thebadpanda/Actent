@@ -46,7 +46,6 @@ public class MessageServiceImplTest {
     private final int messageCount = 2;
     private final Long chatId = 1L;
     private final String firstMessageContent = "firstMessageContent";
-    private final String imageHash = "6b86b273lf3bfc119d6b804eff5a3f5747ada4eaa22f1d49r0we52ddb7875b41";
     private final String imageFilePath = "imageFilePath";
     List<Message> messages;
     private Message messageWithText;
@@ -71,7 +70,6 @@ public class MessageServiceImplTest {
         user.setId(firstId);
         chat.setId(firstId);
         image.setFilePath(imageFilePath);
-//        image.setHash(imageHash);
 
         messageWithText.setSender(user);
         messageWithText.setChat(chat);
