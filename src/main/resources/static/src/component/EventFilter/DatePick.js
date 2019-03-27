@@ -33,13 +33,21 @@ class MaterialUIPickers extends React.Component {
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container style={style} className={classes.grid} justify="space-around">
+                    
                     <DatePicker
                         margin="normal"
-                        label="Date picker"
+                        label="Date from"
                         value={selectedDate}
                         onChange={this.handleDateChange}
                     />
-                </Grid>
+
+                    <DatePicker
+                        margin="normal"
+                        label="Date to"
+                        value={selectedDate}
+                        onChange={this.handleDateChange}
+                    />
+                    </Grid>
             </MuiPickersUtilsProvider>
         );
     }

@@ -4,7 +4,7 @@ import DatePickerPage from './DatePick';
 import CityInput from './CityInput';
 import CategoryList from './CategoryList';
 
-class FilterButtoms extends Component {
+export default class FilterButtoms extends Component {
     state = {
         collapseID: ""
     }
@@ -48,5 +48,3 @@ class FilterButtoms extends Component {
         );
     }
 }
-
-export default FilterButtoms;
