@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import ProfileView from './ProfileView';
+import ProfileEdit from './ProfileEdit';
 
-const apiUrl = 'http://localhost:8080/api/v1';
+export const apiUrl = 'http://localhost:8080/api/v1';
 
 export const getUserId = () => {
     let cookies = document.cookie.split(';').map(cookie => cookie.replace(' ', ''));
@@ -23,14 +24,13 @@ export default class Profile extends React.Component {
         this.state = {
             userId: 2,
             isEdit: false,
-            isMyProfile: true,
-                // +this.props.match.params.profileId === getUserId(),
+            isMyProfile: true, // +this.props.match.params.profileId === getUserId(),
             firstName: '',
             lastName: '',
             phone: '',
             login: '',
             address: '',
-            birthDate: new Date().toUTCString(),
+            birthDate: '',
             bio: '',
             interests: '',
             avatar: ''
@@ -46,40 +46,6 @@ export default class Profile extends React.Component {
     componentDidMount() {
         this.getProfile();
     }
-
-    handleFirstName = (event) => this.setState({firstName: event.target.value});
-
-    handleLastName = (event) => this.setState({lastName: event.target.value});
-
-    handlePhone = (event) => this.setState({phone: event.target.value});
-
-    handleLogin = (event) => this.setState({login: event.target.value});
-
-    handleAddress = (event) => this.setState({address: event.target.value});
-
-    handleBirthDate = (event) => this.setState({birthDate: event.target.value});
-
-    handleBio = (event) => this.setState({bio: event.target.value});
-
-    handleInterests = (event) => this.setState({interests: event.target.value});
-
-
-    saveUserSettings = () => {
-        //TODO send to backend
-    };
-
-    isValidName = () => {
-        if (this.state.name && this.state.name.length > 2) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    isValidEmail = () => {
-        return !!this.state.email;
-    };
-
 
     getProfile = () => {
         const profileUrl = apiUrl + "/users/" + this.state.userId;
@@ -107,6 +73,13 @@ export default class Profile extends React.Component {
 
     handleEditClick = () => {
         this.setState({
+            isEdit: true
+        });
+    };
+
+    handleClose = () => {
+        this.componentWillMount();
+        this.setState({
             isEdit: false
         });
     };
@@ -125,7 +98,11 @@ export default class Profile extends React.Component {
             avatar: this.state.avatar
         };
 
-        const view =
+        const view = this.state.isEdit ?
+            (<ProfileEdit
+                profileData={profileData}
+                onCloseClick={this.handleClose}
+            />) :
             (<ProfileView
                 profileData={profileData}
                 isMyProfile={this.state.isMyProfile}
