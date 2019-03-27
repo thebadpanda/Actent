@@ -1,40 +1,44 @@
 import React from 'react';
-import { MDBInput } from 'mdbreact';
-import axios from 'axios';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default class CategoryList extends React.Component{
 
-    state = {
-        categories1:[]
-    };
+    getInitialState = () => {
+        return {checked: true}
+      };
 
-   
-
-    getCategories = () => {
-      
-        console.log("zdarova");
-        
-        axios.get(`http://localhost:8080/api/v1/categories`)
-            .then(res=>{
-                console.log("zdarova1");
-                const categories = res.data;
-                this.setState({categories1:categories});
-                console.log(categories1);
-            })
-    };
+        handleCheck = () => {
+        this.setState({checked: !this.state.checked});
+      };
 
     render() {
         return(
-            <div className="row">
-            {console.log("in list")}
-                {this.state.categories1.map(category=>{
-                    return(<div className="col-md-6">
-                        <MDBInput key={category.id} label="Filled-in unchecked" type="checkbox" id={category.id}/>
-                    </div>)
-                })
-
-                }
-            </div>
+                    <div className="row">
+                    {
+                               this.props.categories.map(category=>{
+                                        return(
+                                            <div key={category.id} className="col-md-4 col-sm-12 align-self-center cart" >
+                                            <FormGroup row key={category.id}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                    value="checkedA"
+                                                    color="primary"
+                                                    />
+                                                }
+                                                label={category.name}
+                                                />
+                                            </FormGroup>
+                                           </div>
+                                        )
+                                    }
+                                )
+                            }
+                       
+                    </div>
+            
         )
     }
 }

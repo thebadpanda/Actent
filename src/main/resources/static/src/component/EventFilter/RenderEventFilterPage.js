@@ -3,9 +3,8 @@ import FullPageIntroWithFixedTransparentNavbar from "./Header";
 import FilterBody from "./FilterBody";
 import CardExample from './Cart';
 import { BrowserRouter } from 'react-router-dom';
-import CategoryList from './CategoryList';
 import axios from 'axios';
-import JumbotronPage from './AdriyComponent';
+
 
 
 const cartStyle ={
@@ -15,9 +14,8 @@ const cartStyle ={
 class RenderEventFilterPage extends React.Component {
 
     state={
-        categories1:[],
-        events:[],
         categories:[],
+        events:[],
         id: 0,
         title: undefined,
         description: undefined
@@ -25,28 +23,37 @@ class RenderEventFilterPage extends React.Component {
 
     componentDidMount(){
         this.getEvents();
-        this. getCategories();
+        this.getCategories();
     };
     
     getCategories = () => {
-      
-        console.log("zdarova");
-        
         axios.get(`http://localhost:8080/api/v1/categories`)
             .then(res=>{
-                console.log("zdarova1");
+                console.log(res.data);
                 const categories = res.data;
-                this.setState({categories1:categories});
-                console.log(categories);
-            })
-            // this.state.categories1.map(category)
+                this.setState({categories});
+            }).catch(function(error) {
+                console.log(error);
+            });
     };
 
-    getEvents() {
+    getEventsByName = () => {
         axios.get(`http://localhost:8080/api/v1/events/all`)
             .then(res => {
-                console.log("hi");
-                console.log(res.data);
+                const events = res.data;
+                this.setState({ events:events,
+                    id: res.data['id'],
+                    title: res.data['title'],
+                    description: res.data['description']
+                });
+            }) .catch(function(error) {
+            console.log(error);
+        });
+    };
+
+    getEvents = () => {
+        axios.get(`http://localhost:8080/api/v1/events/all`)
+            .then(res => {
                 const events = res.data;
                 this.setState({ events:events,
                     id: res.data['id'],
@@ -60,17 +67,16 @@ class RenderEventFilterPage extends React.Component {
 
 
     render() {
-        console.log("Hell22");
         return (
             <div>
                 <BrowserRouter>
                 <FullPageIntroWithFixedTransparentNavbar/>
                 </BrowserRouter>
                 <div className="container">
-                <JumbotronPage/>
-                    <FilterBody/>
+                    <FilterBody
+                        categories = {this.state.categories}
+                    />
                     <div className="row">
-                        {console.log("aaaaas")}
                         <div className="row align-items-center" >
                             {
                                 this.state.events.map(event=>{

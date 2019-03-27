@@ -3,14 +3,16 @@ import { MDBCard, MDBCardBody, MDBRow, MDBCol} from 'mdbreact';
 import FilterButtoms from './FilterButtoms';
 
 
-const FilterBody = () => {
+const FilterBody = (props) => {
     return (
         <MDBRow>
             <MDBCol style={{ maxWidth: "100%" }}>
                 <MDBCard reverse>
                     <MDBCardBody cascade className="text-center">
 
-                        <FilterButtoms/>
+                        <FilterButtoms
+                        categories = {props.categories}
+                        />
 
                     </MDBCardBody>
                 </MDBCard>

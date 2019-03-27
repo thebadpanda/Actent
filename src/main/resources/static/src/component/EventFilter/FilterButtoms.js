@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { MDBBtn, MDBCollapse } from "mdbreact";
 import DatePickerPage from './DatePick';
-import ButtonPage from './FilterRadioButton';
 import CityInput from './CityInput';
 import CategoryList from './CategoryList';
 
@@ -30,8 +29,9 @@ class FilterButtoms extends Component {
                 </MDBBtn>
                 <MDBCollapse id="category" isOpen={this.state.collapseID}>
                     <div className="container">
-                        <div>sdfas</div>
-                        <CategoryList/>
+                        <CategoryList 
+                        categories = {this.props.categories} 
+                        />
                     </div>
                 </MDBCollapse>
                 <MDBCollapse id="date" isOpen={this.state.collapseID}>
