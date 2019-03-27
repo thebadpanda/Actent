@@ -1,6 +1,7 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.validation.MessageValidationException;
@@ -12,6 +13,7 @@ import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -100,20 +102,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getAllMessagesByChatId(Long id) {
+    public List<Message> getNextThirtyMessagesByChatId(Long id, int pageNumber) {
 
-        List<Message> messages = messageRepository.findAllByChatId(id);
+        List<Message> messages = messageRepository.findAllByChatIdOrderBySendTimeDesc(id, PageRequest.of(pageNumber, NumberConstants.SHOW_THIRTY_MESSAGES_PER_PAGE));
 
-        if (messages.isEmpty()) {
+        return messages;
 
-            throw new ResourceNotFoundException(
-                    ExceptionMessages.MESSAGE_NOT_FOUND,
-                    MESSAGE_NOT_FOUND
-            );
-        } else {
-
-            return messages;
-        }
     }
 
     private boolean checkCredential(Optional<Message> optionalMessage, Message message) {
