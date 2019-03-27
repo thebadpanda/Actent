@@ -1,7 +1,7 @@
 import React from 'react';
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarToggler, MDBCollapse, MDBNavItem, MDBNavLink, MDBContainer, MDBView, MDBMask } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
-import SearchPage from "./HeaderInput";
+import SearchField from "./HeaderInput";
 
 class FullPageIntroWithFixedTransparentNavbar extends React.Component {
     constructor(props) {
@@ -48,7 +48,7 @@ class FullPageIntroWithFixedTransparentNavbar extends React.Component {
                 </Router>
                 <MDBView src="https://mdbootstrap.com/img/Photos/Others/img%20(40).jpg">
                     <MDBMask overlay="black-strong" className="flex-center flex-column text-white text-center">
-                        <SearchPage/>
+                        <SearchField/>
                     </MDBMask>
                 </MDBView>
             </header>
