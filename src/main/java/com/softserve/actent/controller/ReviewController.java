@@ -2,23 +2,23 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.ExceptionMessages;
 import com.softserve.actent.constant.UrlConstants;
-import com.softserve.actent.exceptions.codes.ExceptionCode;
-import com.softserve.actent.exceptions.validation.IncorrectInputDataException;
-import com.softserve.actent.exceptions.validation.IncorrectStringException;
-import com.softserve.actent.exceptions.validation.ValidationException;
-import com.softserve.actent.model.dto.CreateReviewDto;
-import com.softserve.actent.model.dto.ReviewDto;
+import com.softserve.actent.exceptions.security.NotAuthorizedException;
+import com.softserve.actent.model.dto.review.CreateReviewDto;
+import com.softserve.actent.model.dto.review.ReviewDto;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.entity.Review;
+import com.softserve.actent.security.annotation.CurrentUser;
+import com.softserve.actent.security.model.UserPrincipal;
 import com.softserve.actent.service.ReviewService;
-import lombok.extern.log4j.Log4j2;
+import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -31,19 +31,24 @@ import java.util.stream.Collectors;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ReviewController(ReviewService reviewService, ModelMapper modelMapper) {
+    public ReviewController(ReviewService reviewService, UserService userService, ModelMapper modelMapper) {
         this.reviewService = reviewService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
     @PostMapping(value = "/reviews")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public IdDto addReview(@Validated @RequestBody CreateReviewDto addReviewDto) {
+    public IdDto addReview(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                           @Validated @RequestBody CreateReviewDto addReviewDto) {
 
         Review review = modelMapper.map(addReviewDto, Review.class);
+        review.setAuthor(userService.get(currentUser.getId()));
         review = reviewService.add(review);
 
         return new IdDto(review.getId());
@@ -52,7 +57,7 @@ public class ReviewController {
     @GetMapping(value = "/reviews/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ReviewDto getReview(@PathVariable @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
-                                   @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
+                                   @Positive(message = ExceptionMessages.REVIEW_INAPPROPRIATE_ID) Long id) {
 
         Review review = reviewService.get(id);
         return modelMapper.map(review, ReviewDto.class);
@@ -69,21 +74,34 @@ public class ReviewController {
     }
 
     @PutMapping(value = "/reviews/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
-    public ReviewDto updateReview(@Validated @RequestBody CreateReviewDto updateReviewDto,
+    public ReviewDto updateReview(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                                  @Validated @RequestBody CreateReviewDto updateReviewDto,
                                   @PathVariable @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
-                                  @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
+                                  @Positive(message = ExceptionMessages.REVIEW_INAPPROPRIATE_ID) Long id) {
 
-        Review review = reviewService.update(modelMapper.map(updateReviewDto, Review.class), id);
-        return modelMapper.map(review, ReviewDto.class);
+        if(currentUser.getId().equals(reviewService.get(id).getAuthor().getId())) {
+            Review review = reviewService.update(modelMapper.map(updateReviewDto, Review.class), id);
+            return modelMapper.map(review, ReviewDto.class);
+        } else {
+            // TODO: throw forbidden exception
+            return null;
+        }
     }
 
     @DeleteMapping(value = "/reviews/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable
-                                   @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
-                                   @Positive(message = ExceptionMessages.REVIEW_INNAPPROPRIATE_ID) Long id) {
+    public void deleteUserById(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                               @PathVariable
+                               @NotNull(message = ExceptionMessages.REVIEW_NO_ID)
+                               @Positive(message = ExceptionMessages.REVIEW_INAPPROPRIATE_ID) Long id) {
 
-        reviewService.delete(id);
+        if(currentUser.getId().equals(reviewService.get(id).getAuthor().getId())) {
+            reviewService.delete(id);
+        } else {
+            // TODO: throw forbidden exception
+        }
     }
 }
