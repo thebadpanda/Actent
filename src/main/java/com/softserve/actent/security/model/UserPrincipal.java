@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -46,6 +47,8 @@ public class UserPrincipal implements UserDetails {
 
     private List<Chat> bannedChats;
 
+    private Set<Role> roleset;
+
     Collection<? extends GrantedAuthority> authorities;
 
     public static UserPrincipal create(User user) {
@@ -70,6 +73,7 @@ public class UserPrincipal implements UserDetails {
                 user.getEventUsers(),
                 user.getReviews(),
                 user.getBannedChats(),
+                user.getRoleset(),
                 authorities
         );
     }
