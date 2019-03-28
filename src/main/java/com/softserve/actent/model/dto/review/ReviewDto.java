@@ -1,19 +1,36 @@
-package com.softserve.actent.model.dto;
+package com.softserve.actent.model.dto.review;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class ReviewDto {
 
-    @NonNull
     private Long id;
 
-    @NonNull
     private String text;
 
-    @NonNull
     private Integer score;
+
+    @JsonProperty("first_name")
+    private String authorFirstName;
+
+    @JsonProperty("last_name")
+    private String authorLastName;
+
+    @JsonProperty("city")
+    private String authorLocationCityName;
+
+    @JsonProperty("region")
+    private String authorLocationCityRegionName;
+
+    @JsonProperty("country")
+    private String authorLocationCityRegionCountryName;
+
+    @JsonProperty("avatar")
+    private String authorAvatarFilePath;
 }
