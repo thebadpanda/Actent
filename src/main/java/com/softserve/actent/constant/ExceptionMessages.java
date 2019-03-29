@@ -66,4 +66,5 @@ public class ExceptionMessages {
     public static final String NO_CITIES_IN_THIS_REGION_IN_BASE = "There are no cities in this region in base";
     public static final String NO_LOCATIONS_IN_BASE = "There are no locations in base";
     public static final String NO_LOCATIONS_IN_THIS_CITY_IN_BASE = "There are no locations in this city in base";
+    public static final String USER_BY_THIS_LOGIN_IS_NOT_FOUND = "User by this login is not found.";
 }
