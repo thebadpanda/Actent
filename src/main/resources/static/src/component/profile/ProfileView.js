@@ -1,14 +1,14 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
+import styles from './style.css'
 
-const s3Root = 'https://s3.ap-south-1.amazonaws.com/';
+export const s3Root = 'https://s3.ap-south-1.amazonaws.com/';
 
-function getImageUrl(imageName) {
+export function getImageUrl(imageName) {
     if (imageName) {
         return s3Root + 'actent-res/' + imageName;
     }
 }
-import style from './style.css';
 
 export default class ProfileView extends React.Component {
     constructor(props) {
@@ -17,13 +17,14 @@ export default class ProfileView extends React.Component {
 
     render() {
         const editBtn = this.props.isMyProfile ?
-            (<RaisedButton
+            (<Button
                 label="Edit"
+                color="primary"
+                variant="contained"
                 disabled={this.props.profileData.id === ''}
-                primary={true}
-                keyboardFocused={true}
                 onClick={this.props.onEditClick}
-            />) :
+            >Edit
+            </Button>) :
             null;
 
         return (
@@ -44,7 +45,7 @@ export default class ProfileView extends React.Component {
                         <p className="styleInput"><span className="styleSpan">Login:</span>{this.props.profileData.login}</p>
                         <p className="styleInput"><span className="styleSpan">Address:</span>{this.props.profileData.address.name},
                             {this.props.profileData.address.regionCountryName}</p>
-                        <p className="styleInput"><span className="styleSpan">Birth Date:</span>{this.props.profileData.birthDate}</p>
+                        <p className="styleInput"><span className="styleSpan">Birth Date:</span>{this.props.profileData.birthday}</p>
                         <p className="styleInput"><span className="styleSpan">Bio:</span>{this.props.profileData.bio}</p>
                         <p className="styleInput"><span className="styleSpan">Interests:</span>{this.props.profileData.interests}</p>
                     </div>

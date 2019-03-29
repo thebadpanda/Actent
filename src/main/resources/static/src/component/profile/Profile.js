@@ -24,13 +24,14 @@ export default class Profile extends React.Component {
         this.state = {
             userId: 2,
             isEdit: false,
-            isMyProfile: true, // +this.props.match.params.profileId === getUserId(),
+            isMyProfile: true, 
+            // isMyProfile: +this.props.match.params.userId === getCurrentUser().getId(),
             firstName: '',
             lastName: '',
             phone: '',
             login: '',
             address: '',
-            birthDate: '',
+            birthday: '',
             bio: '',
             interests: '',
             avatar: ''
@@ -60,7 +61,7 @@ export default class Profile extends React.Component {
                 lastName: response.data['lastName'],
                 login: response.data['login'],
                 address: response.data['location'],
-                birthDate: response.data['birthDate'],
+                birthday: response.data['birthDate'],
                 bio: response.data['bio'],
                 interests: response.data['interests'],
                 avatar: response.data['avatar']
@@ -78,7 +79,6 @@ export default class Profile extends React.Component {
     };
 
     handleClose = () => {
-        this.componentWillMount();
         this.setState({
             isEdit: false
         });
@@ -87,12 +87,13 @@ export default class Profile extends React.Component {
     render() {
 
         const profileData = {
+            userId: this.state.userId,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             phone: this.state.phone,
             login: this.state.login,
             address: this.state.address,
-            birthDate: this.state.birthDate,
+            birthday: this.state.birthday,
             bio: this.state.bio,
             interests: this.state.interests,
             avatar: this.state.avatar
