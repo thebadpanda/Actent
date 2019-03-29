@@ -2,8 +2,10 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
-import com.softserve.actent.model.dto.LocationDto;
-import com.softserve.actent.model.dto.LocationUpdateDto;
+import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.location.LocationCreateDto;
+import com.softserve.actent.model.dto.location.LocationDto;
+import com.softserve.actent.model.dto.location.LocationUpdateDto;
 import com.softserve.actent.model.entity.Location;
 import com.softserve.actent.service.LocationService;
 import org.modelmapper.ModelMapper;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(UrlConstants.API_V1)
+@RequestMapping(UrlConstants.API_V1_LOCATIONS)
 public class LocationController {
 
     private final LocationService locationService;
@@ -39,24 +41,25 @@ public class LocationController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/locations/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LocationDto get(@PathVariable @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
-                           @Positive(message = StringConstants.LOCATION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+    public LocationDto getById(@PathVariable @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
+                               @Positive(message = StringConstants.LOCATION_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+
         Location location = locationService.get(id);
         return modelMapper.map(location, LocationDto.class);
     }
 
-    @GetMapping(value = "/locations")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<LocationDto> getAll(@RequestParam(value = "cityId", required = false)
-                                    @Positive(message = StringConstants.LOCATION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long cityId) {
+                                    @Positive(message = StringConstants.LOCATION_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long cityId) {
         List<Location> locations;
         List<LocationDto> locationDtos;
         if (cityId == null) {
             locations = locationService.getAll();
         } else {
-            locations = locationService.getByCityId(cityId);
+            locations = locationService.getAllByCityId(cityId);
         }
         locationDtos = locations.stream()
                 .map(location -> modelMapper.map(location, LocationDto.class))
@@ -64,27 +67,40 @@ public class LocationController {
         return locationDtos;
     }
 
-    @PostMapping(value = "/locations")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LocationDto add(@Validated @RequestBody LocationDto locationDto) {
+    public IdDto add(@Validated @RequestBody LocationCreateDto locationCreateDto) {
 
-        Location location = modelMapper.map(locationDto, Location.class);
-        locationService.add(location);
-        return locationDto;
+        Location location = locationService.add(modelMapper.map(checkCreatedLocation(locationCreateDto), Location.class));
+        return new IdDto(location.getId());
     }
 
-    @PutMapping(value = "/locations/{id}")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LocationUpdateDto update(@PathVariable Long id, @Validated @RequestBody LocationUpdateDto locationDto) {
+    public LocationUpdateDto updateAddress(@PathVariable @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
+                                           @Positive(message = StringConstants.LOCATION_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long id,
+                                           @Validated @RequestBody LocationUpdateDto locationUpdateDto) {
 
-        Location location = locationService.update(modelMapper.map(locationDto, Location.class), id);
+        Location location = locationService.update(modelMapper.map(checkUpdatedLocation(locationUpdateDto), Location.class), id);
         return modelMapper.map(location, LocationUpdateDto.class);
     }
 
-    @DeleteMapping(value = "/locations/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @NotNull(message = StringConstants.LOCATION_MUST_BE_NOT_NULL)
-                       @Positive(message = StringConstants.LOCATION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+                       @Positive(message = StringConstants.LOCATION_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+
         locationService.delete(id);
+    }
+
+    private LocationCreateDto checkCreatedLocation(LocationCreateDto createDto) {
+        createDto.setAddress(createDto.getAddress().toLowerCase().trim());
+        return createDto;
+
+    }
+
+    private LocationUpdateDto checkUpdatedLocation(LocationUpdateDto locationUpdateDto) {
+        locationUpdateDto.setAddress(locationUpdateDto.getAddress().toLowerCase().trim());
+        return locationUpdateDto;
     }
 }
