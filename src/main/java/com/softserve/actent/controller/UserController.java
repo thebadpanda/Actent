@@ -8,10 +8,13 @@ import com.softserve.actent.model.dto.user.UserRegistrationDto;
 import com.softserve.actent.model.dto.user.UserDto;
 import com.softserve.actent.model.dto.user.UserSettingsDto;
 import com.softserve.actent.model.entity.User;
+import com.softserve.actent.security.annotation.CurrentUser;
+import com.softserve.actent.security.model.UserPrincipal;
 import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
@@ -41,6 +45,14 @@ public class UserController {
     public UserController(ModelMapper modelMapper, UserService userService) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+    }
+
+    @GetMapping(value = "/users/current")
+    @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getCurrentUser(@ApiIgnore @CurrentUser UserPrincipal currentUser) {
+
+        return modelMapper.map(currentUser, UserDto.class);
     }
 
     @PostMapping(value = "/users")
