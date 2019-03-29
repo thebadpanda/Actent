@@ -70,6 +70,7 @@ public class StringConstants {
     public static final String USER_ID_CAN_NOT_BE_NULL = "User id can not be null";
     public static final String USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "User id must be positive and greater than zero";
     public static final String EVENT_USER_ID_CAN_NOT_BE_NULL = "Event user id can not be null";
+    public static final String START_DATE_CAN_NOT_BE_PAST = "Start date can not be past";
 
     public static final String IMAGE_FILE_PATH_SHOULD_NOT_BE_BLANK = "Image file path shouldn't be empty";
     public static final String IMAGE_HASH_SHOULD_NOT_BE_BLANK = "Image hash shouldn't be blank";
