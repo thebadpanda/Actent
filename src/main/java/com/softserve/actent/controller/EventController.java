@@ -11,7 +11,6 @@ import com.softserve.actent.model.dto.event.EventCreationDto;
 import com.softserve.actent.model.dto.event.EventDto;
 import com.softserve.actent.model.dto.event.EventFilterDto;
 import com.softserve.actent.model.dto.event.EventUpdateDto;
-import com.softserve.actent.model.entity.Category;
 import com.softserve.actent.model.entity.Event;
 import com.softserve.actent.repository.EventFilterRepository;
 import com.softserve.actent.service.EventService;
