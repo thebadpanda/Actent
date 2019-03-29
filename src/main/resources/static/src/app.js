@@ -14,7 +14,6 @@ class App extends React.Component {
         return (
                 <div>
                     <Profile/>
-                    <Link to="/users/1" className="FormField__Link">Profile</Link>
                 </div>
         );
     }
