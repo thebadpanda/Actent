@@ -25,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class Event {
 
     @NonNull
     @Column(name = "start_date", nullable = false)
-    private Long startDate;
+    private LocalDate startDate;
 
     @NonNull
     @Column(nullable = false)
