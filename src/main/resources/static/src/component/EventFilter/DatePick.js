@@ -18,34 +18,40 @@ const style ={
 };
 class MaterialUIPickers extends React.Component {
     state = {
-        // The first commit of Material-UI
-        selectedDate: new Date(),
+        selectedDateFrom: new Date(),
+        selectedDateTo: undefined,
+        buttonCollor: 
     };
 
-    handleDateChange = date => {
-        this.setState({ selectedDate: date });
+    handleDateFromChange = date => {
+        this.setState({ selectedDateFrom: date });
+        console.log(selectedDateFrom);
+    };
+    handleDateToChange = date => {
+        this.setState({ selectedDateTo: date });
+        console.log(selectedDateTo);
     };
 
     render() {
         const { classes } = this.props;
-        const { selectedDate } = this.state;
+
 
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container style={style} className={classes.grid} justify="space-around">
-                    
+               
                     <DatePicker
                         margin="normal"
                         label="Date from"
-                        value={selectedDate}
-                        onChange={this.handleDateChange}
+                        value={this.state.selectedDateFrom}
+                        onChange={this.handleDateFromChange}
                     />
-
+                    
                     <DatePicker
                         margin="normal"
                         label="Date to"
-                        value={selectedDate}
-                        onChange={this.handleDateChange}
+                        value={this.state.selectedDateTo}
+                        onChange={this.handleDateToChange}
                     />
                     </Grid>
             </MuiPickersUtilsProvider>
