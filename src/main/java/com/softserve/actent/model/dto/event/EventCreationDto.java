@@ -30,6 +30,7 @@ public class EventCreationDto {
     @NotNull(message = StringConstants.START_DATE_CAN_NOT_BE_NULL)
     private LocalDate startDate;
 
+    @Min(value = 10000L, message = StringConstants.DURATION_CAN_NOT_BE_LESS_THAN_TEN_MINUTES)
     @NotNull(message = StringConstants.DURATION_CAN_NOT_BE_NULL)
     @Positive(message = StringConstants.DURATION_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
     private Long duration;
