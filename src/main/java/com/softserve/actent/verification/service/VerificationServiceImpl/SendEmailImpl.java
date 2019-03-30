@@ -48,7 +48,7 @@ public class SendEmailImpl implements SendEmail {
             message.setFrom();
             message.setSubject("Verification mail");
             message.setSentDate(new Date());
-            message.setText("For being an activated user in Actent community and have all advantages of our service, " +
+            message.setText("To verify your account and have all advantages of our service, " +
                     "you need to click on the link below. \n \n" + confirmUrl + "\n\nWish you success!\nSincerely yourth, Actent's team");
 
             Transport.send(message);
