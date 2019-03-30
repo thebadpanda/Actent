@@ -16,11 +16,13 @@ public class ExceptionMessages {
     public static final String CATEGORY_IS_NOT_FOUND = "Category with this id isn't exist";
 
     public static final String REVIEW_NO_ID = "You need to provide review id.";
+    public static final String REVIEW_NO_AUTHOR_ID = "ou need to provide review author id.";
     public static final String REVIEW_NO_TEXT = "You need to provide review text.";
     public static final String REVIEW_NO_SCORE = "You need to provide review score.";
     public static final String REVIEW_BAD_SCORE = "Review score must be in range from 1 to 5.";
     public static final String REVIEW_NOT_FOUND_WITH_ID = "Review with requested id was not found.";
-    public static final String REVIEW_INNAPPROPRIATE_ID = "Review id should be number greater than zero.";
+    public static final String REVIEW_INAPPROPRIATE_ID = "Review id should be number greater than zero.";
+    public static final String REVIEW_INAPPROPRIATE_AUTHOR_ID = "Author id should be number greater than zero.";
 
     public static final String IMAGE_NO_ID = "You need to provide image id.";
     public static final String IMAGE_NO_HASH = "You need to provide image hash.";
