@@ -68,6 +68,23 @@ public class EventUserServiceImpl implements EventUserService {
         checkIfExist(id);
         eventUserRepository.deleteById(id);
     }
+    
+    @Override
+    public List<EventUser> getByEventId(Long id) {
+
+        checkEventExistence(id);
+        Event event = new Event();
+        event.setId(id);
+
+        return eventUserRepository.findByEvent(event);
+    }
+
+    private void checkEventExistence(Long id) {
+
+        if (!eventRepository.existsById(id)) {
+            throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+        }
+    }
 
     private void checkForCorrectAddedData(EventUser eventUser) {
 
@@ -89,14 +106,5 @@ public class EventUserServiceImpl implements EventUserService {
         if (!eventUserRepository.existsById(id)) {
             throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
-    }
-
-    @Override
-    public List<EventUser> getByEventId(Long id) {
-
-        Event event = new Event();
-        event.setId(id);
-
-        return eventUserRepository.findByEvent(event);
     }
 }
