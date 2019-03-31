@@ -20,7 +20,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -35,20 +43,20 @@ public class EventController {
     private final EventCreationConverter eventCreationConverter;
     private final EventConverter eventConverter;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    EventFilterRepository eventFilterRepository;
+    private final EventFilterRepository eventFilterRepository;
 
     @Autowired
     public EventController(EventService eventService,
                            EventCreationConverter eventCreationConverter,
                            EventConverter eventConverter,
-                           ModelMapper modelMapper) {
+                           ModelMapper modelMapper,
+                           EventFilterRepository eventFilterRepository) {
 
         this.eventService = eventService;
         this.eventCreationConverter = eventCreationConverter;
         this.eventConverter = eventConverter;
         this.modelMapper = modelMapper;
+        this.eventFilterRepository = eventFilterRepository;
     }
 
     @GetMapping(value = "/events/all")

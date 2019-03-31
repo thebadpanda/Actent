@@ -90,7 +90,7 @@ public class EventServiceImpl implements EventService {
     public Event update(Event event, Long id) {
 
         if (event == null || id == null) {
-            throwResourceNotFound();
+            throwResourceNotFound(ExceptionMessages.EVENT_CAN_NOT_BE_NULL);
         }
 
         Event preparedEvent = getPreparedEventFromDataBase(event, id);
@@ -164,7 +164,7 @@ public class EventServiceImpl implements EventService {
             event.setChat(eventFromBase.getChat());
         } else {
             if (!chatRepository.existsById(event.getChat().getId())) {
-                throwResourceNotFound();
+                throwResourceNotFound(ExceptionMessages.CHAT_BY_THIS_ID_IS_NOT_FOUND);
             }
         }
     }
@@ -175,7 +175,7 @@ public class EventServiceImpl implements EventService {
             event.setImage(eventFromBase.getImage());
         } else {
             if (!imageRepository.existsById(event.getImage().getId())) {
-                throwResourceNotFound();
+                throwResourceNotFound(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID);
             }
         }
     }
@@ -186,7 +186,7 @@ public class EventServiceImpl implements EventService {
             event.setCategory(eventFromBase.getCategory());
         } else {
             if (!categoryRepository.existsById(event.getCategory().getId())) {
-                throwResourceNotFound();
+                throwResourceNotFound(ExceptionMessages.CATEGORY_IS_NOT_FOUND);
             }
         }
     }
@@ -197,7 +197,7 @@ public class EventServiceImpl implements EventService {
             event.setAddress(eventFromBase.getAddress());
         } else {
             if (!locationRepository.existsById(event.getAddress().getId())) {
-                throwResourceNotFound();
+                throwResourceNotFound(ExceptionMessages.LOCATION_NOT_FOUND);
             }
         }
     }
@@ -207,7 +207,7 @@ public class EventServiceImpl implements EventService {
         if (event.getCreator() == null) {
             event.setCreator(eventFromBase.getCreator());
         } else {
-            throwResourceNotFound();
+            throwResourceNotFound(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND);
         }
     }
 
@@ -282,18 +282,49 @@ public class EventServiceImpl implements EventService {
 
     private void checkEvent(Event event) {
 
-        if (event == null || event.getCreator() == null || event.getAddress() == null || event.getCategory() == null || event.getAccessType() == null) {
-            throwResourceNotFound();
-        } else if (!userRepository.existsById(event.getCreator().getId())) {
-            throwResourceNotFound();
-        } else if (!locationRepository.existsById(event.getAddress().getId())) {
-            throwResourceNotFound();
-        } else if (!categoryRepository.existsById(event.getCategory().getId())) {
-            throwResourceNotFound();
+        checkEventAndEventFieldsForNull(event);
+        checkForExistenceResource(event);
+    }
+
+    private void checkEventAndEventFieldsForNull(Event event) {
+
+        if (event == null) {
+            throwResourceNotFound(ExceptionMessages.EVENT_CAN_NOT_BE_NULL);
+        }
+
+        if (event.getCreator() == null) {
+            throwResourceNotFound(ExceptionMessages.EVENT_CREATOR_CAN_NOT_BE_NULL);
+        }
+
+        if (event.getAddress() == null) {
+            throwResourceNotFound(ExceptionMessages.EVENT_ADDRESS_CAN_NOT_BE_NULL);
+        }
+
+        if (event.getCategory() == null) {
+            throwResourceNotFound(ExceptionMessages.EVENT_CATEGORY_CAN_NOT_BE_NULL);
+        }
+
+        if (event.getAccessType() == null) {
+            throwResourceNotFound(ExceptionMessages.EVENT_ACCESS_TYPE_CAN_NOT_BE_NULL);
         }
     }
 
-    private void throwResourceNotFound() {
-        throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+    private void checkForExistenceResource(Event event) {
+
+        if (!userRepository.existsById(event.getCreator().getId())) {
+            throwResourceNotFound(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND);
+        }
+
+        if (!locationRepository.existsById(event.getAddress().getId())) {
+            throwResourceNotFound(ExceptionMessages.LOCATION_NOT_FOUND);
+        }
+
+        if (!categoryRepository.existsById(event.getCategory().getId())) {
+            throwResourceNotFound(ExceptionMessages.CATEGORY_IS_NOT_FOUND);
+        }
+    }
+
+    private void throwResourceNotFound(String message) {
+        throw new ResourceNotFoundException(message, ExceptionCode.NOT_FOUND);
     }
 }
