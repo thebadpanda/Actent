@@ -2,7 +2,7 @@ import React from 'react';
 import Event from './event/Event.jsx';
 import EquipmentList from './equipment/EquipmentList.jsx';
 import Review from './review/Review.jsx';
-import CreateEquipment from './equipment/CreateEquipment.jsx'
+import CreateEquipment from './equipment/CreateEquipment.jsx';
 
 import './Window.css';
 import AppBar from '@material-ui/core/AppBar';
@@ -32,7 +32,6 @@ class Window extends React.Component {
       handleChange = (event, value) => {
         this.setState({ value });
       };
-
       
     handleCreateEquipment = (equipment) => {
 
