@@ -2,8 +2,10 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
-import com.softserve.actent.model.dto.RegionDto;
-import com.softserve.actent.model.dto.RegionUpdateDto;
+import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.location.RegionCreateDto;
+import com.softserve.actent.model.dto.location.RegionDto;
+import com.softserve.actent.model.dto.location.RegionUpdateDto;
 import com.softserve.actent.model.entity.Region;
 import com.softserve.actent.service.RegionService;
 import org.modelmapper.ModelMapper;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(UrlConstants.API_V1)
+@RequestMapping(UrlConstants.API_V1_REGIONS)
 public class RegionController {
 
     private final RegionService regionService;
@@ -39,24 +41,25 @@ public class RegionController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/regions/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RegionDto get(@PathVariable @NotNull(message = StringConstants.REGION_ID_NOT_NULL)
-                         @Positive(message = StringConstants.REGION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+    public RegionDto getById(@PathVariable @NotNull(message = StringConstants.REGION_ID_NOT_NULL)
+                             @Positive(message = StringConstants.REGION_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+
         Region region = regionService.get(id);
         return modelMapper.map(region, RegionDto.class);
     }
 
-    @GetMapping(value = "/regions")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<RegionDto> getAll(@RequestParam(value = "countryId", required = false)
-                                  @Positive(message = StringConstants.COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long countryId) {
+                                  @Positive(message = StringConstants.COUNTRY_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long countryId) {
         List<Region> regions;
         List<RegionDto> regionDtos;
         if (countryId == null) {
             regions = regionService.getAll();
         } else {
-            regions = regionService.getByCountryId(countryId);
+            regions = regionService.getAllByCountryId(countryId);
         }
         regionDtos = regions.stream()
                 .map(region -> modelMapper.map(region, RegionDto.class))
@@ -64,30 +67,39 @@ public class RegionController {
         return regionDtos;
     }
 
-    @PostMapping(value = "/regions")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RegionDto add(@Validated @RequestBody RegionDto regionDto) {
+    public IdDto add(@Validated @RequestBody RegionCreateDto regionCreateDto) {
 
-        Region region = modelMapper.map(regionDto, Region.class);
-        regionService.add(region);
-        return regionDto;
-
+        Region region = regionService.add(modelMapper.map(isRegionExist(regionCreateDto), Region.class));
+        return new IdDto(region.getId());
     }
 
-    @PutMapping(value = "/regions/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RegionUpdateDto update(@PathVariable Long id,
-                                  @Validated @RequestBody RegionUpdateDto regionDto) {
-        Region region = regionService.update(modelMapper.map(regionDto, Region.class), id);
+    public RegionUpdateDto updateName(@PathVariable Long id,
+                                      @Validated @RequestBody RegionUpdateDto regionUpdateDto) {
+        Region region = regionService.update(modelMapper.map(checkUpdatedRegion(regionUpdateDto), Region.class), id);
         return modelMapper.map(region, RegionUpdateDto.class);
     }
 
 
-    @DeleteMapping(value = "/regions/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @NotNull(message = StringConstants.COUNTRY_ID_NOT_NULL)
-                       @Positive(message = StringConstants.COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+                       @Positive(message = StringConstants.COUNTRY_ID_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+
         regionService.delete(id);
+    }
+
+    private RegionCreateDto isRegionExist(RegionCreateDto regionCreateDto) {
+        regionCreateDto.setName(regionCreateDto.getName().toLowerCase().trim());
+        return regionCreateDto;
+    }
+
+    private RegionUpdateDto checkUpdatedRegion(RegionUpdateDto regionUpdateDto) {
+        regionUpdateDto.setName(regionUpdateDto.getName().toLowerCase().trim());
+        return regionUpdateDto;
     }
 }
 
