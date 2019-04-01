@@ -34,10 +34,13 @@ class Show extends React.Component {
                         <Info 
                             info={this.props.info}
 
+                            creationDate={this.props.creationDate}
                             startDate={this.props.startDate}
                             duration={this.props.duration}
+                            capacity={this.props.capacity}
                             category={this.props.category}
-                            creator={this.props.creator}
+                            creatorFirstName={this.props.creatorFirstName}
+                            creatorLastName={this.props.creatorLastName}
 
                             participants={this.props.participants}
                             spectators={this.props.spectators}
