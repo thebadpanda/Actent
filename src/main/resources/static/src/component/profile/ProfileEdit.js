@@ -3,7 +3,6 @@ import axios from 'axios';
 import DatePicker from 'material-ui/DatePicker';
 import {apiUrl} from './Profile.js';
 import {getImageUrl} from './ProfileView';
-import {imageValidator} from './FileUploadValidator';
 import {Card} from 'material-ui/Card';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -20,16 +19,17 @@ export default class ProfileEdit extends React.Component {
             userId: this.props.profileData.userId,
             firstName: this.props.profileData.firstName,
             lastName: this.props.profileData.lastName,
+            email: this.props.profileData.email,
             phone: this.props.profileData.phone,
             login: this.props.profileData.login,
             address: this.props.profileData.address,
             birthday: new Date(this.props.profileData.birthday),
             bio: this.props.profileData.bio,
             interests: this.props.profileData.interests,
-            // imageUrl: getImageUrl(this.props.profileData.avatar.filePath),
-            imageUrl: this.props.profileData.avatar.filePath,
             imageName: this.props.profileData.avatar.filePath,
-            imageData: {}
+            imageData: {},
+            imageId: undefined,
+            filePath: undefined
         };
     }
 
@@ -49,25 +49,39 @@ export default class ProfileEdit extends React.Component {
 
     handleInterests = (event) => this.setState({interests: event.target.value});
 
+    handleEmail = (event) => this.setState({email: event.target.value});
+
     getBirthday = () => {
         return this.state.birthday.getFullYear() + '-' +
-            this.state.birthday.getMonth() + '-' +
-            this.state.birthday.getDate();
+            this.handleDigitsInMonth(this.state.birthday.getMonth() + 1) + '-' +
+            this.handleDigitsInDate(this.state.birthday.getDate());
     };
-    saveUserSettings = () => {
-        console.log("state: " + this.state.userId + "props: " + this.props.userId);
 
+    handleDigitsInDate = (i) => {
+        return (i < 10) ? (`0 + ${i}`) : i;
+    };
+
+    handleDigitsInMonth = (i) => {
+        return (i < 10) ? (`0 + ${i + 1}`) : i;
+    };
+
+    saveUserSettings = () => {
         const url = apiUrl + /users/ + this.state.userId;
 
-        axios.put(url, {
+        const data = {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             login: this.state.login,
             address: this.state.address,
-            birthday: this.getBirthday(),
+            birthDate: this.getBirthday(),
             bio: this.state.bio,
             interests: this.state.interests,
-        }).then(() => {
+            email: this.state.email,
+            phone: this.state.phone,
+            avatarId: this.state.imageId
+        };
+
+        axios.put(url, data).then(() => {
             this.props.onCloseClick();
         });
 
@@ -75,34 +89,48 @@ export default class ProfileEdit extends React.Component {
 
     saveUserPhoto = () => {
         const uploadUrl = apiUrl + '/storage/uploadFile/';
+        const addImageUrl = apiUrl + '/images/';
         const userUrl = apiUrl + /users/ + this.state.userId;
         const requestTimeout = 30000;
+
+        const imageData = {
+            filePath: this.state.imageName
+        };
 
         axios.post(uploadUrl, this.state.imageData, {
             timeout: requestTimeout,
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }})
-            .then(response => {
+            }
+        }).then(response => {
+            this.setState({
+                imageName: response.data,
+                imageData: {
+                    filePath: response.data
+                }
+            });
+        }).then(() => {
+            axios.post(addImageUrl, this.state.imageData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
                 this.setState({
-                    imageName: response.data['image_key']
-                });
-            }).then(() => {
-            axios.post(userUrl, this.state.imageName)
-                .then(response => {
-                    this.props.onCloseClick();
-                });
-            // this.hideLinearProgress();
+                    imageId: response.data.id,
+                })
+            });
         }).catch(error => {
             console.log(error);
         });
     };
 
-    fetchData = (imageData, imageUrl) => {
+    fetchData = (imageData, imageName) => {
         this.setState({
             imageData: imageData,
-            imageUrl: imageUrl
-        }, () => { this.saveUserPhoto(); });
+            imageName: imageName
+        }, () => {
+            this.saveUserPhoto();
+        });
     };
 
     isValidName = () => {
@@ -117,7 +145,21 @@ export default class ProfileEdit extends React.Component {
         return !!this.state.email;
     };
 
+
     render() {
+
+        const img = this.state.imageName !== null ?
+            (<img src={getImageUrl(this.state.imageName)}
+                  alt=""
+                  className="imageStyle"
+            />)
+            :
+            (<img src={"https://s3.ap-south-1.amazonaws.com/actent-res/1554136129708-default-user.png"}
+                  alt=""
+                  className="imageStyle"
+                />
+            );
+
         return (
             <div className="styleMainDiv">
                 <Card className="styleCard">
@@ -126,10 +168,7 @@ export default class ProfileEdit extends React.Component {
                     </Typography>
 
                     <div className="styleContainerEdit">
-                        <img src={this.state.imageUrl}
-                             alt=""
-                             className="imageStyle"
-                        />
+                        {img}
                     </div>
                     <FileUpload
                         fetchData={this.fetchData}
@@ -166,6 +205,20 @@ export default class ProfileEdit extends React.Component {
                             multiline
                             rowsMax={3}
                             value={this.state.address.name}
+                        />
+                        <TextField
+                            id="tv_phone"
+                            label='Phone'
+                            onChange={this.handlePhone}
+                            fullWidth={true}
+                            value={this.state.phone}
+                        />
+                        <TextField
+                            id="tv_email"
+                            label='Email'
+                            onChange={this.han}
+                            fullWidth={true}
+                            value={this.state.email}
                         />
                         <DatePicker
                             id="date_picker_birthday"

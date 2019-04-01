@@ -5,7 +5,6 @@ import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.model.entity.*;
 import com.softserve.actent.repository.CityRepository;
 import com.softserve.actent.repository.ImageRepository;
-import com.softserve.actent.repository.LocationRepository;
 import com.softserve.actent.repository.UserRepository;
 import com.softserve.actent.service.UserService;
 import org.junit.After;
@@ -49,7 +48,6 @@ public class UserServiceImplTest {
     private final City firstUserLocation = new City();
     private final Role firstUserRole = Role.USER;
     private final String firstUserImagePath = "D:IMG-7033";
-    private final String firstUserImageHash = "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b";
     private final Long firstUserImageId = 1L;
     private final Long firstUserLocationId = 1L;
     private final String firstUserLocationAddress = "Fedkovycha str, 5";
@@ -97,6 +95,7 @@ public class UserServiceImplTest {
     public void setUp() {
 
         region.setId(cityId);
+
         region.setName(cityName);
 
         firstUserAvatar.setFilePath(firstUserImagePath);
