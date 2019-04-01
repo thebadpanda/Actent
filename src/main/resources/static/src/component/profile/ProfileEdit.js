@@ -29,7 +29,15 @@ export default class ProfileEdit extends React.Component {
             imageName: this.props.profileData.avatar.filePath,
             imageData: {},
             imageId: undefined,
-            filePath: undefined
+            filePath: undefined,
+            errorFirstName: '',
+            errorLastName: '',
+            errorEmail: '',
+            errorPhone: '',
+            errorLogin: '',
+            errorAddress: '',
+            errorBirthDate: '',
+            errorBio: ''
         };
     }
 
@@ -45,11 +53,21 @@ export default class ProfileEdit extends React.Component {
 
     handleBirthday = (event, date) => this.setState({birthday: date});
 
-    handleBio = (event) => this.setState({bio: event.target.value});
+    handleBio = (event) => {
+        if ()
+        this.setState({bio: event.target.value});
+    }
 
     handleInterests = (event) => this.setState({interests: event.target.value});
 
-    handleEmail = (event) => this.setState({email: event.target.value});
+    handleEmail = (event) => {
+        const regex = /^\S+@\S+\.\S+$/;
+        if (regex.test(event.target.value) === true) {
+            this.setState({errorEmail: '', email: event.target.value});
+        } else {
+            this.setState({errorEmail: 'Error Email'});
+        }
+    };
 
     getBirthday = () => {
         return this.state.birthday.getFullYear() + '-' +
@@ -128,19 +146,6 @@ export default class ProfileEdit extends React.Component {
         });
     };
 
-    isValidName = () => {
-        if (this.state.name && this.state.name.length > 2) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-
-    isValidEmail = () => {
-        return !!this.state.email;
-    };
-
-
     render() {
 
         const img = this.state.imageName !== null ?
@@ -214,6 +219,8 @@ export default class ProfileEdit extends React.Component {
                             onChange={this.han}
                             fullWidth={true}
                             value={this.state.email}
+                            error={!!this.state.errorEmail}
+                            helperText={this.state.errorEmail}
                         />
                         <DatePicker
                             id="date_picker_birthday"
