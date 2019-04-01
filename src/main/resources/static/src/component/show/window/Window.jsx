@@ -2,7 +2,6 @@ import React from 'react';
 import Event from './event/Event.jsx';
 import EquipmentList from './equipment/EquipmentList.jsx';
 import Review from './review/Review.jsx';
-import CreateEquipment from './equipment/CreateEquipment.jsx'
 
 import './Window.css';
 import AppBar from '@material-ui/core/AppBar';
@@ -34,21 +33,21 @@ class Window extends React.Component {
       };
 
       
-    handleCreateEquipment = (equipment) => {
-
-        console.log("In handleCreateEquipment equipment = ");
-        console.log(equipment);
-
-        axios.post(`http://localhost:8080/api/v1/equipments/`, equipment)
-            .then(res => {
-                const createdEquipment = res.data;
-                console.log(createdEquipment);
-                this.getEquipments()
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
+    // handleCreateEquipment = (equipment) => {
+    //
+    //     console.log("In handleCreateEquipment equipment = ");
+    //     console.log(equipment);
+    //
+    //     axios.post(`http://localhost:8080/api/v1/equipments/`, equipment)
+    //         .then(res => {
+    //             const createdEquipment = res.data;
+    //             console.log(createdEquipment);
+    //             this.getEquipments();
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
 
     render() {
 
@@ -71,8 +70,7 @@ class Window extends React.Component {
                                         />
                                     </TabContainer>}
                 {value === 1 && <TabContainer>
-                                    <CreateEquipment handleCreateEquipment = {this.handleCreateEquipment}/>
-                                    <EquipmentList />
+                                    <EquipmentList/>
                                 </TabContainer>}
                 {value === 2 && <TabContainer>
                                     <Review reviews={this.props.reviews}/>
