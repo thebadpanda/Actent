@@ -3,6 +3,7 @@ package com.softserve.actent.exceptions.api;
 import com.softserve.actent.exceptions.ActentAppException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
@@ -71,6 +72,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(ex.getMessage());
         return buildResponseEntity(
                 new ApiError(BAD_REQUEST, ExceptionCode.MISSING_SERVLET_REQUEST_PARAMETER.exceptionCode, errorText));
+    }
+
+    /**
+     * Handles org.hibernate.exception.ConstraintViolationException. Happens when you try add to
+     * database duplicate value or not existed value.
+     *
+     * @param ex the ConstraintViolationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintFails(ConstraintViolationException ex) {
+        ApiError apiError = new ApiError();
+        apiError.setStatus(BAD_REQUEST);
+        apiError.setExceptionCode(ExceptionCode.DUPLICATE_VALUE.exceptionCode);
+        apiError.setDebugMessage("Cannot add or update row: duplicated value");
+
+        log.error(ex.getMessage());
+
+        return buildResponseEntity(apiError);
     }
 
     /**

@@ -14,12 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "locations")
+@Table(name = "locations", uniqueConstraints = {@UniqueConstraint(columnNames = {"address", "city_id"})})
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +30,7 @@ public class Location {
     @NotBlank(message = StringConstants.EMPTY_LOCATION)
     @Length(min = NumberConstants.LOCATION_MIN_LENGTH,
             max = NumberConstants.LOCATION_MAX_LENGTH,
-            message = StringConstants.LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS)
+            message = StringConstants.LOCATION_LENGTH_BETWEEN_FIVE_AND_FIFTY_SYMBOLS)
     @Column(nullable = false,
             length = NumberConstants.LOCATION_MAX_LENGTH)
     private String address;
