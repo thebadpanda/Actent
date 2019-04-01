@@ -37,14 +37,15 @@ public class StringConstants {
 
     public static final String COUNTRY_ID_NOT_NULL = "Country id can not be null";
     public static final String REGION_ID_NOT_NULL = "Region id can not be null";
-    public static final String COUNTRY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Country id must be positive and greater than zero";
-    public static final String REGION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Region id must be positive and greater than zero";
-    public static final String LOCATION_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO = "Location id must be positive and greater than zero";
+    public static final String CITY_ID_NOT_NULL = "City id can not be null";
+    public static final String COUNTRY_ID_POSITIVE_AND_GREATER_THAN_ZERO = "Country id must be positive and greater than zero";
+    public static final String REGION_ID_POSITIVE_AND_GREATER_THAN_ZERO = "Region id must be positive and greater than zero";
+    public static final String LOCATION_ID_POSITIVE_AND_GREATER_THAN_ZERO = "Location id must be positive and greater than zero";
 
     public static final String COUNTRY_LENGTH_BETWEEN_THREE_AND_THIRTY_SYMBOLS = "Country should be between 3 and 30 symbols";
-    public static final String REGION_LENGTH_BETWEEN_FIRE_AND_THIRTY_SYMBOLS = "Region should be between 5 and 30 symbols";
+    public static final String REGION_LENGTH_BETWEEN_FIVE_AND_THIRTY_SYMBOLS = "Region should be between 5 and 30 symbols";
     public static final String CITY_LENGTH_BETWEEN_FOUR_AND_THIRTY_SYMBOLS = "City should be between 4 and 30 symbols";
-    public static final String LOCATION_LENGTH_BETWEEN_FIRE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
+    public static final String LOCATION_LENGTH_BETWEEN_FIVE_AND_FIFTY_SYMBOLS = "Location should be between 5 and 50 symbols";
 
     public static final String CHAT_TYPE_NOT_BE_BLANK = "Chat type can`t be blank";
     public static final String TITLE_LENGTH_IS_TO_LONG = "Title length is to long";
@@ -98,4 +99,7 @@ public class StringConstants {
             "id is already exists in list of banned users in this chat.";
     public static final String USER_BY_SUCH_ID_IS_NOT_BE_BANNED_IN_THIS_CHAT = "User by such id is not be banned in " +
             "this chat";
+
+    public static final String BEARER = "Bearer";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 }
