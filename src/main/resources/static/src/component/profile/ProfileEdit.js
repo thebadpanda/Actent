@@ -90,12 +90,7 @@ export default class ProfileEdit extends React.Component {
     saveUserPhoto = () => {
         const uploadUrl = apiUrl + '/storage/uploadFile/';
         const addImageUrl = apiUrl + '/images/';
-        const userUrl = apiUrl + /users/ + this.state.userId;
         const requestTimeout = 30000;
-
-        const imageData = {
-            filePath: this.state.imageName
-        };
 
         axios.post(uploadUrl, this.state.imageData, {
             timeout: requestTimeout,
@@ -255,9 +250,6 @@ export default class ProfileEdit extends React.Component {
                             onClick={this.saveUserSettings}
                         >Save </Button>
                     </div>
-                    {/*<div className="linearProgressWrapperStyle">*/}
-                    {/*<LinearProgress mode='indeterminate' className= "linearProgressStyle"/>*/}
-                    {/*</div>*/}
                 </Card>
             </div>
         )
