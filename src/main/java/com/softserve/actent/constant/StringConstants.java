@@ -29,6 +29,7 @@ public class StringConstants {
     public static final String USER_CITY_ID_NEGATIVE_NUMBER = "User id should not be negative number";
     public static final String USER_AVATAR_ID_SHOULD_BE_GREATER_THAN_ZERO = "User avatar id should be greater than zero";
     public static final String USER_EMAIL_NOT_VALID = "User's email not valid";
+    public static final String USER_PHONE_IS_NOT_VALID = "Phone is not valid";
 
     public static final String EMPTY_COUNTRY = "Country can't be empty ";
     public static final String EMPTY_REGION = "Region can't be empty";
