@@ -5,6 +5,7 @@ import com.softserve.actent.constant.NumberConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -23,7 +24,8 @@ public class Review {
 
     @NonNull
     @NotBlank(message = ExceptionMessages.REVIEW_NO_TEXT)
-    @Column(nullable = false)
+    @Column(nullable = false, length = NumberConstants.REVIEW_TEXT_MAX_LENGTH)
+    @Length(min = NumberConstants.REVIEW_TEXT_MIN_LENGTH, max = NumberConstants.REVIEW_TEXT_MAX_LENGTH)
     private String text;
 
     @NonNull
