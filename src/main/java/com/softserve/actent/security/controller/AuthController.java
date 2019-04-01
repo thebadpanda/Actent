@@ -2,12 +2,15 @@ package com.softserve.actent.security.controller;
 
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.entity.Role;
+import com.softserve.actent.model.entity.Status;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.security.JwtTokenProvider;
 import com.softserve.actent.security.model.dto.request.SignInDto;
 import com.softserve.actent.security.model.dto.request.SignUpDto;
 import com.softserve.actent.security.model.dto.response.JwtAuthResponseDto;
 import com.softserve.actent.service.UserService;
+import com.softserve.actent.verification.service.SendEmail;
+import com.softserve.actent.verification.service.Verification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +46,12 @@ public class AuthController {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    private SendEmail sendEmail;
+
+    @Autowired
+    private Verification verification;
+
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.OK)
     public JwtAuthResponseDto authenticateUser(@Validated @RequestBody SignInDto signInDto) {
@@ -69,7 +78,10 @@ public class AuthController {
 
         user.setRoleset(Collections.singleton(userRole));
 
+        user.setStatus(Status.NON_VERIFIED);
+        user.setUuid(verification.createUuidWithSalt());
         user = userService.add(user);
+        sendEmail.sendSimpleEmail(user.getEmail(), user);
 
         return new IdDto(user.getId());
     }
