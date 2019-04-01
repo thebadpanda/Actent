@@ -1,6 +1,5 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.repository.CountryRepository;
 import com.softserve.actent.service.CountryService;
@@ -9,16 +8,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static junit.framework.TestCase.assertNull;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,90 +32,96 @@ public class CountryServiceImplTest {
     @MockBean
     private CountryRepository countryRepository;
 
+    @Mock
+    private List<Country> countries;
+    @Mock
+    private Country firstCountry;
+    @Mock
+    private Country secondCountry;
+
     private final Long firstId = 1L;
     private final Long secondId = 2L;
-    private final Long thirdId = 3L;
     private final Long notExistedId = 100L;
     private final String firstCountryName = "Ukraine";
-    private final String secondCountryName = "Australia";
-    private final String thirdCountryName = "Canada";
-    private final int count = 3;
-    private List<Country> countries;
-    private Country firstCountry;
-    private Country secondCountry;
-    private Country thirdCountry;
+    private final String secondCountryName = "Canada";
+
 
     @Before
     public void setUp() {
         firstCountry = createCountry(firstId, firstCountryName);
         secondCountry = createCountry(secondId, secondCountryName);
-        thirdCountry = createCountry(thirdId, thirdCountryName);
 
-        countries = Arrays.asList(firstCountry, secondCountry, thirdCountry);
+        countries = Arrays.asList(firstCountry, secondCountry);
 
-        Mockito.when(countryRepository.findById(firstId)).thenReturn(Optional.of(firstCountry));
-        Mockito.when(countryRepository.findById(secondId)).thenReturn(Optional.of(secondCountry));
-        Mockito.when(countryRepository.findById(thirdId)).thenReturn(Optional.of(thirdCountry));
+        when(countryRepository.findById(firstId)).thenReturn(Optional.of(firstCountry));
+        when(countryRepository.findById(secondId)).thenReturn(Optional.of(secondCountry));
 
-        Mockito.when(countryRepository.findById(notExistedId)).thenReturn(Optional.empty());
-        Mockito.when(countryRepository.findAll()).thenReturn(countries);
+        when(countryRepository.findById(notExistedId)).thenReturn(Optional.empty());
+        when(countryRepository.findAll()).thenReturn(countries);
 
-        Mockito.when(countryRepository.save(firstCountry)).thenReturn(firstCountry);
-        Mockito.when(countryRepository.save(secondCountry)).thenReturn(secondCountry);
-        Mockito.when(countryRepository.save(thirdCountry)).thenReturn(thirdCountry);
+        when(countryRepository.save(firstCountry)).thenReturn(firstCountry);
+        when(countryRepository.save(secondCountry)).thenReturn(secondCountry);
 
-        Mockito.doNothing().when(countryRepository).deleteById(firstId);
-        Mockito.doNothing().when(countryRepository).deleteById(secondId);
-        Mockito.doNothing().when(countryRepository).deleteById(thirdId);
+        doNothing().when(countryRepository).deleteById(firstId);
+        doNothing().when(countryRepository).deleteById(secondId);
     }
 
     @Test
-    public void testFindCountryById() {
-        assertThat(countryService.get(thirdId).getName()).isEqualTo(thirdCountryName);
+    public void testGetById() {
+        assertThat(countryService.get(firstId).getName()).isEqualTo(firstCountryName);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testFindByNotExistedId_orThrowException() {
+    public void testGetNullId() {
+        countryService.get(null);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetByNotExistedId_orThrowException() {
         countryService.get(notExistedId);
     }
 
     @Test
-    public void testFindAll() {
-        assertThat(countryService.getAll().size()).isEqualTo(count);
+    public void testGetAll() {
+        assertThat(countryService.getAll().size()).isEqualTo(countries.size());
         assertThat(countryService.getAll().get(0).getName()).isEqualTo(firstCountryName);
         assertThat(countryService.getAll().get(1).getName()).isEqualTo(secondCountryName);
-        assertThat(countryService.getAll().get(2).getName()).isEqualTo(thirdCountryName);
     }
 
     @Test
-    public void testAddCountry() {
-        Mockito.when(countryRepository.findAll()).thenReturn(Collections.emptyList());
+    public void testAdd() {
         assertThat(countryService.add(firstCountry)).isEqualTo(firstCountry);
     }
 
-    @Test(expected = DuplicateValueException.class)
-    public void testAddDuplicateCountryName_thenThrowException() {
-        assertThat(countryService.add(firstCountry)).isEqualTo(firstCountry);
-    }
-
-    @Test(expected = DuplicateValueException.class)
-    public void testUpdateCountryIdWithDuplicateName_thenThrowException() {
+    @Test
+    public void testUpdat() {
+        when(countryRepository.existsById(secondId)).thenReturn(true);
         assertThat(countryService.update(secondCountry, secondId).getName()).isEqualTo(secondCountryName);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testUpdateCountryByNotExistedId_thenThrowException() {
+    public void testUpdateByNotExistedId_thenThrowException() {
         countryService.update(firstCountry, notExistedId);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void testUpdateWhereCountryNull_thenThrowException() {
+        countryService.update(null, firstId);
+    }
+
     @Test
-    public void testDeleteCountryById() {
+    public void testDeleteById() {
         countryService.delete(firstId);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testDeleteCountryByNotExistedId_thenThrowException() {
+    public void testDeleteByNotExistedId_thenThrowException() {
         countryService.delete(notExistedId);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testDeleteByNullId() {
+        countryService.delete(null);
     }
 
     private Country createCountry(Long countryId, String name) {
@@ -126,5 +133,9 @@ public class CountryServiceImplTest {
 
     @After
     public void tearDown() {
+        firstCountry = null;
+        secondCountry = null;
+        assertNull(firstCountry);
+        assertNull(secondCountry);
     }
 }

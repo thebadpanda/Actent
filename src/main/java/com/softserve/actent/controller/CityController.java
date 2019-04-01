@@ -2,8 +2,10 @@ package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
-import com.softserve.actent.model.dto.CityDto;
-import com.softserve.actent.model.dto.CityUpdateDto;
+import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.location.CityDto;
+import com.softserve.actent.model.dto.location.CityCreateDto;
+import com.softserve.actent.model.dto.location.CityUpdateDto;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.service.CityService;
 import org.modelmapper.ModelMapper;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(UrlConstants.API_V1)
+@RequestMapping(UrlConstants.API_V1_CITIES)
 public class CityController {
 
     private final CityService cityService;
@@ -39,16 +41,16 @@ public class CityController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/cities/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CityDto get(@PathVariable @NotNull(message = StringConstants.CITY_ID_CAN_NOT_BE_NULL)
-                       @Positive(message = StringConstants.CITY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+    public CityDto getById(@PathVariable @NotNull(message = StringConstants.CITY_ID_CAN_NOT_BE_NULL)
+                           @Positive(message = StringConstants.CITY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
 
         City city = cityService.get(id);
         return modelMapper.map(city, CityDto.class);
     }
 
-    @GetMapping(value = "/cities")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CityDto> getAll(@RequestParam(value = "regionId", required = false)
                                 @Positive(message = StringConstants.CITY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long regionId) {
@@ -58,7 +60,7 @@ public class CityController {
         if (regionId == null) {
             cities = cityService.getAll();
         } else {
-            cities = cityService.getByRegionId(regionId);
+            cities = cityService.getAllByRegionId(regionId);
         }
         cityDtos = cities.stream()
                 .map(city -> modelMapper.map(city, CityDto.class))
@@ -66,26 +68,38 @@ public class CityController {
         return cityDtos;
     }
 
-    @PostMapping(value = "/cities")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CityDto add(@Validated @RequestBody CityDto cityDto) {
-        City city = modelMapper.map(cityDto, City.class);
-        cityService.add(city);
-        return cityDto;
+    public IdDto add(@Validated @RequestBody CityCreateDto cityCreateDto) {
+
+        City city = cityService.add(modelMapper.map(checkCreatedCity(cityCreateDto), City.class));
+        return new IdDto(city.getId());
     }
 
-    @PutMapping(value = "/cities/{id}")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CityUpdateDto update(@PathVariable Long id,
-                                @Validated @RequestBody CityUpdateDto cityDto) {
-        City city = cityService.update(modelMapper.map(cityDto, City.class), id);
+    public CityUpdateDto updateName(@PathVariable Long id,
+                                    @Validated @RequestBody CityUpdateDto cityUpdateDto) {
+
+        City city = cityService.update(modelMapper.map(checkUpdatedCity(cityUpdateDto), City.class), id);
         return modelMapper.map(city, CityUpdateDto.class);
     }
 
-    @DeleteMapping(value = "/cities/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable @NotNull(message = StringConstants.CITY_ID_CAN_NOT_BE_NULL)
                        @Positive(message = StringConstants.CITY_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long id) {
+
         cityService.delete(id);
+    }
+
+    private CityCreateDto checkCreatedCity(CityCreateDto cityCreateDto) {
+        cityCreateDto.setName(cityCreateDto.getName().toLowerCase().trim());
+        return cityCreateDto;
+    }
+
+    private CityUpdateDto checkUpdatedCity(CityUpdateDto cityUpdateDto) {
+        cityUpdateDto.setName(cityUpdateDto.getName().toLowerCase().trim());
+        return cityUpdateDto;
     }
 }
