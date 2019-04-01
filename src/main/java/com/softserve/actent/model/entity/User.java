@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -59,8 +60,11 @@ public class User {
 
     @NonNull
     @NotBlank(message = StringConstants.EMPTY_USER_PASSWORD)
-    @Column(nullable = false, length = NumberConstants.USER_PASSWORD_MAX_LENGTH)
+    @Column(length = NumberConstants.USER_PASSWORD_MAX_LENGTH)
     private String password;
+
+    @Pattern(regexp="(^$|[0-9]{10})", message = StringConstants.USER_PHONE_IS_NOT_VALID)
+    private String phone;
 
     @Column
     private LocalDate birthDate;

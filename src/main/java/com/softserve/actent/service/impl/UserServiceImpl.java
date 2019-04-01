@@ -12,9 +12,12 @@ import com.softserve.actent.service.CityService;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.LocationService;
 import com.softserve.actent.service.UserService;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -52,18 +55,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
     @Override
     public User update(User user, Long id) {
+
         if (userRepository.existsById(id)) {
-            user.setId(id);
+
+            User existingUser = this.get(id);
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setLogin(user.getLogin());
+            existingUser.setPhone(user.getPhone());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setBirthDate(user.getBirthDate());
+            existingUser.setBio(user.getBio());
+
             if (user.getLocation() != null){
-                user.setLocation(cityService.get(user.getLocation().getId()));
+                existingUser.setLocation(cityService.get(user.getLocation().getId()));
             }
             if (user.getAvatar() != null){
-                user.setAvatar(imageService.get(user.getAvatar().getId()));
+                existingUser.setAvatar(imageService.get(user.getAvatar().getId()));
             }
-            return userRepository.save(user);
+            return userRepository.save(existingUser);
+
         } else {
             throw new AccessDeniedException(ExceptionMessages.USER_NOT_REGISTRED, ExceptionCode.NOT_FOUND);
         }
