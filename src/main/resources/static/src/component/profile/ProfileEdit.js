@@ -234,7 +234,6 @@ export default class ProfileEdit extends React.Component {
                             rowsMax={3}
                             value={this.state.bio}
                         />
-                        {/*<ChangePassword />*/}
                     </div>
                     <div className="styleButtons">
                         <Button
