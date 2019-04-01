@@ -5,6 +5,7 @@ import com.softserve.actent.model.entity.City;
 import java.util.List;
 
 public interface CityService extends BaseCrudService<City> {
-    List<City> getByRegionId(Long regionId);
+
+    List<City> getAllByRegionId(Long regionId);
 }
 
