@@ -12,8 +12,7 @@ import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
-public class
-EquipmentCreateDto {
+public class EquipmentCreateDto {
 
     @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
     @Length(min = NumberConstants.TITLE_MIN_LENGTH, max = NumberConstants.TITLE_MAX_LENGTH, message = StringConstants.TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS)
