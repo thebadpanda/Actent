@@ -31,24 +31,7 @@ class Window extends React.Component {
       handleChange = (event, value) => {
         this.setState({ value });
       };
-
       
-    // handleCreateEquipment = (equipment) => {
-    //
-    //     console.log("In handleCreateEquipment equipment = ");
-    //     console.log(equipment);
-    //
-    //     axios.post(`http://localhost:8080/api/v1/equipments/`, equipment)
-    //         .then(res => {
-    //             const createdEquipment = res.data;
-    //             console.log(createdEquipment);
-    //             this.getEquipments();
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // };
-
     render() {
 
         const { value } = this.state;

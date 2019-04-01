@@ -1,7 +1,7 @@
 .page {
     display: flex;
     align-items: flex-start;
-    height: 1100px;
+    height: 100%;
 }
 
 .container-1 {
@@ -25,13 +25,15 @@
 
 .card-title {
     align-self: center;
-  }
+    position: static;
+}
 
 .card-window {
     height: 100%;
 }
 
 .card-info {
+    padding: 10px;
     height: 40%;
 }
 
