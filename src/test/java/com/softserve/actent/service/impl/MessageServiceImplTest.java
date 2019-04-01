@@ -1,6 +1,5 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.validation.ValidationException;
 import com.softserve.actent.model.entity.Chat;
@@ -18,7 +17,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -50,7 +48,6 @@ public class MessageServiceImplTest {
     private final String firstMessageContent = "firstMessageContent";
     private final String imageHash = "6b86b273lf3bfc119d6b804eff5a3f5747ada4eaa22f1d49r0we52ddb7875b41";
     private final String imageFilePath = "imageFilePath";
-    private final int pageNumber = 1;
     List<Message> messages;
     private Message messageWithText;
     private Message messageWithImage;
@@ -87,7 +84,7 @@ public class MessageServiceImplTest {
         Mockito.when(messageRepository.findById(firstId)).thenReturn(Optional.of(messageWithText));
         Mockito.when(messageRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
-        Mockito.when(messageRepository.findAllByChatIdOrderBySendTimeDesc(chatId, PageRequest.of(pageNumber, NumberConstants.SHOW_THIRTY_MESSAGES_PER_PAGE))).thenReturn(messages);
+        Mockito.when(messageRepository.findAllByChatId(chatId)).thenReturn(messages);
         Mockito.when(messageRepository.findAll()).thenReturn(messages);
         Mockito.when(messageRepository.save(messageWithText)).thenReturn(messageWithText);
         Mockito.when(messageRepository.save(messageWithImage)).thenReturn(messageWithImage);
@@ -111,7 +108,7 @@ public class MessageServiceImplTest {
 
     @Test
     public void given2Messages_findAllByChatId_thenReturn2Records() {
-        assertThat(messageService.getNextThirtyMessagesByChatId(chatId, pageNumber).size()).isEqualTo(messageCount);
+        assertThat(messageService.getMessagesByChatId(chatId).size()).isEqualTo(messageCount);
     }
 
     @Test
@@ -123,24 +120,6 @@ public class MessageServiceImplTest {
     public void whenFindAllIsEmpty_thenExceptionShouldBeThrown() {
         Mockito.when(messageRepository.findAll()).thenReturn(Collections.emptyList());
         assertThat(messageService.getAll().size()).isEqualTo(messageCount);
-    }
-
-    @Test
-    public void whenAddMessage_thenMessageShouldBeReturned() {
-        assertThat(messageService.add(messageWithText)).isEqualTo(messageWithText);
-    }
-
-    @Test
-    public void whenAddImageMessage_thenMessageShouldBeReturned() {
-
-        assertThat(messageService.add(messageWithImage)).isEqualTo(messageWithImage);
-    }
-
-
-    @Test
-    public void whenUpdateMessage_thenMessageShouldBeReturned() {
-
-        assertThat(messageService.update(messageWithText, firstId)).isEqualTo(messageWithText);
     }
 
     @Test(expected = ValidationException.class)
