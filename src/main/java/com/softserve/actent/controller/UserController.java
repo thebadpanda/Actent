@@ -56,9 +56,10 @@ public class UserController {
                                   @PathVariable
                                   @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                   @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
-        User user = userService.update(userSettingsToEntity(userSettingsDto), id);
 
-        return userSettingsEntityToDto(user);
+        User user =(userSettingsToEntity(userSettingsDto));
+
+        return userSettingsEntityToDto(userService.update(user, id));
     }
 
     @GetMapping(value = "/users")
