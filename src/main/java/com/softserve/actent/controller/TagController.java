@@ -10,6 +10,7 @@ import com.softserve.actent.service.TagService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,7 @@ public class TagController {
     }
 
     @PostMapping(value = "/tags")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addTag(@Validated @RequestBody CreateTagDto createTagDto) {
 
@@ -71,6 +73,7 @@ public class TagController {
     }
 
     @PutMapping(value = "/tags/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public TagDto updateTagById(@Validated @RequestBody CreateTagDto tagDto,
                                 @PathVariable @NotNull(message = ExceptionMessages.TAG_NO_ID)
@@ -81,6 +84,7 @@ public class TagController {
     }
 
     @DeleteMapping(value = "/tags/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTagById(@PathVariable @NotNull(message = ExceptionMessages.TAG_NO_ID)
                                   @Positive(message = ExceptionMessages.TAG_INNAPPROPRIATE_ID) Long id) {

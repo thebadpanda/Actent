@@ -2,6 +2,7 @@ package com.softserve.actent.repository;
 
 import com.softserve.actent.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     boolean existsByLogin(String login);
+
+    Optional<User> findByLoginOrEmail(String login, String email);
 }
