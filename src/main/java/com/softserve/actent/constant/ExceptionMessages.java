@@ -55,5 +55,18 @@ public class ExceptionMessages {
     public static final String REGION_NOT_FOUND = "Region with this id not found";
     public static final String CITY_NOT_FOUND = "City with this id not found";
     public static final String LOCATION_NOT_FOUND = "Location with this id not found";
+  
+    public static final String COUNTRY_ALREADY_EXIST = "Country with this name already exist in base";
+    public static final String REGION_ALREADY_EXIST = "Region with this name in this country already exist in base";
+    public static final String CITY_ALREADY_EXIST = "City with this name in this region already exist in base";
+    public static final String LOCATION_ALREADY_EXIST = "Location with this name in this city already exist in base";
 
+    public static final String NO_COUNTRIES_IN_BASE = "There are no countries in base";
+    public static final String NO_REGIONS_IN_BASE = "There are no regions in base";
+    public static final String NO_REGIONS_IN_THIS_COUNTRY_IN_BASE = "There are no regions in this country in base";
+    public static final String NO_CITIES_IN_BASE = "There are no cities in base";
+    public static final String NO_CITIES_IN_THIS_REGION_IN_BASE = "There are no cities in this region in base";
+    public static final String NO_LOCATIONS_IN_BASE = "There are no locations in base";
+    public static final String NO_LOCATIONS_IN_THIS_CITY_IN_BASE = "There are no locations in this city in base";
+    public static final String USER_BY_THIS_LOGIN_IS_NOT_FOUND = "User by this login is not found.";
 }

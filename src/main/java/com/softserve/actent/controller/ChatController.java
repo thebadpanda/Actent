@@ -12,6 +12,7 @@ import com.softserve.actent.service.ChatService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class ChatController {
     }
 
     @PostMapping(value = "/chats")
+    @PreAuthorize("hasRole=('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEventChat(@Validated @RequestBody AddChatDto addChatDto) {
         Chat chat = chatService.addChat(addChatDto.getChatType());
@@ -51,12 +53,14 @@ public class ChatController {
     }
 
     @DeleteMapping(value = "/chats/{chatId}")
+    @PreAuthorize("hasRole=('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEventChatById(@PathVariable(value = "chatId") @NotNull @Positive Long chatId){
         chatService.deleteChatById(chatId);
     }
 
     @PutMapping(value = "/chats/{chatId}/bannedUsers/{userId}")
+    @PreAuthorize("hasRole=('USER')")
     @ResponseStatus(HttpStatus.OK)
     public List<UserForChatDto> banUserByChatAndUserId(@PathVariable(value = "chatId") @NotNull @Positive Long chatId,
                                                        @PathVariable(value = "userId") @NotNull @Positive Long userId){
@@ -76,6 +80,7 @@ public class ChatController {
     }
 
     @PutMapping(value = "/chats/{chatId}/unban/{userId}")
+    @PreAuthorize("hasRole=('USER')")
     @ResponseStatus(HttpStatus.OK)
     public ChatInfoDto unBannedUserByChatId(@PathVariable(value = "chatId") @Positive @NotNull Long chatId,
                                             @PathVariable(value = "userId") @Positive @NotNull Long userId){

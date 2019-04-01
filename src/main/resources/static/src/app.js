@@ -1,19 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Hallo from "./component/Hallo";
-import LoginForm from "./component/LoginForm";
+import './styles/index.css';
+import Layout from './Layout';
+import {BrowserRouter as Router} from 'react-router-dom';
 
-class App extends React.Component {
-    render() {
-        return (
-           <div>
-               <div>
-                   <Hallo />
-                   <LoginForm />
-               </div>
-           </div>
-        );
-    }
-}
-
-ReactDOM.render(<App/>, window.document.getElementById('root'));
+ReactDOM.render(
+    <Router>
+        <Layout/>
+    </Router>,
+    document.getElementById('root'));
