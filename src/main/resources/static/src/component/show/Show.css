@@ -1,0 +1,40 @@
+.page {
+    display: flex;
+    align-items: flex-start;
+    height: 1100px;
+}
+
+.container-1 {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+.container-2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+.box {
+    box-shadow: 0 2px 5px;
+    border-radius: 1pc;
+}
+
+.card-title {
+    align-self: center;
+  }
+
+.card-window {
+    height: 100%;
+}
+
+.card-info {
+    height: 40%;
+}
+
+.card-chat {
+    height: 60%;
+}

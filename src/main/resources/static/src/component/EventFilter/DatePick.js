@@ -20,7 +20,7 @@ class MaterialUIPickers extends React.Component {
     state = {
         selectedDateFrom: new Date(),
         selectedDateTo: undefined,
-        buttonCollor: 
+        buttonCollor: undefined
     };
 
     handleDateFromChange = date => {

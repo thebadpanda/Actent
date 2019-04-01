@@ -1,0 +1,5 @@
+.tab-container {
+    padding: 10px;
+    overflow-y: auto; 
+    height: 100%;
+}
