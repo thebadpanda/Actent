@@ -7,14 +7,19 @@ import com.softserve.actent.model.dto.message.CreateImageMessageDto;
 import com.softserve.actent.model.dto.message.CreateTextMessageDto;
 import com.softserve.actent.model.dto.message.ViewMessageDto;
 import com.softserve.actent.model.entity.Message;
+import com.softserve.actent.security.annotation.CurrentUser;
+import com.softserve.actent.security.model.UserPrincipal;
 import com.softserve.actent.service.ChatService;
 import com.softserve.actent.service.MessageService;
 import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -32,7 +37,6 @@ public class MessageController {
     private final ChatService chatService;
 
     private final ViewMessageConverter viewMessageConverter;
-
 
     private final ModelMapper modelMapper;
 
@@ -52,48 +56,66 @@ public class MessageController {
 
 
     @PostMapping(value = "/textMessages")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ViewMessageDto addMessage(@Validated @RequestBody CreateTextMessageDto createMessageDto) {
+    public ViewMessageDto addMessage(@Validated @RequestBody CreateTextMessageDto createMessageDto,
+                                     @ApiIgnore @CurrentUser UserPrincipal currentUser) {
 
         Message message = modelMapper.map(createMessageDto, Message.class);
-        message.setSender(userService.get(createMessageDto.getSenderId()));
+        message.setSender(userService.get(currentUser.getId()));
         message.setChat(chatService.getChatById(createMessageDto.getChatId()));
 
         return viewMessageConverter.convertToDto(messageService.add(message));
     }
 
     @PostMapping(value = "/imageMessages")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ViewMessageDto addImage(@Validated @RequestBody CreateImageMessageDto createImageMessageDto) {
+    public ViewMessageDto addImage(@Validated @RequestBody CreateImageMessageDto createImageMessageDto,
+                                   @ApiIgnore @CurrentUser UserPrincipal currentUser) {
         Message message = modelMapper.map(createImageMessageDto, Message.class);
-        message.setSender(userService.get(createImageMessageDto.getSenderId()));
+        message.setSender(userService.get(currentUser.getId()));
         message.setChat(chatService.getChatById(createImageMessageDto.getChatId()));
 
         return viewMessageConverter.convertToDto(messageService.addImageMessage(message));
     }
 
-    @GetMapping(value = "/messages/{id}")
+    @GetMapping(value = "/currentMessages/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public List<ViewMessageDto> getCurrentMessagesByChatId(@PathVariable @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
-                                                    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id,
-                                                    @RequestParam("pageNumber") int pageNumber) {
+                                                           @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id,
+                                                           Pageable pageable) {
 
-        return viewMessageConverter.convertToDto(messageService.getNextThirtyMessagesByChatId(id, pageNumber));
+        return viewMessageConverter.convertToDto(messageService.getCurrentMessagesByChatId(id, pageable));
+    }
+
+    @GetMapping(value = "/messages/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ViewMessageDto> getMessagesByChatId(@PathVariable @NotNull(message = StringConstants.CHAT_ID_SHOULD_NOT_BE_NULL)
+                                                    @Positive(message = StringConstants.CHAT_ID_SHOULD_BE_POSITIVE) Long id) {
+
+        return viewMessageConverter.convertToDto(messageService.getMessagesByChatId(id));
     }
 
     @PutMapping(value = "/messages/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public ViewMessageDto updateMessage(@PathVariable @NotNull
                                         @Positive(message = StringConstants.MESSAGE_ID_SHOULD_BE_POSITIVE) Long id,
-                                        @Validated @RequestBody CreateTextMessageDto createMessageDto) {
+                                        @Validated @RequestBody CreateTextMessageDto createMessageDto,
+                                        @ApiIgnore @CurrentUser UserPrincipal currentUser) {
+        Message message = modelMapper.map(createMessageDto, Message.class);
+        message.setSender(userService.get(currentUser.getId()));
+        Message message1 = messageService.update(message, id);
 
-        Message message = messageService.update(modelMapper.map(createMessageDto, Message.class), id);
-        message.setSender(userService.get(createMessageDto.getSenderId()));
         message.setChat(chatService.getChatById(createMessageDto.getChatId()));
-        return viewMessageConverter.convertToDto(message);
+        return viewMessageConverter.convertToDto(message1);
     }
 
     @DeleteMapping(value = "/textMessages/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMessageById(@PathVariable @NotNull
                                   @Positive(message = StringConstants.MESSAGE_ID_SHOULD_BE_POSITIVE) Long id) {
