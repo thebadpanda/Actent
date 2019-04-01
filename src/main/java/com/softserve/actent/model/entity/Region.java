@@ -7,22 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "regions")
+@Table(name = "regions", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "country_id"})})
 public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +24,7 @@ public class Region {
     @NotBlank(message = StringConstants.EMPTY_REGION)
     @Length(min = NumberConstants.REGION_MIN_LENGTH,
             max = NumberConstants.REGION_MAX_LENGTH,
-            message = StringConstants.REGION_LENGTH_BETWEEN_FIRE_AND_THIRTY_SYMBOLS)
+            message = StringConstants.REGION_LENGTH_BETWEEN_FIVE_AND_THIRTY_SYMBOLS)
     @Column(nullable = false,
             length = NumberConstants.REGION_MAX_LENGTH)
     private String name;

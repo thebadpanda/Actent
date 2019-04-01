@@ -1,7 +1,6 @@
 package com.softserve.actent.controller;
 
 import com.softserve.actent.constant.StringConstants;
-import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.equipment.EquipmentCreateDto;
 import com.softserve.actent.model.dto.equipment.EquipmentDto;
@@ -10,6 +9,7 @@ import com.softserve.actent.service.EquipmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +26,12 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.softserve.actent.constant.UrlConstants.API_V1;
+import static com.softserve.actent.constant.UrlConstants.EQUIPMENTS;
+
 @Validated
 @RestController
-@RequestMapping(UrlConstants.API_V1)
+@RequestMapping(API_V1 + EQUIPMENTS)
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
@@ -41,7 +44,7 @@ public class EquipmentController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/equipments")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<EquipmentDto> getAllEquipments() {
 
@@ -52,7 +55,7 @@ public class EquipmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/equipments/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EquipmentDto getEquipmentById(@PathVariable
                                          @NotNull
@@ -63,7 +66,8 @@ public class EquipmentController {
         return modelMapper.map(equipment, EquipmentDto.class);
     }
 
-    @PostMapping("/equipments")
+    @PostMapping()
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEquipment(@Validated @RequestBody EquipmentCreateDto equipmentCreateDto) {
 
@@ -71,7 +75,8 @@ public class EquipmentController {
         return new IdDto(equipment.getId());
     }
 
-    @DeleteMapping("/equipments/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEquipmentById(@PathVariable
                                     @NotNull
@@ -81,7 +86,8 @@ public class EquipmentController {
         equipmentService.delete(id);
     }
 
-    @PutMapping("/equipments/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public EquipmentCreateDto updateEquipmentById(@PathVariable
                                                   @NotNull

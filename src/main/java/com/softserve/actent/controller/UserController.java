@@ -4,14 +4,21 @@ import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
+import com.softserve.actent.model.dto.review.CreateReviewDto;
+import com.softserve.actent.model.dto.review.ReviewDto;
 import com.softserve.actent.model.dto.user.UserRegistrationDto;
 import com.softserve.actent.model.dto.user.UserDto;
 import com.softserve.actent.model.dto.user.UserSettingsDto;
+import com.softserve.actent.model.entity.Review;
 import com.softserve.actent.model.entity.User;
+import com.softserve.actent.security.annotation.CurrentUser;
+import com.softserve.actent.security.model.UserPrincipal;
+import com.softserve.actent.service.ReviewService;
 import com.softserve.actent.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -34,13 +43,22 @@ import java.util.List;
 public class UserController {
 
     private final ModelMapper modelMapper;
-
     private final UserService userService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public UserController(ModelMapper modelMapper, UserService userService) {
+    public UserController(ModelMapper modelMapper, UserService userService, ReviewService reviewService) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.reviewService = reviewService;
+    }
+
+    @GetMapping(value = "/users/current")
+    @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getCurrentUser(@ApiIgnore @CurrentUser UserPrincipal currentUser) {
+
+        return modelMapper.map(currentUser, UserDto.class);
     }
 
     @PostMapping(value = "/users")
@@ -60,6 +78,38 @@ public class UserController {
         User user =(userSettingsToEntity(userSettingsDto));
 
         return userSettingsEntityToDto(userService.update(user, id));
+    }
+
+    @PutMapping(value = "/users/{userId}/reviews")
+    @PreAuthorize("hasRole('USER')")
+    @ResponseStatus(HttpStatus.OK)
+    public ReviewDto addReviewToUser(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                                     @Validated @RequestBody CreateReviewDto createReviewDto, Long userId) {
+
+        if (currentUser.getId().equals(userId)) {
+            // TODO: user can not write review for himself
+        }
+
+        Review review = modelMapper.map(createReviewDto, Review.class);
+        review.setAuthor(userService.get(currentUser.getId()));
+        review = reviewService.add(review);
+
+        User user = userService.get(userId);
+        user.getReviews().add(review);
+        userService.update(user, userId);
+
+        return modelMapper.map(review, ReviewDto.class);
+    }
+
+    @GetMapping(value = "/users/{userId}/reviews")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewDto> getUserReviews(Long userId) {
+
+        List<Review> reviews = userService.get(userId).getReviews();
+
+        return reviews.stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/users")

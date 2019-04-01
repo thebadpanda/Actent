@@ -24,7 +24,11 @@ public enum ExceptionCode {
 
     CHAT_NOT_FOUND(2090),
 
-    MESSAGE_NOT_FOUND(2060);
+    NOT_AUTHORIZED(2125),
+
+    MESSAGE_NOT_FOUND(2060),
+
+    USER_NOT_FOUND(2090);
 
     public final int exceptionCode;
 

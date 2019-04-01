@@ -1,7 +1,6 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
-import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Country;
@@ -28,37 +27,24 @@ public class CountryServiceImpl implements CountryService {
     @Transactional
     @Override
     public Country add(Country country) {
-        if (isCountryAlreadyExistInDatabase(country.getName())) {
-            throw new DuplicateValueException(
-                    ExceptionMessages.COUNTRY_ALREADY_EXIST,
-                    ExceptionCode.DUPLICATE_VALUE);
-        } else {
-            return countryRepository.save(country);
-        }
+        return countryRepository.save(country);
     }
 
     @Transactional
     @Override
     public Country update(Country country, Long countryId) {
-        Optional<Country> countryOptional = countryRepository.findById(countryId);
 
-        if (countryOptional.isPresent()) {
-            if (isCountryAlreadyExistInDatabase(country.getName())) {
-                throw new DuplicateValueException(
-                        ExceptionMessages.COUNTRY_ALREADY_EXIST,
-                        ExceptionCode.DUPLICATE_VALUE);
-            } else {
-                country.setId(countryId);
-                return countryRepository.save(country);
-            }
+        if (countryRepository.existsById(countryId)) {
+            country.setId(countryId);
+            return countryRepository.save(country);
         } else {
             throw new ResourceNotFoundException(
                     ExceptionMessages.COUNTRY_NOT_FOUND,
                     ExceptionCode.NOT_FOUND);
-
         }
     }
 
+    @Override
     public Country get(Long countryId) {
         return countryRepository.findById(countryId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -68,14 +54,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<Country> getAll() {
-        List<Country> countries = countryRepository.findAll();
-
-        if (countries.isEmpty()) {
-            throw new ResourceNotFoundException(
-                    ExceptionMessages.NO_COUNTRIES_IN_BASE,
-                    ExceptionCode.NOT_FOUND);
-        }
-        return countries;
+        return countryRepository.findAll();
     }
 
     @Transactional
@@ -90,19 +69,5 @@ public class CountryServiceImpl implements CountryService {
                     ExceptionMessages.COUNTRY_NOT_FOUND,
                     ExceptionCode.NOT_FOUND);
         }
-    }
-
-    boolean isCountryAlreadyExistInDatabase(String countryName) {
-        for (Country country : getCountries()) {
-            if (countryName.equals(country.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private List<Country> getCountries() {
-        List<Country> countries = countryRepository.findAll();
-        return countries;
     }
 }
