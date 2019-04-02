@@ -114,6 +114,7 @@ public class UserController {
 
     @GetMapping(value = "/users")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('USER')")
     public List<UserSettingsDto> getUsers(@RequestParam(value = "email", required = false)
                                           @Email(message = StringConstants.USER_EMAIL_NOT_VALID)
                                           @Size(max = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE)
