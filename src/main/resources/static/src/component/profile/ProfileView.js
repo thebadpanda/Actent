@@ -24,8 +24,16 @@ export default class ProfileView extends React.Component {
                 disabled={this.props.profileData.id === ''}
                 onClick={this.props.onEditClick}
             >Edit
-            </Button>) :
-            null;
+            </Button>)
+            :
+            (<Button
+                label="Add review"
+                color="secondary"
+                variant="contained"
+                disabled={this.props.profileData.id === ''}
+                onClick={this.props.onAddReviewClick}
+            >Edit
+            </Button>);
 
         const img = this.props.profileData.avatar !== null ?
             (<img src={getImageUrl(this.props.profileData.avatar.filePath)}
