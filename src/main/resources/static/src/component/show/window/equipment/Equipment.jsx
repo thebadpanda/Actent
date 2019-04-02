@@ -13,7 +13,7 @@ class Equipment extends React.Component {
                     <MDBCol>
                         <MDBJumbotron style={{ padding: "2rem 2rem" }}>
 
-                            <div className="col-md-12 d-flex justify-content-start">
+                            <div id="createbutton" className="col-md-12 d-flex justify-content-end">
                                 <DeleteEquipment/>
                             </div>
 
