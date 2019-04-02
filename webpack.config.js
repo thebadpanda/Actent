@@ -27,9 +27,8 @@ const config = {
                 use: ["style-loader", "css-loader"]
             },
             {
-                test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
-                loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
-
+                test: /.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                use: "url-loader?limit=100000"
             }
         ]
     }
