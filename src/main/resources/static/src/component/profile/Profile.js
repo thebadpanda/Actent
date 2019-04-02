@@ -24,6 +24,7 @@ export default class Profile extends React.Component {
         this.state = {
             userId: 1,
             isEdit: false,
+            isReviewing: false,
             isMyProfile: true, // isMyProfile: +this.props.match.params.userId === getCurrentUser().getId(),
             firstName: '',
             lastName: '',
@@ -80,6 +81,12 @@ export default class Profile extends React.Component {
         });
     };
 
+    handleAddReview = () => {
+      this.setState( {
+          isReviewing: true
+      })
+    };
+
     handleClose = () => {
         this.setState({
             isEdit: false
@@ -111,6 +118,7 @@ export default class Profile extends React.Component {
                 profileData={profileData}
                 isMyProfile={this.state.isMyProfile}
                 onEditClick={this.handleEditClick}
+                onAddReviewClick={this.handleAddReview()}
             />);
 
         return (

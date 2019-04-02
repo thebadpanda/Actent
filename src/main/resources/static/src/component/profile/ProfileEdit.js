@@ -41,24 +41,64 @@ export default class ProfileEdit extends React.Component {
         };
     }
 
-    handleFirstName = (event) => this.setState({firstName: event.target.value});
+    handleFirstName = (event) => {
+        if (event.target.length > 2 || event.target.length < 30) {
+            this.setState({firstName: event.target.value, errorFirstName: ''});
+        }
+        else {
+            this.setState({ errorFirstName: 'First name must be from 2 to 30 symbols'})
+        }
+    };
 
-    handleLastName = (event) => this.setState({lastName: event.target.value});
+    handleLastName = (event) => {
+        if (event.target.length > 2 || event.target.length < 30) {
+            this.setState({lastName: event.target.value, errorLastName: ''});
+        }
+        else {
+            this.setState({ errorLastName: 'First name must be from 2 to 30 symbols'})
+        }
+    };
 
-    handlePhone = (event) => this.setState({phone: event.target.value});
+    handlePhone = (event) => {
+        const regex = /^$|[0-9]{10,12}/;
+        if (regex.test(event.target.value === true)) {
+            this.setState({phone: event.target.value, errorPhone: ''});
+        }
+        else {
+            this.setState({errorPhone: 'Phone number not valid'})
+        }
+    };
 
-    handleLogin = (event) => this.setState({login: event.target.value});
+    handleLogin = (event) => {
+        if (event.target.length > 2 || event.target.length < 30) {
+            this.setState({login: event.target.value, errorLogin: ''});
+        }
+        else {
+            this.setState({ errorLogin: 'First name must be from 2 to 30 symbols'})
+        }
+    };
 
-    handleAddress = (event) => this.setState({address: event.target.value});
+    handleAddress = (event) => {
+        this.setState({address: event.target.value});
+    };
 
-    handleBirthday = (event, date) => this.setState({birthday: date});
+    handleBirthday = (event, date) => {
+        this.setState({birthday: date});
+    };
 
     handleBio = (event) => {
-        if ()
-        this.setState({bio: event.target.value});
-    }
+        if (event.target.length < 500) {
+            this.setState({bio: event.target.value, errorBio: ''});
 
-    handleInterests = (event) => this.setState({interests: event.target.value});
+        }
+        else {
+            this.setState( {errorBio: 'Bio must be up to 500 symbols'});
+        }
+    };
+
+    handleInterests = (event) => {
+        this.setState({interests: event.target.value});
+    };
 
     handleEmail = (event) => {
         const regex = /^\S+@\S+\.\S+$/;
@@ -260,6 +300,4 @@ export default class ProfileEdit extends React.Component {
             </div>
         )
     }
-
-
 }
