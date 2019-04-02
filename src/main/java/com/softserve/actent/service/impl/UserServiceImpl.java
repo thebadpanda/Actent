@@ -86,6 +86,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
+    @Override
+    public User registrationUpdate(User user, Long id) {
+        if (userRepository.existsById(id)) {
+            user.setId(id);
+            return userRepository.save(user);
+        } else {
+            throw new AccessDeniedException(ExceptionMessages.USER_NOT_REGISTRED, ExceptionCode.NOT_FOUND);
+        }
+    }
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
@@ -113,5 +124,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userRepository.findUserByLogin(login).orElseThrow(() ->
+                new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_LOGIN_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 }

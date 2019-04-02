@@ -12,6 +12,7 @@ import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.MessageService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,19 +37,30 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public Message add(Message message) {
-        message.setMessageType(MessageType.TEXT);
-        return messageRepository.save(message);
+        Message newMessage = new Message();
+        newMessage.setChat(message.getChat());
+        newMessage.setSender(message.getSender());
+        newMessage.setMessageContent(message.getMessageContent());
+        newMessage.setMessageType(MessageType.TEXT);
+        return messageRepository.save(newMessage);
     }
 
     @Override
     @Transactional
     public Message addImageMessage(Message message) {
         Image image = new Image();
+<<<<<<< HEAD
 //        image.setHash(message.getImage().getHash());
+=======
+        Message newMessage = new Message();
+        image.setHash(message.getImage().getHash());
+>>>>>>> develop
         image.setFilePath(message.getImage().getFilePath());
-        message.setMessageType(MessageType.IMAGE);
-        message.setImage(imageService.add(image));
-        return messageRepository.save(message);
+        newMessage.setMessageType(MessageType.IMAGE);
+        newMessage.setImage(imageService.add(image));
+        newMessage.setSender(message.getSender());
+        newMessage.setChat(message.getChat());
+        return messageRepository.save(newMessage);
     }
 
     @Override
@@ -87,33 +99,33 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public Message update(Message message, Long id) {
+        Message newMessage = new Message();
+        newMessage.setChat(message.getChat());
+        newMessage.setSender(message.getSender());
+        newMessage.setMessageContent(message.getMessageContent());
+
         Optional<Message> optionalMessage = messageRepository.findById(id);
 
-        if (optionalMessage.isPresent() && checkCredential(optionalMessage, message)) {
+        if (optionalMessage.isPresent() && checkCredential(optionalMessage, newMessage)) {
 
-            message.setId(id);
-            message.setMessageType(MessageType.TEXT);
-            return messageRepository.save(message);
+            newMessage.setId(id);
+            newMessage.setMessageType(MessageType.TEXT);
+            return messageRepository.save(newMessage);
         } else {
             throw new ResourceNotFoundException(ExceptionMessages.MESSAGE_NOT_FOUND, MESSAGE_NOT_FOUND);
         }
     }
 
     @Override
-    public List<Message> getAllMessagesByChatId(Long id) {
+    public List<Message> getCurrentMessagesByChatId(Long chatId, Pageable pageable) {
+        return messageRepository.findAllByChatId(chatId, pageable).getContent();
 
-        List<Message> messages = messageRepository.findAllByChatId(id);
+    }
 
-        if (messages.isEmpty()) {
+    @Override
+    public List<Message> getMessagesByChatId(Long chatId) {
+        return messageRepository.findAllByChatId(chatId);
 
-            throw new ResourceNotFoundException(
-                    ExceptionMessages.MESSAGE_NOT_FOUND,
-                    MESSAGE_NOT_FOUND
-            );
-        } else {
-
-            return messages;
-        }
     }
 
     private boolean checkCredential(Optional<Message> optionalMessage, Message message) {

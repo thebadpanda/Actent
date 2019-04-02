@@ -3,10 +3,10 @@ import ReactDOM from "react-dom";
 import Profile from "./component/profile/Profile";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {getMuiTheme} from "material-ui/styles";
+import Layout from './Layout';
+import './styles/index.css';
 
-const muiTheme = getMuiTheme();
-
+// TODO: remove
 class App extends React.Component {
     render() {
         return (
@@ -17,9 +17,11 @@ class App extends React.Component {
     }
 }
 
+//TODO: remove <App/>
 ReactDOM.render(
     <Router>
         <MuiThemeProvider>
+            <Layout/>
             <App/>
         </MuiThemeProvider>
     </Router>,

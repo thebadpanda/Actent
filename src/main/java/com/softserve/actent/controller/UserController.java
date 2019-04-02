@@ -84,7 +84,8 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public ReviewDto addReviewToUser(@ApiIgnore @CurrentUser UserPrincipal currentUser,
-                                     @Validated @RequestBody CreateReviewDto createReviewDto, Long userId) {
+                                     @Validated @RequestBody CreateReviewDto createReviewDto,
+                                     @PathVariable Long userId) {
 
         if (currentUser.getId().equals(userId)) {
             // TODO: user can not write review for himself
@@ -94,16 +95,16 @@ public class UserController {
         review.setAuthor(userService.get(currentUser.getId()));
         review = reviewService.add(review);
 
-        User user = userService.get(userId);
-        user.getReviews().add(review);
-        userService.update(user, userId);
+        User target = userService.get(userId);
+        target.getReviews().add(review);
+        userService.update(target, userId);
 
         return modelMapper.map(review, ReviewDto.class);
     }
 
     @GetMapping(value = "/users/{userId}/reviews")
     @ResponseStatus(HttpStatus.OK)
-    public List<ReviewDto> getUserReviews(Long userId) {
+    public List<ReviewDto> getUserReviews(@PathVariable Long userId) {
 
         List<Review> reviews = userService.get(userId).getReviews();
 

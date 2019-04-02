@@ -106,7 +106,7 @@ public class MessageServiceImplTest {
 
     @Test
     public void given2Messages_findAllByChatId_thenReturn2Records() {
-        assertThat(messageService.getAllMessagesByChatId(chatId).size()).isEqualTo(messageCount);
+        assertThat(messageService.getMessagesByChatId(chatId).size()).isEqualTo(messageCount);
     }
 
     @Test
@@ -118,24 +118,6 @@ public class MessageServiceImplTest {
     public void whenFindAllIsEmpty_thenExceptionShouldBeThrown() {
         Mockito.when(messageRepository.findAll()).thenReturn(Collections.emptyList());
         assertThat(messageService.getAll().size()).isEqualTo(messageCount);
-    }
-
-    @Test
-    public void whenAddMessage_thenMessageShouldBeReturned() {
-        assertThat(messageService.add(messageWithText)).isEqualTo(messageWithText);
-    }
-
-    @Test
-    public void whenAddImageMessage_thenMessageShouldBeReturned() {
-
-        assertThat(messageService.add(messageWithImage)).isEqualTo(messageWithImage);
-    }
-
-
-    @Test
-    public void whenUpdateMessage_thenMessageShouldBeReturned() {
-
-        assertThat(messageService.update(messageWithText, firstId)).isEqualTo(messageWithText);
     }
 
     @Test(expected = ValidationException.class)
