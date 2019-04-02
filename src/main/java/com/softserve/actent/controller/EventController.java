@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(UrlConstants.API_V1)
+@PreAuthorize("isAnonymous()")
 public class EventController {
 
     private final EventService eventService;
@@ -106,6 +108,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/events")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEvent(@Validated @RequestBody EventCreationDto eventCreationDto) {
 
@@ -116,6 +119,7 @@ public class EventController {
     }
 
     @PutMapping(value = "events/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEventById(@Validated @RequestBody EventUpdateDto eventUpdateDto,
                                     @PathVariable
@@ -130,6 +134,7 @@ public class EventController {
     }
 
     @DeleteMapping(value = "/events/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEventById(@PathVariable
                                 @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)

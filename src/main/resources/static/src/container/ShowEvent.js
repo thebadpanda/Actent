@@ -2,7 +2,7 @@ import React from 'react';
 import Show from '../component/show/Show.jsx';
 import Axios from 'axios';
 
-class App extends React.Component {
+class ShowEvent extends React.Component {
 
     state = {
         title: 'Super party event',
@@ -101,4 +101,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default ShowEvent;
