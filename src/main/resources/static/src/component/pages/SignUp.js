@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import { registerUser } from '../../util/apiUtils';
 
 export default class SignUp extends React.Component{
 
@@ -60,7 +61,7 @@ export default class SignUp extends React.Component{
             password: this.state.password
         };
 
-        axios.post(`http://localhost/api/v1/auth/signup`, user)
+        registerUser(user)
             .then(res => {
                 NotificationManager.success('Verification message has been sent to your e-mail', 'Check your e-mail');
             }).catch((error) => {

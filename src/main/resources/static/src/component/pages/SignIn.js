@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import { saveAuthorizationToken, setAuthorizationHeader, getTokenFromCredentials } from '../../util/apiUtils';
 
 export default class SignIn extends React.Component{
 
@@ -28,12 +29,16 @@ export default class SignIn extends React.Component{
             usernameOrEmail: this.state.usernameOrEmail,
         };
 
-        axios.post(`http://localhost/api/v1/auth/signin`, user)
+        getTokenFromCredentials(user)
             .then((response) => {
-                    this.props.history.push('/home');
-            }).catch((error) => {
+                response.data.accessToken ? saveAuthorizationToken(response.data.accessToken) : Promise.reject("Access token is undefined.");
+                this.props.history.push('/home');
+        })
+            .catch((error) => {
                 NotificationManager.error('Invalid E-mail or Password!', 'Error!', 5000);
-            });
+        });
+
+
     };
 
     isValid = () => {

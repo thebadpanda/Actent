@@ -9,6 +9,10 @@ export default class HomePage extends React.Component {
     }
 
 
+    sendReview = () => {
+        this.props.history.push('/reviews');
+    }
+
     sendLogin = () => {
         this.props.history.push('/auth/sign-in')
     }
@@ -30,6 +34,12 @@ export default class HomePage extends React.Component {
                         <Button className="FormField__Button" variant="contained" color="primary"
                                 onClick={this.sendRegistration}>
                             Registration
+                        </Button>
+                    </div>
+                    <div>
+                        <Button className="FormField__Button" variant="contained" color="primary"
+                                onClick={this.sendReview}>
+                            Review
                         </Button>
                     </div>
                 </div>
