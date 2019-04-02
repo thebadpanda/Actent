@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    List<Message> findAllByChatId(Long chatId);
-
     Page<Message> findAllByChatId(Long chatId, Pageable pageable);
+
+    List<Message> findAllByChatId(Long chatId);
 }
