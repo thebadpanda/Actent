@@ -1,9 +1,9 @@
 package com.softserve.actent.model.dto.converter;
 
-import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.model.dto.chat.ChatInfoDto;
 import com.softserve.actent.model.dto.chat.UserForChatDto;
 import com.softserve.actent.model.entity.Chat;
+import com.softserve.actent.repository.MessageRepository;
 import com.softserve.actent.service.MessageService;
 import com.softserve.actent.utils.modelmapper.IModelMapperConverter;
 import org.modelmapper.ModelMapper;
@@ -19,7 +19,7 @@ public class ChatInfoConverter implements IModelMapperConverter<Chat, ChatInfoDt
     private ModelMapper modelMapper;
 
     @Autowired
-    private MessageService messageService;
+    private MessageRepository messageRepository;
 
     @Override
     public Chat convertToEntity(ChatInfoDto dto) {
@@ -34,11 +34,8 @@ public class ChatInfoConverter implements IModelMapperConverter<Chat, ChatInfoDt
         chatInfoDto.setId(entity.getId());
         chatInfoDto.setChatType(entity.getType());
 
-        try{
-            chatInfoDto.setCountOfMessages(Long.valueOf(messageService.getAllMessagesByChatId(entity.getId()).size()));
-        }catch (ResourceNotFoundException ex){
-            chatInfoDto.setCountOfMessages(0L);
-        }
+        chatInfoDto.setCountOfMessages((long) messageRepository.findAllByChatId(entity.getId()).size());
+
         chatInfoDto.setBannedUserInChatDto(entity.getBannedUsers().stream()
                 .map(user -> modelMapper.map(user, UserForChatDto.class))
                 .collect(Collectors.toList()));
