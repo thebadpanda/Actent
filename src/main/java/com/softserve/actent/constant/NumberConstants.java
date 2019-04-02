@@ -52,4 +52,6 @@ public class NumberConstants {
     public static final short DEFAULT_MIN_VALUE_FOR_CATEGORY_ID = 0;
 
     public static final short USER_STATUS_MAX_LENGTH = 13;
+
+    public static final short SHOW_THIRTY_MESSAGES_PER_PAGE = 30;
 }
