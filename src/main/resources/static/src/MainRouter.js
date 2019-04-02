@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './component/Homepage';
+import RenderEventFilterPage from './component/EventFilter/RenderEventFilterPage';
 import SignUpInForm from './component/SignUpInForm';
 import {Route, Switch, Redirect} from "react-router-dom";
 import { confidureAxios } from "./util/apiUtils";
@@ -14,7 +14,8 @@ export default class MainRouter extends React.Component{
         return(
             <main>
                 <Switch>
-                    <Route path='/home' component={Home} />
+                    <Route path='/home' component={RenderEventFilterPage} />
+
                     <Route path='/auth' component={SignUpInForm} />
                     <Route path='/reviews'  render={()=><ReviewForm targetId={2}/>} />
                     <Redirect path='*' to='/home' />
