@@ -18,6 +18,7 @@ export default class CreateEquipment extends React.Component {
             satisfied: false,
             title: undefined
         }
+        errorText: '',
     };
 
     handleClickOpen = () => {
@@ -68,6 +69,8 @@ export default class CreateEquipment extends React.Component {
                         <TextField
                             name="title"
                             required={true}
+                            error={this.state.errorText.lenght === 0 ? false : true}
+                            helperText={"asdadasd"}
                             autoFocus
                             margin="dense"
                             id="title"
