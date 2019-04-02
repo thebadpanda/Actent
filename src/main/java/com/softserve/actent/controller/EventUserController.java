@@ -64,6 +64,17 @@ public class EventUserController {
         return eventsUsersConverter.convertToDto(eventUser);
     }
 
+    @GetMapping(value = "/eventsUsers/events/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventUserDto> getEventUserByEventId(@PathVariable
+                                                        @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)
+                                                        @Positive(message = StringConstants.EVENT_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
+                                                                Long id) {
+
+        List<EventUser> eventUserList = eventUserService.getByEventId(id);
+        return eventsUsersConverter.convertToDto(eventUserList);
+    }
+
     @PutMapping(value = "/eventsUsers/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventUserDto updateEventsUsers(@Validated @RequestBody EventUserDto eventUserDto,

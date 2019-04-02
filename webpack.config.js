@@ -20,15 +20,24 @@ const config = {
             {
                 test: /\.jsx?/,
                 exclude: /node_modules/,
-                use: ["babel-loader"]
+                loader: ["babel-loader"]
             },
             {
                 test: /\.css$/,
                 use: ["style-loader", "css-loader"]
             },
             {
+<<<<<<< HEAD
                 test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
                 loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
+=======
+                test: /\.scss$/,
+                use: ["sass-loader"]
+            },
+            {
+                test: /.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                use: "url-loader?limit=100000"
+>>>>>>> a
             }
         ]
     }
