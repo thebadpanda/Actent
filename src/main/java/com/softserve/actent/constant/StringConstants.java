@@ -103,4 +103,7 @@ public class StringConstants {
 
     public static final String BEARER = "Bearer";
     public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    public static final String EMAIL_LOGIN = "onlyTwo2111@gmail.com";
+    public static final String EMAIL_PASSWORD = "qwert1234asd";
 }
