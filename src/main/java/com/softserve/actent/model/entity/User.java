@@ -99,4 +99,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(length = NumberConstants.USER_ROLE_MAX_LENGTH)
     private Set<Role> roleset;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = NumberConstants.USER_STATUS_MAX_LENGTH)
+    private Status status;
+
+    private String uuid;
 }
