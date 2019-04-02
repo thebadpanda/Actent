@@ -13,12 +13,6 @@ class App extends React.Component {
         equipments: ['first equipment', 'second equipment', 'third equipment'],
         reviews: ['first review', 'second review', 'third review', 'fff review', 'fourth review', 'fifth review', 'sixth review', 'seventh review', 'eight review', 'ten review', 'eleven review', 'twelve review', 'thirteen review', 'fourteen review', '15 review', '16 review', '17 review', '18 review', '19 review', '20 review', '21 review', '22 review', '23 review', '24 review', '25 review', '26 review', '27 review', '28 review', '29 review'],
 
-        creationDate: undefined,
-        startDate: undefined,
-        duration: undefined,
-        capacity: undefined,
-        category: undefined,
-
         participants: undefined,
         spectators: undefined
     }
@@ -38,7 +32,7 @@ class App extends React.Component {
                 description: eve.data['description'],
 
                 image: eve.data['image'],
-                chat: eve.data['chat'],
+                chat: eve.data.Chat.id,
 
                 equipments: eve.data['equipments'],
                 //reviews: eve.data.feedback,
@@ -61,8 +55,6 @@ class App extends React.Component {
     getParticipants = () => {
 
         Axios.get(`http://localhost:8080/api/v1/eventsUsers/events/1`).then(part => {
-
-            console.log(part.data.length);
 
             let participantsCount = 0;
             let spectatorsCount = 0;

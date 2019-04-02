@@ -2,11 +2,6 @@ import React from 'react';
 
 class Info extends React.Component {
 
-    constructor(props) {
-        super(props);
-        console.log(props);
-    }
-
     render() {
 
         return (
