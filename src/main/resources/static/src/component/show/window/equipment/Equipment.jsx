@@ -2,20 +2,24 @@ import React from "react";
 import { MDBJumbotron, MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import Satisfie from './Satisfie.jsx'
 import AssigneUser from './AssigneUser.jsx'
+import DeleteEquipment from './DeleteEquipment.jsx'
 
 class Equipment extends React.Component {
-
 
     render() {
         return (
             <MDBContainer className="mt-5 text-center">
                 <MDBRow>
                     <MDBCol>
-                        <MDBJumbotron style={{ padding: "2rem 2rem", height: "300px" }}>
+                        <MDBJumbotron style={{ padding: "2rem 2rem" }}>
+
+                            <div className="col-md-12 d-flex justify-content-start">
+                                <DeleteEquipment/>
+                            </div>
 
                             <div className="row">
                                 <div className="col-md-12">
-                                    <h2 className="h1 display-3">{this.props.equipment.title}</h2>
+                                    <h2 className="h2 display-4">{this.props.equipment.title}</h2>
                                 </div>
                             </div>
 
