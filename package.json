@@ -23,7 +23,6 @@
   "homepage": "https://github.com/lv-381-java/Actent#readme",
   "devDependencies": {
     "@babel/core": "^7.4.0",
-
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
