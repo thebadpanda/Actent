@@ -14,4 +14,6 @@ public class EquipmentDto {
     private String assignedUserFirstName;
     private String assignedUserLastName;
     private String assignedEventTitle;
+    private Long assignedUserId;
+    private Long assignedEventId;
 }
