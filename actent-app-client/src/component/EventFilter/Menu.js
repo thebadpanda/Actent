@@ -50,41 +50,17 @@ export default class Menu extends Component {
                         <MDBNavItem>
                             <MDBNavLink to='#!'>Pricing</MDBNavLink>
                         </MDBNavItem>
-                        <MDBNavItem>
-                            <MDBDropdown>
-                                <MDBDropdownToggle nav caret>
-                                    <div className='d-none d-md-inline'>Dropdown</div>
-                                </MDBDropdownToggle>
-                                <MDBDropdownMenu className='dropdown-default' right>
-                                    <MDBDropdownItem href='#!'>Action</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Another Action</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
-                                </MDBDropdownMenu>
-                            </MDBDropdown>
-                        </MDBNavItem>
                     </MDBNavbarNav>
                     <MDBNavbarNav right>
-                        <MDBNavItem>
-                            <MDBNavLink className='waves-effect waves-light' to='#!'>
-                                <MDBIcon fab icon='twitter' />
-                            </MDBNavLink>
-                        </MDBNavItem>
-                        <MDBNavItem>
-                            <MDBNavLink className='waves-effect waves-light' to='#!'>
-                                <MDBIcon fab icon='google-plus-g' />
-                            </MDBNavLink>
-                        </MDBNavItem>
                         <MDBNavItem>
                             <MDBDropdown>
                                 <MDBDropdownToggle nav caret>
                                     <MDBIcon icon='user' />
                                 </MDBDropdownToggle>
                                 <MDBDropdownMenu className='dropdown-default' right>
-                                    <MDBDropdownItem href='#!'>Action</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Another Action</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
-                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
+                                    <MDBDropdownItem href='/auth/sign-in'>Sign In</MDBDropdownItem>
+                                    <MDBDropdownItem href='/auth/sign-up'>Sign Up</MDBDropdownItem>
+                                    <MDBDropdownItem href='/profile'>Profile</MDBDropdownItem>
                                 </MDBDropdownMenu>
                             </MDBDropdown>
                         </MDBNavItem>
