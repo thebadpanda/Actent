@@ -5,6 +5,9 @@ import {
     BEARER,
     API_USERS_URL,
     API_REVIEWS_URL,
+    API_SIGN_IN_URL,
+    API_AUTH_URL,
+    API_SIGN_UP_URL,
 } from '../constants/apiConstants';
 import axios from 'axios';
 
@@ -13,12 +16,12 @@ export const testConfiguration = _ => {
     axios.defaults.headers.common['Content-Type'] = 'application/json';
 
     saveAuthorizationToken(
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTUzNjI1NzcxLCJleHAiOjE1NTQyMjY5NzF9._Wx-dWTON7aORB30XfPvUvaNvu9kyUS_zfrp3W9gZvyaD1GFLLkMTBlINnNfB7TIaYum_GHhcarZX-i4D3XfCg',
+        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTU0MjU0NTU3LCJleHAiOjE1NTQ4NTkzNTd9.uz6_MnbzwnBF5G1yr_ZTDb7HlzWyUaYxlpWRgcO-zwfJQF7lM189nxxx-3TXaZad7RF1CspnKVL3Q1cue80tPQ',
     );
     setAuthorizationHeader();
 };
 
-export const confidureAxios = _ => {
+export const configureAxios = _ => {
     axios.defaults.baseURL = API_BASE_URL;
     axios.defaults.headers.common['Content-Type'] = 'application/json';
 };
@@ -61,3 +64,8 @@ export const getUserById = async userId =>
     checkTokenHeader() ? axios.get(`${API_USERS_URL}/${userId}`) : Promise.reject('No access token set.');
 
 export const checkTokenHeader = _ => (axios.defaults.headers.common[AUTHORIZATION_HEADER] ? true : false);
+
+export const getTokenFromCredentials = async userCredentials =>
+    axios.post(API_AUTH_URL + API_SIGN_IN_URL, userCredentials);
+
+export const registerUser = async userData => axios.post(API_AUTH_URL + API_SIGN_UP_URL, userData);
