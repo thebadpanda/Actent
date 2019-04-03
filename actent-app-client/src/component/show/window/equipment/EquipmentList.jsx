@@ -77,6 +77,16 @@ class EquipmentList extends React.Component {
                 });
     };
 
+    handleDeleteEquipment = (equipment_id) => {
+
+        axios.delete(`http://localhost:8080/api/v1/equipments/${equipment_id}`)
+                .then(res => {
+                    this.getEquipments();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    };
 
     render() {
         return (
@@ -90,6 +100,7 @@ class EquipmentList extends React.Component {
                                                     <Equipment
                                                             equipment={item}
                                                             handleUpdateEquipment={this.handleUpdateEquipment}
+                                                            handleDeleteEquipment={this.handleDeleteEquipment}
                                                             creatorId={this.props.creatorId}
                                                     />
                                                 </div>
