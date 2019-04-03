@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @Validated
 @RequestMapping(UrlConstants.API_V1)
-@PreAuthorize("isAnonymous()")
+@PreAuthorize("permitAll()")
 public class CategoryController {
 
     private final CategoryService categoryService;
