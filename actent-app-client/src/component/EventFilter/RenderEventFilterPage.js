@@ -151,7 +151,8 @@ export default class RenderEventFilterPage extends React.Component {
                                 <div
                                     key={event.id}
                                     className='col-md-4 col-sm-12 align-self-center cart'
-                                    style={cartStyle}>
+                                    style={cartStyle}
+                                >
                                     <CardExample
                                         title={event.title}
                                         eventId={event.id}
