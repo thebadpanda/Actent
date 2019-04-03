@@ -1,15 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import DateFnsUtils from '@date-io/date-fns';
 import { apiUrl } from './Profile.js';
 import { getImageUrl } from './ProfileView';
-import { Card } from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import FileUpload from './FileUpload';
-import Typography from '@material-ui/core/Typography';
-import './style.css';
+import styles from './style.css';
+import { Button, Card, Typography, TextField } from '@material-ui/core';
+import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 export default class ProfileEdit extends React.Component {
     constructor(props) {
@@ -283,10 +280,10 @@ export default class ProfileEdit extends React.Component {
                     </div>
                     <div className='styleButtons'>
                         <Button label='Cancel' variant='contained' color='secondary' onClick={this.props.onCloseClick}>
-                            Cancel
+                            Cancel{' '}
                         </Button>
                         <Button label='Save' color='primary' variant='contained' onClick={this.saveUserSettings}>
-                            Save
+                            Save{' '}
                         </Button>
                     </div>
                 </Card>
