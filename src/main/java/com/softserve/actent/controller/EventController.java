@@ -9,13 +9,17 @@ import com.softserve.actent.model.dto.converter.EventConverter;
 import com.softserve.actent.model.dto.converter.EventCreationConverter;
 import com.softserve.actent.model.dto.event.EventCreationDto;
 import com.softserve.actent.model.dto.event.EventDto;
+import com.softserve.actent.model.dto.event.EventFilterDto;
 import com.softserve.actent.model.dto.event.EventUpdateDto;
 import com.softserve.actent.model.entity.Event;
+import com.softserve.actent.repository.EventFilterRepository;
 import com.softserve.actent.service.EventService;
+import com.softserve.actent.service.impl.EventSpecification;
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -33,23 +38,27 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(UrlConstants.API_V1)
+@PreAuthorize("isAnonymous()")
 public class EventController {
 
     private final EventService eventService;
     private final EventCreationConverter eventCreationConverter;
     private final EventConverter eventConverter;
     private final ModelMapper modelMapper;
+    private final EventFilterRepository eventFilterRepository;
 
     @Autowired
     public EventController(EventService eventService,
                            EventCreationConverter eventCreationConverter,
                            EventConverter eventConverter,
-                           ModelMapper modelMapper) {
+                           ModelMapper modelMapper,
+                           EventFilterRepository eventFilterRepository) {
 
         this.eventService = eventService;
         this.eventCreationConverter = eventCreationConverter;
         this.eventConverter = eventConverter;
         this.modelMapper = modelMapper;
+        this.eventFilterRepository = eventFilterRepository;
     }
 
     @GetMapping(value = "/events/all")
@@ -71,6 +80,17 @@ public class EventController {
         return eventConverter.convertToDto(event);
     }
 
+    @PostMapping(value = "/events/filter")
+    public List<EventDto> getEventsWithFilter(
+            @RequestBody EventFilterDto eventFilterDto) {
+        System.out.println(eventFilterDto);
+        List<Event> result = eventFilterRepository.findAll(EventSpecification.getTitle(eventFilterDto.getTitle())
+                .and(EventSpecification.getCategory(eventFilterDto.getCategoryId()))
+                .and(EventSpecification.getCity(eventFilterDto.getCityName()))
+                .and(EventSpecification.getDate(eventFilterDto.getDateFrom(), eventFilterDto.getDateTo())));
+        return eventConverter.convertToDto(result);
+    }
+
     @GetMapping(value = "/events/title/{title}")
     @ResponseStatus(HttpStatus.OK)
     public List<EventDto> getByTitle(@PathVariable
@@ -87,6 +107,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/events")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEvent(@Validated @RequestBody EventCreationDto eventCreationDto) {
 
@@ -97,6 +118,7 @@ public class EventController {
     }
 
     @PutMapping(value = "events/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEventById(@Validated @RequestBody EventUpdateDto eventUpdateDto,
                                     @PathVariable
@@ -111,6 +133,7 @@ public class EventController {
     }
 
     @DeleteMapping(value = "/events/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEventById(@PathVariable
                                 @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)

@@ -5,6 +5,7 @@ import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Event;
 import com.softserve.actent.model.entity.EventUser;
+import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.EventRepository;
 import com.softserve.actent.repository.EventUserRepository;
 import com.softserve.actent.repository.UserRepository;
@@ -69,6 +70,40 @@ public class EventUserServiceImpl implements EventUserService {
         eventUserRepository.deleteById(id);
     }
 
+    @Override
+    public List<EventUser> getByEventId(Long id) {
+
+        checkEventExistence(id);
+        Event event = new Event();
+        event.setId(id);
+
+        return eventUserRepository.findByEvent(event);
+    }
+
+    @Override
+    public List<EventUser> getByUserId(Long id) {
+
+        checkUserExistence(id);
+        User user = new User();
+        user.setId(id);
+
+        return eventUserRepository.findByUser(user);
+    }
+
+    private void checkEventExistence(Long id) {
+
+        if (!eventRepository.existsById(id)) {
+            throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+        }
+    }
+
+    private void checkUserExistence(Long id) {
+
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+        }
+    }
+
     private void checkForCorrectAddedData(EventUser eventUser) {
 
         if (eventUser == null || eventUser.getEvent() == null || eventUser.getUser() == null || eventUser.getType() == null) {
@@ -89,14 +124,5 @@ public class EventUserServiceImpl implements EventUserService {
         if (!eventUserRepository.existsById(id)) {
             throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
-    }
-
-    @Override
-    public List<EventUser> getByEventId(Long id) {
-
-        Event event = new Event();
-        event.setId(id);
-
-        return eventUserRepository.findByEvent(event);
     }
 }
