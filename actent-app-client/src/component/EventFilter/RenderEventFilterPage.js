@@ -22,8 +22,8 @@ export default class RenderEventFilterPage extends React.Component {
         filteredEvents: [],
         categoryId: [],
         cityName: '',
-        dateFrom: 0,
-        dateTo: 0,
+        dateFrom: undefined,
+        dateTo: undefined,
     };
 
     componentDidMount() {
@@ -151,9 +151,11 @@ export default class RenderEventFilterPage extends React.Component {
                                 <div
                                     key={event.id}
                                     className='col-md-4 col-sm-12 align-self-center cart'
-                                    style={cartStyle}>
+                                    style={cartStyle}
+                                >
                                     <CardExample
                                         title={event.title}
+                                        eventId={event.id}
                                         description={event.description}
                                         city={event.Location.Country.Region.City.name}
                                         category={event.Category.name}

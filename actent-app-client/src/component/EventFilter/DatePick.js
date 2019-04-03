@@ -1,5 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
@@ -32,15 +31,15 @@ export default class DatePicker extends React.Component {
 
     convertToLong = () => {
         if (this.state.from != undefined || this.state.from != null) {
-            console.log(this.state.from.getTime());
-            this.props.setDateRange(this.state.from.getTime(), 0);
+            console.log(this.state.from);
+            this.props.setDateRange(this.state.from, null);
             if (this.state.to != undefined || this.state.to != null) {
-                this.props.setDateRange(this.state.from.getTime(), this.state.to.getTime());
+                this.props.setDateRange(this.state.from, this.state.to);
             }
         } else {
             console.log('null');
             this.props.setButtonColor('info');
-            this.props.setDateRange(0, 0);
+            this.props.setDateRange(null, null);
         }
     };
 
@@ -74,8 +73,7 @@ export default class DatePicker extends React.Component {
                         onDayClick={this.handleDayClick}
                         disabledDays={past}
                     />
-                    <Helmet>
-                        <style>{`
+                    <style>{`
   .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
     background-color: #f0f8ff !important;
     color: #4a90e2;
@@ -92,7 +90,6 @@ export default class DatePicker extends React.Component {
     border-bottom-right-radius: 50% !important;
   }
 `}</style>
-                    </Helmet>
                 </div>
             </div>
         );

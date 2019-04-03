@@ -14,7 +14,9 @@ class Equipment extends React.Component {
                         <MDBJumbotron style={{ padding: "2rem 2rem" }}>
 
                             <div id="createbutton" className="col-md-12 d-flex justify-content-end">
-                                <DeleteEquipment/>
+                                <DeleteEquipment
+                                        creatorId={this.props.creatorId}
+                                />
                             </div>
 
                             <div className="row">
