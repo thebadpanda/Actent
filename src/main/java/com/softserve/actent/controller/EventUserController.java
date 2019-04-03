@@ -68,9 +68,9 @@ public class EventUserController {
     @GetMapping(value = "/eventsUsers/events/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<EventUserDto> getEventUserByEventId(@PathVariable
-                                                        @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)
-                                                        @Positive(message = StringConstants.EVENT_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
-                                                                Long id) {
+                                                    @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)
+                                                    @Positive(message = StringConstants.EVENT_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO)
+                                                            Long id) {
 
         List<EventUser> eventUserList = eventUserService.getByEventId(id);
         return eventsUsersConverter.convertToDto(eventUserList);
@@ -102,7 +102,6 @@ public class EventUserController {
     }
 
     @GetMapping(value = "/eventsUsers/allEvents/{userId}")
-    @PreAuthorize("isAuthenticated()")
     public List<EventUserDto> getAllFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                            @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                            @RequestParam(name = "city", required = false) String city,
@@ -117,7 +116,6 @@ public class EventUserController {
     }
 
     @GetMapping(value = "/eventsUsers/pastEvents/{userId}")
-    @PreAuthorize("isAuthenticated()")
     public List<EventUserDto> getAllPastEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                                      @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                                      @RequestParam(name = "city", required = false) String city,
@@ -132,7 +130,6 @@ public class EventUserController {
     }
 
     @GetMapping(value = "/eventsUsers/futureEvents/{userId}")
-    @PreAuthorize("isAuthenticated()")
     public List<EventUserDto> getAllFutureEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                                        @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                                        @RequestParam(name = "city", required = false) String city,
