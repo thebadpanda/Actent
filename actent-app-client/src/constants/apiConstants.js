@@ -8,3 +8,4 @@ export const API_REVIEWS_URL = '/reviews';
 export const API_AUTH_URL = '/auth';
 export const API_SIGN_IN_URL = '/signin';
 export const API_SIGN_UP_URL = '/signup';
+export const API_MESSAGES_URL = '/messages';

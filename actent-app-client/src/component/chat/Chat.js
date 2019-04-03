@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import {connect, sendMessage, showMessageOutput} from '../websockets/ws';
 import '../../styles/chat.css';
 import axios from 'axios';
+import {API_BASE_URL, API_MESSAGES_URL} from "../../constants/apiConstants";
 
 export default class Chat extends React.Component {
 
@@ -18,8 +19,7 @@ export default class Chat extends React.Component {
     }
 
     getListMessages = () => {
-
-             axios.get(`http://localhost:80/api/v1/messages/${this.state.chatId}`).then(res => {
+             axios.get(API_BASE_URL + API_MESSAGES_URL + `/${this.state.chatId}`).then(res => {
                 this.setState({messages: res.data}, () => {
                     this.state.messages.forEach(msg => showMessageOutput(msg))
                 })
