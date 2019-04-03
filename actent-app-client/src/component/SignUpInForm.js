@@ -11,7 +11,7 @@ export default class SignInUp extends React.Component {
                 <div className='App__Form'>
                     <div className='FormTitle'>
                         <NavLink
-                            to='/auth/sign-in'
+                            to='/auth/signIn'
                             activeClassName='FormTitle__Link--Active'
                             className='FormTitle__Link'
                         >
@@ -19,7 +19,7 @@ export default class SignInUp extends React.Component {
                         </NavLink>
                         or{' '}
                         <NavLink
-                            to='/auth/sign-up'
+                            to='/auth/signUp'
                             activeClassName='FormTitle__Link--Active'
                             className='FormTitle__Link'
                         >
@@ -27,8 +27,8 @@ export default class SignInUp extends React.Component {
                         </NavLink>
                     </div>
 
-                    <Route path={`${this.props.match.path}/sign-up`} component={SignUp} />
-                    <Route path={`${this.props.match.path}/sign-in`} component={SignIn} />
+                    <Route path={`${this.props.match.path}/signUp`} component={SignUp} />
+                    <Route path={`${this.props.match.path}/signIn`} component={SignIn} />
                 </div>
             </div>
         );
