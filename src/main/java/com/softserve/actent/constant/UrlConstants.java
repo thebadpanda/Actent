@@ -8,5 +8,7 @@ public class UrlConstants {
     public static final String API_V1_REGIONS = "/api/v1/regions";
     public static final String API_V1_CITIES = "/api/v1/cities";
     public static final String API_V1_LOCATIONS = "/api/v1/locations";
-  
+
+    public static final String EQUIPMENTS = "/equipments";
+
 }

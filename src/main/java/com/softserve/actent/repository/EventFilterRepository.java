@@ -9,3 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface EventFilterRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
 }
+
