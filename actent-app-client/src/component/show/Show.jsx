@@ -44,8 +44,12 @@ class Show extends React.Component {
 
                     <div className='but'>
                         <div className='b-1'>
-                            <Participant currentUserId={this.state.userId}/>
+                            <Participant 
+                                currentUserId={this.state.userId}
+                                eventId={this.props.eventId}
+                            />
                         </div>
+
                         <div className='b-2'>
                             <Spectator currentUserId={this.state.userId}/>
                         </div>

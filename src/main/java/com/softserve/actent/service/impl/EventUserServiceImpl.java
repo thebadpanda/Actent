@@ -1,6 +1,8 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.constant.StringConstants;
+import com.softserve.actent.exceptions.DuplicateValueException;
 import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Event;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 public class EventUserServiceImpl implements EventUserService {
@@ -116,6 +119,18 @@ public class EventUserServiceImpl implements EventUserService {
 
         if (!userRepository.existsById(eventUser.getUser().getId())) {
             throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+        }
+
+        checkIfThisUserIsAssignedAlready(eventUser);
+    }
+
+    private void checkIfThisUserIsAssignedAlready(EventUser eventUser) {
+
+        List<EventUser> list = eventUserRepository.findByUser(eventUser.getUser());
+        Predicate<Long> isPresent = id -> id.equals(eventUser.getEvent().getId());
+
+        if (list.stream().anyMatch(x -> isPresent.test(x.getEvent().getId()))) {
+            throw new DuplicateValueException(ExceptionMessages.USER_CAN_NOT_ASSIGNED_TWICE, ExceptionCode.DUPLICATE_VALUE);
         }
     }
 
