@@ -12,6 +12,7 @@ import com.softserve.actent.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @Validated
 @RequestMapping(UrlConstants.API_V1)
+@PreAuthorize("isAnonymous()")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -39,6 +41,7 @@ public class CategoryController {
 
     @PostMapping(value = "/categories")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
     public IdDto addCategory(@RequestBody @Validated CreateCategoryDto createCategoryDto) {
         Category parent = categoryService.getParent(createCategoryDto.getParentId());
         Category category = categoryService.add(new Category(createCategoryDto.getName(), parent));
@@ -103,11 +106,13 @@ public class CategoryController {
 
     @DeleteMapping(value = "/categories/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("isAuthenticated()")
     public void deleteCategoryById(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id) {
         categoryService.delete(id);
     }
 
     @PutMapping(value = "/categories/{id}")
+    @PreAuthorize("isAuthenticated()")
     public CreateCategoryDto update(@PathVariable @NotNull @Positive(message = StringConstants.CATEGORY_ID_MUST_BE_POSITIVE) Long id,
                                     @RequestBody @Validated CreateCategoryDto createCategoryDto) {
         Category parent = categoryService.getParent(createCategoryDto.getParentId());
