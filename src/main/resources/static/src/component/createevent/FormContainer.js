@@ -9,6 +9,10 @@ import {DatePicker, MuiPickersUtilsProvider, TimePicker} from "material-ui-picke
 import DateFnsUtils from "@date-io/date-fns";
 import Location from "./Location";
 import TextField from '@material-ui/core/TextField';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import './styles.css';
+
 
 class FormContainer extends Component {
     constructor(props) {
@@ -141,7 +145,8 @@ class FormContainer extends Component {
 
     render() {
         return (
-            <div className="">
+            <div className="mainWrapper">
+                <h1> Creating an event  </h1>
                 <Input
                     type={"text"}
                     title={"Title "}
