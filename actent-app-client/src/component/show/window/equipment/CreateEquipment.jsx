@@ -6,9 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { getCurrentUser } from '../../../../util/apiUtils';
 
 const TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS = "Title should be between 6 and 100 symbols";
-const DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_5HUNDRED_SYMBOLS = "Descriptions should be between 6 and 500 symbols";
+const DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_5HUNDRED_SYMBOLS = "Descriptions should be blank or between 6 and 500 symbols";
 
 export default class CreateEquipment extends React.Component {
 
@@ -21,8 +22,15 @@ export default class CreateEquipment extends React.Component {
             satisfied: false,
             title: undefined
         },
-        errorText: '',
+        errorTitleText: TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS,
+        errorDescriptionText: '',
+        currentUserId: undefined,
     };
+
+    constructor(props) {
+        super(props);
+        this.setCurrentUserId();
+    }
 
     handleClickOpen = () => {
         this.setState({open: true});
@@ -41,6 +49,20 @@ export default class CreateEquipment extends React.Component {
                 ...this.state.equipment,
                 [name]: value
             }
+        })
+
+        const titleText = this.isValidTitle() ? '' : TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS;
+        const descriptionText = this.isValidDescription() ? '' : DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_5HUNDRED_SYMBOLS
+
+        // console.log("isValidDescription");
+        // console.log(this.isValidDescription());
+        
+        console.log(this.state.equipment.description);
+        console.log(this.state.equipment.title);
+
+        this.setState({
+            errorDescriptionText: descriptionText,
+            errorTitleText: titleText,
         })
     }
 
@@ -62,7 +84,7 @@ export default class CreateEquipment extends React.Component {
 
     isValidDescription = () => {
 
-        if (this.state.equipment.description && this.state.equipment.description.length >= 500){
+        if (this.state.equipment.description && (this.state.equipment.description.length >= 500 || this.state.equipment.description.length <= 6)){
             return false
         }
 
@@ -77,12 +99,26 @@ export default class CreateEquipment extends React.Component {
         return false;
     }
 
+    setCurrentUserId = () => {
+
+        getCurrentUser().then(res => this.setState({ currentUserId: res.data.id })).catch(e => console.error(e));
+    }
+
     render() {
+
+        let createButton = null;
+        createButton = (!!this.state.currentUserId && (this.props.creatorId === this.state.currentUserId))
+            ?
+           (
+                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+                        Add new equipment
+                </Button>
+            )
+            : null;
+        
         return (
                 <div>
-                    <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-                        Add new equipment
-                    </Button>
+                    {createButton}
                     <Dialog
                             open={this.state.open}
                             onClose={this.handleClose}
@@ -96,8 +132,8 @@ export default class CreateEquipment extends React.Component {
                             <TextField
                                     name="title"
                                     required={true}
-                                    error={this.state.errorText.length !== 0}
-                                    helperText={this.state.errorText}
+                                    error={this.state.errorTitleText.length !== 0}
+                                    helperText={this.state.errorTitleText}
                                     autoFocus
                                     margin="dense"
                                     id="title"
@@ -109,8 +145,9 @@ export default class CreateEquipment extends React.Component {
                             <TextField
                                     name="description"
                                     multiline={true}
-                                    error={this.state.errorText.length !== 0}
-                                    helperText={this.state.errorText}
+                                    error={this.state.errorDescriptionText.length !== 0}
+                                    //error={!this.isValidDescription}
+                                    helperText={this.state.errorDescriptionText}
                                     margin="dense"
                                     id="Description"
                                     label="Description"

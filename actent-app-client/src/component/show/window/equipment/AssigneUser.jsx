@@ -3,13 +3,20 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { getCurrentUser } from '../../../../util/apiUtils';
 
 let getUserId = () => 2;
 
 class AlertDialog extends React.Component {
     state = {
         open: false,
+        currentUserId: undefined,
     };
+
+    constructor(props) {
+        super(props);
+        this.setCurrentUserId();
+    }
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -45,10 +52,26 @@ class AlertDialog extends React.Component {
         this.handleClose();
     };
 
+    setCurrentUserId = () => {
+
+        getCurrentUser().then(res => this.setState({ currentUserId: res.data.id })).catch(e => console.error(e));
+    }
+
+    hasAccesDiscardAssigne = () => {
+
+        console.log(this.props.currentEquipment.assignedUserId);
+
+        if (this.state.currentUserId !== this.props.currentEquipment.assignedUserId ){
+            return false;
+        }
+
+        return true;
+    }
+
     render() {
         let assigneButton;
 
-        if (this.props.currentEquipment.assignedUserFirstName === null || this.props.currentEquipment.assignedUserLastName === null) {
+        if (this.props.currentEquipment.assignedUserId === null) {
 
             assigneButton = (
                 <div>
@@ -74,10 +97,10 @@ class AlertDialog extends React.Component {
                     </Dialog>
                 </div>
             );
-        } else {
+        } else{
             assigneButton = (
                 <div>
-                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen} disabled={!this.hasAccesDiscardAssigne}>
                         Discard assigne
                     </Button>
 

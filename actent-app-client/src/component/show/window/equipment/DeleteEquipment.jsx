@@ -5,8 +5,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { getCurrentUser } from '../../../../util/apiUtils';
 
-let getUserId = () => 2;
-
 class DeleteEquipment extends React.Component {
     state = {
         open: false,
@@ -26,8 +24,6 @@ class DeleteEquipment extends React.Component {
     };
 
     handleDelete = () => {
-
-        console.log("in handle delete")
         this.props.handleDeleteEquipment(this.props.equipmentId);
         this.handleClose();
     };
@@ -40,16 +36,13 @@ class DeleteEquipment extends React.Component {
     render() {
         let assigneButton;
 
-        // console.log(this.props.creatorId);
-        // console.log(this.state.currentUserId);
-
         if (this.props.creatorId === this.state.currentUserId) {
 
             assigneButton = (
                 <div>
                     <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
                         Delete
-                        </Button>
+                    </Button>
 
                     <Dialog
                         open={this.state.open}
