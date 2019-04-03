@@ -1,8 +1,8 @@
 import React from 'react';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import Dropzone from 'react-dropzone';
 import Button from '@material-ui/core/Button';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
 import {imageValidator} from './FileUploadValidator';
 import {s3Root} from './ProfileView'
 

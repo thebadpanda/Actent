@@ -3,6 +3,8 @@ package com.softserve.actent.controller;
 import com.softserve.actent.constant.NumberConstants;
 import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
+import com.softserve.actent.exceptions.codes.ExceptionCode;
+import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.review.CreateReviewDto;
 import com.softserve.actent.model.dto.review.ReviewDto;
@@ -39,6 +41,7 @@ import java.util.stream.Collectors;
 
 @Validated
 @RestController
+@PreAuthorize("isAnonymous()")
 @RequestMapping(UrlConstants.API_V1)
 public class UserController {
 
@@ -54,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/current")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public UserDto getCurrentUser(@ApiIgnore @CurrentUser UserPrincipal currentUser) {
 
@@ -63,6 +66,7 @@ public class UserController {
 
     @PostMapping(value = "/users")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public IdDto addUser(@Validated @RequestBody UserRegistrationDto userRegistrationDto) {
         User user = userService.add(userRegistrationDtoToEntity(userRegistrationDto));
         return new IdDto(user.getId());
@@ -70,18 +74,25 @@ public class UserController {
 
     @PutMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUserById(@Validated @RequestBody UserSettingsDto userSettingsDto,
+    @PreAuthorize("isAuthenticated()")
+    public UserDto updateUserById(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                                  @Validated @RequestBody UserSettingsDto userSettingsDto,
                                   @PathVariable
                                   @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                   @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
 
-        User user =(userSettingsToEntity(userSettingsDto));
+        if (currentUser.getId().equals(id)) {
 
-        return userSettingsEntityToDto(userService.update(user, id));
+            User user = (userSettingsToEntity(userSettingsDto));
+
+            return userSettingsEntityToDto(userService.update(user, id));
+        } else {
+            throw new AccessDeniedException("You cannot update this profile!", ExceptionCode.NOT_AUTHORIZED);
+        }
     }
 
     @PutMapping(value = "/users/{userId}/reviews")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public ReviewDto addReviewToUser(@ApiIgnore @CurrentUser UserPrincipal currentUser,
                                      @Validated @RequestBody CreateReviewDto createReviewDto,
@@ -115,7 +126,6 @@ public class UserController {
 
     @GetMapping(value = "/users")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER')")
     public List<UserSettingsDto> getUsers(@RequestParam(value = "email", required = false)
                                           @Email(message = StringConstants.USER_EMAIL_NOT_VALID)
                                           @Size(max = NumberConstants.USER_EMAIL_MAX_LENGTH, message = StringConstants.USER_EMAIL_LENGTH_RANGE)
@@ -134,19 +144,25 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{id}")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getUserById(@PathVariable
-                               @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
-                               @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
+    public UserDto getUserById(
+            @PathVariable
+            @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+            @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
         return userSettingsEntityToDto(userService.get(id));
     }
 
     @DeleteMapping(value = "/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable
+    @PreAuthorize("isAuthenticated()")
+    public void deleteUserById(@ApiIgnore @CurrentUser UserPrincipal currentUser,
+                               @PathVariable
                                @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                @Positive(message = StringConstants.USER_ID_SHOULD_BE_GREATER_THAN_ZERO) Long id) {
-        userService.delete(id);
+        if (currentUser.getId().equals(id)) {
+            userService.delete(id);
+        }
     }
 
     private User userRegistrationDtoToEntity(UserRegistrationDto userRegistrationDto) {

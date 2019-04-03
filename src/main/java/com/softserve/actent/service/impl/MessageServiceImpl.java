@@ -49,12 +49,7 @@ public class MessageServiceImpl implements MessageService {
     @Transactional
     public Message addImageMessage(Message message) {
         Image image = new Image();
-<<<<<<< HEAD
-//        image.setHash(message.getImage().getHash());
-=======
         Message newMessage = new Message();
-        image.setHash(message.getImage().getHash());
->>>>>>> develop
         image.setFilePath(message.getImage().getFilePath());
         newMessage.setMessageType(MessageType.IMAGE);
         newMessage.setImage(imageService.add(image));

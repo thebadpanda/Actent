@@ -2,27 +2,24 @@ import React from 'react';
 import axios from 'axios';
 import ProfileView from './ProfileView';
 import ProfileEdit from './ProfileEdit';
+import {getCurrentUser} from '../../util/apiUtils'
 
 export const apiUrl = 'http://localhost:8080/api/v1';
 
-export const getUserId = () => {
-    let cookies = document.cookie.split(';').map(cookie => cookie.replace(' ', ''));
-    const name = 'user_id=';
-
-    for (let i = 0; i < cookies.length; i++) {
-        if (cookies[i].indexOf(name) !== -1) {
-            return +cookies[i].substring(name.length, cookies[i].length);
-        }
-    }
-    return null;
-};
+// export const getUserId = () => {
+//     getCurrentUser()
+//         .then(response => {
+//             console.log(response.data['id']);
+//             return response.data['id']
+//         });
+// };
 
 export default class Profile extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            userId: 1,
+            userId: undefined,
             isEdit: false,
             isReviewing: false,
             isMyProfile: true, // isMyProfile: +this.props.match.params.userId === getCurrentUser().getId(),
@@ -45,16 +42,36 @@ export default class Profile extends React.Component {
     //     this.getProfile();
     // }
 
-    componentDidMount() {
-        this.getProfile();
+    async componentDidMount() {
+
+        try {
+            const data = (await getCurrentUser()).data;
+
+            this.setState({
+                ...this.state,
+                userId: data.id
+            });
+
+            this.getProfile();
+        } catch (e) {
+            console.error(e);
+        }
+        // getCurrentUser().then( response => {
+        //     this.setState({
+        //         ...this.state,
+        //        userId: response.data['id']
+        //    });
+        // }).then( () => {
+        //     console.log(this.state.userId);
+        //     this.getProfile();
+        // });
     }
 
     getProfile = () => {
+
         const profileUrl = apiUrl + "/users/" + this.state.userId;
 
         axios.get(profileUrl).then(response => {
-
-            console.log(response.data);
 
             this.setState({
                 userId: response.data['id'],
@@ -82,9 +99,9 @@ export default class Profile extends React.Component {
     };
 
     handleAddReview = () => {
-      this.setState( {
-          isReviewing: true
-      })
+        this.setState({
+            isReviewing: true
+        })
     };
 
     handleClose = () => {
@@ -118,7 +135,7 @@ export default class Profile extends React.Component {
                 profileData={profileData}
                 isMyProfile={this.state.isMyProfile}
                 onEditClick={this.handleEditClick}
-                onAddReviewClick={this.handleAddReview()}
+                onAddReviewClick={this.handleAddReview}
             />);
 
         return (
