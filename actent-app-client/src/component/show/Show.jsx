@@ -4,10 +4,31 @@ import Window from './window/Window.jsx';
 import Info from './info/Info.jsx';
 import Chat from './chat/Chat.jsx';
 import './Show.css';
-import Participant from './button/Participyant.jsx';
+import Participant from './button/Participant.jsx';
 import Spectator from './button/Spectator.jsx';
+import { getCurrentUser } from '../../util/apiUtils.js';
 
 class Show extends React.Component {
+
+    state = {
+        currentUserId: undefined,
+    }
+
+    async componentDidMount() {
+        try {
+            const data = (await getCurrentUser()).data;
+
+            this.setState({
+                ...this.state,
+                userId: data.id,
+            });
+
+            this.getProfile();
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     render() {
 
@@ -23,10 +44,10 @@ class Show extends React.Component {
 
                     <div className='but'>
                         <div className='b-1'>
-                            <Participant />
+                            <Participant currentUserId={this.state.userId}/>
                         </div>
                         <div className='b-2'>
-                            <Spectator />
+                            <Spectator currentUserId={this.state.userId}/>
                         </div>
                     </div>
 

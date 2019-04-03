@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle/index';
 let getUserId = () => 2;
 
 class Participant extends React.Component {
+
     state = {
         open: false,
     };
@@ -25,6 +26,7 @@ class Participant extends React.Component {
 
     handleAssignedUserId = () => {
 
+        
         this.handleClose();
 
     };
@@ -36,9 +38,8 @@ class Participant extends React.Component {
 
     render() {
         let assigneButton;
-        let currentUser = "dont assigne";
-
-        if ((currentUser == "dont assigne") ? true : false ) {
+    
+        if (this.props.currentUserId) {
 
             assigneButton = (
                     <div>
