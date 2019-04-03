@@ -38,7 +38,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(UrlConstants.API_V1)
-@PreAuthorize("isAnonymous()")
+@PreAuthorize("permitAll()")
 public class EventController {
 
     private final EventService eventService;
