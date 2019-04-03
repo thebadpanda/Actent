@@ -1,5 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
@@ -74,8 +73,7 @@ export default class DatePicker extends React.Component {
                         onDayClick={this.handleDayClick}
                         disabledDays={past}
                     />
-                    <Helmet>
-                        <style>{`
+                    <style>{`
   .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
     background-color: #f0f8ff !important;
     color: #4a90e2;
@@ -92,7 +90,6 @@ export default class DatePicker extends React.Component {
     border-bottom-right-radius: 50% !important;
   }
 `}</style>
-                    </Helmet>
                 </div>
             </div>
         );

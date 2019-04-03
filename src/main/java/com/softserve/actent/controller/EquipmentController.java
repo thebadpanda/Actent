@@ -32,7 +32,7 @@ import static com.softserve.actent.constant.UrlConstants.EQUIPMENTS;
 @Validated
 @RestController
 @RequestMapping(API_V1 + EQUIPMENTS)
-@PreAuthorize("isAnonymous()")
+@PreAuthorize("permitAll()")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;

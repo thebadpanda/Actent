@@ -28,21 +28,25 @@ export default class SignIn extends React.Component{
             password: this.state.password,
             usernameOrEmail: this.state.usernameOrEmail,
         };
+        
 
         getTokenFromCredentials(user)
             .then((response) => {
-                response.data.accessToken ? saveAuthorizationToken(response.data.accessToken) : Promise.reject("Access token is undefined.");
+                response.data.accessToken ? this.handleLogin(response.data.accessToken) : Promise.reject("Access token is undefined.");
                 this.props.history.push('/home');
         })
             .catch((error) => {
                 NotificationManager.error('Invalid E-mail or Password!', 'Error!', 5000);
         });
-
-
     };
 
+    handleLogin = accessToken => {
+        saveAuthorizationToken(accessToken);
+        setAuthorizationHeader();
+    }
+
     isValid = () => {
-        if(this.state.usernameOrEmail && this.state.usernameOrEmail.length > 5){
+        if(this.state.usernameOrEmail && this.state.usernameOrEmail.length){
             return true;
         }else {
             return false;
