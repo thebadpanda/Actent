@@ -11,27 +11,29 @@ class Participant extends React.Component {
 
     state = {
         open: false,
+        eventUser: undefined,
     };
 
-
-
     getParticipants = () => {
-        Axios.post(`http://localhost:8080/api/v1/eventsUsers/events/${this.state.eventId}`).then(part => {
-            let participantsCount = 0;
-            let spectatorsCount = 0;
 
-            part.data.forEach(e => {
-                e.eventUserType === 'PARTICIPANT' ? participantsCount++ : spectatorsCount++;
-            });
-
-            this.setState({
-                ...this.state,
-                participants: participantsCount,
-                spectators: spectatorsCount,
-            });
+        let userId = {id: this.props.currentUserId}
+        let eventId = {id: this.props.eventId}
+        let eventUser = {userId, eventId, eventUserType: 'PARTICIPANT'}
+        
+        Axios.post(`http://localhost:8080/api/v1/eventsUsers`, eventUser).then().catch(function(error) {
+            console.log(error);
         });
     };
 
+
+    createEventUser = () => {
+        let user = {id: this.props.currentUserId}
+        let event = {id: this.props.eventId}
+
+        this.setState({
+            eventUser: {User: user, Event: event, EventUserType: 'PARTICIPANT'}
+        });
+    }
 
 
     handleClickOpen = () => {
