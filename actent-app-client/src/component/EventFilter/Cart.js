@@ -1,7 +1,6 @@
 import React from 'react';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
-import { Route, Link, BrowserRouter } from 'react-router-dom';
-import Show from '../show/Show.jsx';
+import { Route, Link, NavLink, BrowserRouter } from 'react-router-dom';
 
 const CardExample = props => {
     return (
@@ -17,8 +16,9 @@ const CardExample = props => {
                     <MDBCardText>Description: {props.description}</MDBCardText>
                     <MDBCardText>City: {props.city}</MDBCardText>
                     <MDBCardText>Category: {props.category}</MDBCardText>
-
-                    <MDBBtn href='#'>Go to Event</MDBBtn>
+                    <NavLink to={`show/${props.eventId}`}>
+                        <MDBBtn>Go to Event</MDBBtn>
+                    </NavLink>
                 </MDBCardBody>
             </MDBCard>
         </MDBCol>

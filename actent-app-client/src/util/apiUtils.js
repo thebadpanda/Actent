@@ -24,16 +24,20 @@ export const testConfiguration = _ => {
 export const configureAxios = _ => {
     axios.defaults.baseURL = API_BASE_URL;
     axios.defaults.headers.common['Content-Type'] = 'application/json';
+    setAuthorizationHeader();
 };
 
 export const saveAuthorizationToken = accessToken => localStorage.setItem(ACCESS_TOKEN, accessToken);
 
 export const removeAuthorizationToken = _ => localStorage.removeItem(ACCESS_TOKEN);
 
-export const setAuthorizationHeader = _ =>
+export const setAuthorizationHeader = _ => {
+    
     localStorage.getItem(ACCESS_TOKEN)
         ? (axios.defaults.headers.common[AUTHORIZATION_HEADER] = `${BEARER} ${localStorage.getItem(ACCESS_TOKEN)}`)
-        : Promise.reject('No access token set.');
+        : Promise.reject('setAuthorizationHeader: No access token set.');
+        
+}
 
 export const removeAuthorizationHeader = _ => delete axios.defaults.headers.common[AUTHORIZATION_HEADER];
 
