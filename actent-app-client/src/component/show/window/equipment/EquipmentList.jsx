@@ -26,19 +26,6 @@ class EquipmentList extends React.Component {
 
     componentDidMount() {
         this.getEquipments();
-        //this.signIn();
-    };
-
-    signIn() {
-        axios.post(`http://localhost:8080/api/v1/auth/signin`)
-                .then(res => {
-                    console.log(res.data);
-                    axiosConfig.headers['Authorization'] = res.data.tokenType + ' ' + res.data.accessToken;
-                    console.log(axiosConfig.headers['Authorization']);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
     };
 
     getEquipments = () => {
