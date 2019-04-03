@@ -39,7 +39,7 @@ export default class RenderEventFilterPage extends React.Component {
     };
 
     cleanFilter = () => {
-        this.setState({ filteredEvents: [] }, () => this.getEvents());
+        this.setState({ filteredEvents: [], categoriesId: [] }, () => this.getEvents());
         console.log('in clean');
     };
 
@@ -136,6 +136,7 @@ export default class RenderEventFilterPage extends React.Component {
                         categories={this.state.categories}
                         setCity={this.setCity}
                         setCategoriesId={this.setCategoriesId}
+                        categoriesId={this.state.categoriesId}
                     />
                     <div className='row'>
                         {events.map(event => {
