@@ -3,12 +3,14 @@ import ReviewForm from './component/review/ReviewForm';
 import Profile from './component/profile/Profile';
 import FormContainer from './component/createevent/FormContainer';
 import RenderEventFilterPage from './component/EventFilter/RenderEventFilterPage';
+import UserEventsPage from "./component/userEventsPage/UserEventsPage";
 import ShowEvent from './container/ShowEvent';
 import SignInUp from './component/SignUpInForm';
 import { configureAxios, getCurrentUser } from './util/apiUtils';
 import Show from './component/show/Show';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
+
 
 export default class App extends React.Component {
     constructor(props) {
@@ -47,6 +49,8 @@ export default class App extends React.Component {
                     <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
                     <Route path='/profile' render={() => <Profile />} />
+                    <Route parh='/userEvents' render={() => <UserEventsPage />} />
+                    <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/' component={RenderEventFilterPage} />
                 </Switch>
             </div>
