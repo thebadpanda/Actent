@@ -6,18 +6,6 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import CreateEquipment from './CreateEquipment.jsx'
 
-const signInData = {
-    password: "root",
-    usernameOrEmail: "root",
-}
-
-let axiosConfig = {
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'JWT fefege...',
-    }
-}
-
 class EquipmentList extends React.Component {
 
     state = {
@@ -30,7 +18,7 @@ class EquipmentList extends React.Component {
 
     getEquipments = () => {
 
-        axios.get(`http://localhost:8080/api/v1/equipments`)
+        axios.get(`http://localhost:8080/api/v1/equipments/event/${this.props.eventId}`)
                 .then(res => {
                     const equipments = res.data;
                     console.log(res.data);
@@ -91,7 +79,9 @@ class EquipmentList extends React.Component {
     render() {
         return (
                 <div className="container-fluid">
-                    <CreateEquipment handleCreateEquipment={this.handleCreateEquipment} style={{position: 'fixed'}}/>
+                    <CreateEquipment handleCreateEquipment={this.handleCreateEquipment} style={{position: 'fixed'}}
+                        eventId={this.props.eventId}
+                    />
                     <div className="row ">
                         {
                             this.state.equipments.map(item => {
