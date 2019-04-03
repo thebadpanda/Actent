@@ -8,6 +8,7 @@ import ShowEvent from './container/ShowEvent';
 import SignInUp from './component/SignUpInForm';
 import { configureAxios, getCurrentUser } from './util/apiUtils';
 import Show from './component/show/Show';
+import Confirm from './component/confirm/Confirm';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 
@@ -50,6 +51,7 @@ export default class App extends React.Component {
                     <Route path='/profile' render={() => <Profile />} />
                     <Route path='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
+                    <Route path='/confirm' component={Confirm} />
                     <Route exact path='/' component={RenderEventFilterPage} />
                 </Switch>
             </div>
