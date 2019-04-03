@@ -22,8 +22,8 @@ export default class RenderEventFilterPage extends React.Component {
         filteredEvents: [],
         categoryId: [],
         cityName: '',
-        dateFrom: 0,
-        dateTo: 0,
+        dateFrom: undefined,
+        dateTo: undefined,
     };
 
     componentDidMount() {
