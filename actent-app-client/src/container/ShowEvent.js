@@ -13,6 +13,7 @@ class ShowEvent extends React.Component {
         equipments: ['first equipment', 'second equipment', 'third equipment'],
         reviews: ['first review', 'second review', 'third review', 'fff review', 'fourth review', 'fifth review', 'sixth review', 'seventh review', 'eight review', 'ten review', 'eleven review', 'twelve review', 'thirteen review', 'fourteen review', '15 review', '16 review', '17 review', '18 review', '19 review', '20 review', '21 review', '22 review', '23 review', '24 review', '25 review', '26 review', '27 review', '28 review', '29 review'],
 
+        creatorId: undefined,
         participants: undefined,
         spectators: undefined
     }
@@ -44,6 +45,7 @@ class ShowEvent extends React.Component {
                 category: eve.data.Category.name,
                 creatorFirstName: eve.data.Creator.firstName,
                 creatorLastName: eve.data.Creator.lastName,
+                creatorId: eve.data.Creator.id,
 
             });
 
@@ -92,6 +94,7 @@ class ShowEvent extends React.Component {
                     category={this.state.category}
                     creatorFirstName={this.state.creatorFirstName}
                     creatorLastName={this.state.creatorLastName}
+                    creatorId={this.state.creatorId}
 
                     participants={this.state.participants}
                     spectators={this.state.spectators}

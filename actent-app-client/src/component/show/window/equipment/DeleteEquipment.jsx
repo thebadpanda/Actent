@@ -12,6 +12,11 @@ class DeleteEquipment extends React.Component {
         open: false,
     };
 
+    constructor(props) {
+        super(props);
+        this.setCurrentUserId();
+    }
+
     handleClickOpen = () => {
         this.setState({ open: true });
     };
@@ -26,20 +31,18 @@ class DeleteEquipment extends React.Component {
         this.handleClose();
     };
 
-    getCurrentUserId = async _ => {
-        try {
-            return (await getCurrentUser()).data.id;
-        } catch (e) {
-            console.error(e);
-        }
+    setCurrentUserId = _ => {
+
+        getCurrentUser().then(res => this.setState({ currentUserId: res.data.id })).catch(e => console.error(e));
     }
 
     render() {
         let assigneButton;
 
-        console.log(this.props.creatorId === this.getCurrentUserId());
+        console.log(this.props.creatorId);
+        console.log(this.state.currentUserId);
 
-        if (this.props.creatorId === this.getCurrentUserId()) {
+        if (this.props.creatorId === this.state.currentUserId) {
 
 
             assigneButton = (
