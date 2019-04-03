@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button/index';
 import Dialog from '@material-ui/core/Dialog/index';
 import DialogActions from '@material-ui/core/DialogActions/index';
 import DialogTitle from '@material-ui/core/DialogTitle/index';
+import Axios from 'axios';
 
 let getUserId = () => 2;
 
@@ -11,6 +12,27 @@ class Participant extends React.Component {
     state = {
         open: false,
     };
+
+
+
+    getParticipants = () => {
+        Axios.post(`http://localhost:8080/api/v1/eventsUsers/events/${this.state.eventId}`).then(part => {
+            let participantsCount = 0;
+            let spectatorsCount = 0;
+
+            part.data.forEach(e => {
+                e.eventUserType === 'PARTICIPANT' ? participantsCount++ : spectatorsCount++;
+            });
+
+            this.setState({
+                ...this.state,
+                participants: participantsCount,
+                spectators: spectatorsCount,
+            });
+        });
+    };
+
+
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -26,7 +48,7 @@ class Participant extends React.Component {
 
     handleAssignedUserId = () => {
 
-        
+
         this.handleClose();
 
     };

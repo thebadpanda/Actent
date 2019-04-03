@@ -53,7 +53,9 @@ class Window extends React.Component {
                                         />
                                     </TabContainer>}
                 {value === 1 && <TabContainer>
-                                    <EquipmentList/>
+                                    <EquipmentList
+                                    creatorId={this.props.creatorId}
+                                    />
                                 </TabContainer>}
                 {value === 2 && <TabContainer>
                                     <Review reviews={this.props.reviews}/>
