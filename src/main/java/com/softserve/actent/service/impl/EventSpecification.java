@@ -1,0 +1,53 @@
+package com.softserve.actent.service.impl;
+
+import com.softserve.actent.model.entity.Event;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
+
+public class EventSpecification {
+
+    private static final String EVENT_TITLE = "title";
+    private static final String EVENT_CATEGORY = "category";
+    private static final String EVENT_ID = "id";
+    private static final String EVENT_ADDRESS = "address";
+    private static final String EVENT_CITY = "city";
+    private static final String CITY_NAME = "name";
+    private static final String EVENT_START_DATE = "startDate";
+    private static final Long POSITIVE_NUMBER = 0L;
+
+
+    public static Specification<Event> getTitle(String title) {
+        return (Specification<Event>) (root, query, cb) ->
+                (title == null || title.isEmpty()) ? null
+                        : cb.like(root.get(EVENT_TITLE), "%" + title + "%");
+    }
+
+    public static Specification<Event> getCategory(List<Long> categoryId) {
+        return (Specification<Event>) (root, query, cb) ->
+                (categoryId.isEmpty()) ? null
+                        : cb.isTrue(root.get(EVENT_CATEGORY).get(EVENT_ID).in(categoryId));
+    }
+
+    public static Specification<Event> getCity(String city) {
+        return (Specification<Event>) (root, query, cb) ->
+                (city == null || city.isEmpty()) ? null
+                        : cb.equal(root.get(EVENT_ADDRESS).get(EVENT_CITY).get(CITY_NAME), city);
+    }
+
+    public static Specification<Event> getDate(Long dateFrom, Long dateTo) {
+        return (Specification<Event>) (root, query, cb) -> {
+            if (dateFrom == null && dateTo == null || dateFrom.equals(0L) && dateTo.equals(0L)) {
+                return null;
+            } else if (dateTo == null || dateTo.equals(POSITIVE_NUMBER)) {
+                return cb.greaterThanOrEqualTo(root.get(EVENT_START_DATE), dateFrom);
+            } else if (dateFrom == null || dateFrom.equals(POSITIVE_NUMBER)) {
+                return cb.lessThanOrEqualTo(root.get(EVENT_START_DATE), dateTo);
+            } else {
+                return cb.between(root.get(EVENT_START_DATE), dateFrom, dateTo);
+            }
+        };
+    }
+
+
+}
