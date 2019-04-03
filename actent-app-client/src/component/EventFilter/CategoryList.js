@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export default class CategoryList extends React.Component {
     state = {
-        categories: [],
+        categories: this.props.categoriesId,
         color: 'info',
     };
 
@@ -52,6 +52,9 @@ export default class CategoryList extends React.Component {
     render() {
         return (
             <div className='row'>
+                {console.log('this.props.categoriesId')}
+                {console.log(this.state.categories)}
+                {console.log(this.props.categoriesId)}
                 {this.props.categories.map(category => {
                     return (
                         <div key={category.id} className='col-md-4 col-sm-12 align-self-center cart'>
