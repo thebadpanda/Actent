@@ -208,6 +208,7 @@ export default class ProfileEdit extends React.Component {
                     </Typography>
 
                     <div className='styleContainerEdit'>{img}</div>
+
                     <FileUpload fetchData={this.fetchData} handleSavePhoto={this.handleSavePhoto} />
                     <div className='styleName'>
                         <TextField
@@ -239,19 +240,19 @@ export default class ProfileEdit extends React.Component {
                             fullWidth={true}
                             multiline
                             rowsMax={3}
-                            value={this.state.address !== null ? this.state.address.name : null}
+                            value={this.state.address !== null ? this.state.address.name : ''}
                         />
                         <TextField
                             id='tv_phone'
                             label='Phone'
                             onChange={this.handlePhone}
                             fullWidth={true}
-                            value={this.state.phone}
+                            value={this.state.phone !== null ? this.state.phone : ''}
                         />
                         <TextField
                             id='tv_email'
                             label='Email'
-                            onChange={this.han}
+                            onChange={this.handleEmail}
                             fullWidth={true}
                             value={this.state.email}
                             error={!!this.state.errorEmail}
@@ -275,7 +276,7 @@ export default class ProfileEdit extends React.Component {
                             fullWidth={true}
                             multiline
                             rowsMax={3}
-                            value={this.state.bio}
+                            value={this.state.bio !== null ? this.state.bio : ''}
                         />
                     </div>
                     <div className='styleButtons'>

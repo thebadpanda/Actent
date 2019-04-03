@@ -22,18 +22,17 @@ export default class App extends React.Component {
         };
     }
 
-    setCurrentUser = async _ => {
-        try {
-            const currentUser = (await getCurrentUser()).data;
-
-            this.setState({
-                currentUser: currentUser,
-                currentUserId: currentUser.id,
-                isAuthenticated: true,
-            });
-        } catch (e) {
-            console.error(e);
-        }
+    setCurrentUser = _ => {
+        getCurrentUser()
+            .then(res => {
+                this.setState({
+                    currentUser: res.data,
+                    currentUserId: res.data.id,
+                    isAuthenticated: true,
+                });
+                console.log(this.state);
+            })
+            .catch(e => console.error(e));
     };
 
     componentDidMount() {
@@ -47,7 +46,7 @@ export default class App extends React.Component {
                     <Route path='/auth' component={SignInUp} />
                     <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
-                    <Route path='/profile' render={() => <Profile />} />
+                    <Route path='/profile' render={() => <Profile id={this.state.currentUserId} current={true} />} />
                     <Route path='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route exact path='/' component={RenderEventFilterPage} />
