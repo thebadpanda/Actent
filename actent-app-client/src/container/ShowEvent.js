@@ -43,6 +43,7 @@ class ShowEvent extends React.Component {
             '29 review',
         ],
 
+        creatorId: undefined,
         participants: undefined,
         spectators: undefined,
     };
@@ -70,6 +71,7 @@ class ShowEvent extends React.Component {
                     duration: eve.data['duration'],
                     capacity: eve.data['capacity'],
                     category: eve.data.Category.name,
+                    creatorId: eve.data.Creator.id,
                     creatorFirstName: eve.data.Creator.firstName,
                     creatorLastName: eve.data.Creator.lastName,
                 });
@@ -114,6 +116,7 @@ class ShowEvent extends React.Component {
                     category={this.state.category}
                     creatorFirstName={this.state.creatorFirstName}
                     creatorLastName={this.state.creatorLastName}
+                    creatorId={this.state.creatorId}
                     participants={this.state.participants}
                     spectators={this.state.spectators}
                 />
