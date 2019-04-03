@@ -154,6 +154,7 @@ export default class RenderEventFilterPage extends React.Component {
                                     style={cartStyle}>
                                     <CardExample
                                         title={event.title}
+                                        id={event.id}
                                         description={event.description}
                                         city={event.Location.Country.Region.City.name}
                                         category={event.Category.name}
