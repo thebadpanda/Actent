@@ -28,7 +28,7 @@ class DeleteEquipment extends React.Component {
     render() {
         let assigneButton;
 
-        if (true) {
+        if (this.props.creatorId && this.props.creatorId === getUserId()) {
 
             assigneButton = (
                     <div>
