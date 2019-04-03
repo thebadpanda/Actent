@@ -132,4 +132,20 @@ public class EquipmentServiceImpl implements EquipmentService {
             );
         }
     }
+
+    @Override
+    public List<Equipment> getByAssignedEventId(Long assignedEvent_id) {
+
+        List<Equipment> equipments = equipmentRepository.findAllByAssignedEventId(assignedEvent_id);
+        if (equipments.isEmpty()) {
+
+            throw new ResourceNotFoundException(
+                    ExceptionMessages.EQUIPMENTS_ARE_NOT_FOUND,
+                    ExceptionCode.NOT_FOUND
+            );
+        } else {
+
+            return equipments;
+        }
+    }
 }

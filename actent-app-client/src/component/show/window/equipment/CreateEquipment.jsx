@@ -15,8 +15,8 @@ export default class CreateEquipment extends React.Component {
     state = {
         open: false,
         equipment: {
-            assignedEventId: 1,
-            assignedUserId: 1,
+            assignedEventId: this.props.eventId,
+            assignedUserId: null,
             description: undefined,
             satisfied: false,
             title: undefined

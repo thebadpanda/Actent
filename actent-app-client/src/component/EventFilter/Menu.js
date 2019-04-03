@@ -14,8 +14,8 @@ import {
     MDBDropdownItem,
     MDBIcon,
 } from 'mdbreact';
-import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
+import { removeAuthorizationToken } from '../../util/apiUtils';
 
 export default class Menu extends Component {
     constructor(props) {
@@ -32,6 +32,10 @@ export default class Menu extends Component {
             collapse: !this.state.collapse,
         });
     }
+
+    handleLogOut = _ => {
+        removeAuthorizationToken();
+    };
 
     render() {
         return (
@@ -58,6 +62,9 @@ export default class Menu extends Component {
                                     <MDBDropdownItem href='/auth/signIn'>Sign In</MDBDropdownItem>
                                     <MDBDropdownItem href='/auth/signUp'>Sign Up</MDBDropdownItem>
                                     <MDBDropdownItem href='/profile'>Profile</MDBDropdownItem>
+                                    <MDBDropdownItem href='/' onClick={this.handleLogOut}>
+                                        Log Out
+                                    </MDBDropdownItem>
                                 </MDBDropdownMenu>
                             </MDBDropdown>
                         </MDBNavItem>

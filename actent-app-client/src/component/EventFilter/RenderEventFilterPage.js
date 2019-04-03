@@ -20,7 +20,7 @@ export default class RenderEventFilterPage extends React.Component {
         category: '',
         city: '',
         filteredEvents: [],
-        categoryId: [],
+        categoriesId: [],
         cityName: '',
         dateFrom: undefined,
         dateTo: undefined,
@@ -51,13 +51,13 @@ export default class RenderEventFilterPage extends React.Component {
         this.setState({ cityName: cityName }, () => this.eventsFilter());
     };
 
-    setCategoryId = categoryId => {
-        this.setState({ categoryId: categoryId }, () => this.eventsFilter());
+    setCategoriesId = categoriesId => {
+        this.setState({ categoriesId: categoriesId }, () => this.eventsFilter());
     };
 
     getCategories = () => {
         axios
-            .get(`http://localhost:8080/api/v1/categories`)
+            .get(`/categories`)
             .then(res => {
                 console.log(res.data);
                 const categories = res.data;
@@ -70,7 +70,7 @@ export default class RenderEventFilterPage extends React.Component {
 
     eventsFilter = () => {
         const data = {
-            categoryId: this.state.categoryId,
+            categoriesId: this.state.categoriesId,
             cityName: this.state.cityName,
             dateFrom: this.state.dateFrom,
             dateTo: this.state.dateTo,
@@ -79,13 +79,14 @@ export default class RenderEventFilterPage extends React.Component {
         console.log('filter');
         console.log(data);
         axios
-            .post(`http://localhost:8080/api/v1/events/filter`, data)
+            .post(`/events/filter`, data)
             .then(res => {
                 const events = res.data;
                 console.log(res.data);
                 console.log(this.state.title);
                 console.log('aaaaaaaaaaaaaaaa');
                 this.setState({
+                    filteredEvents: events,
                     events: [],
                     events: events,
                     id: res.data['id'],
@@ -102,7 +103,7 @@ export default class RenderEventFilterPage extends React.Component {
 
     getEvents = () => {
         axios
-            .get(`http://localhost:8080/api/v1/events/all`)
+            .get(`/events/all`)
             .then(res => {
                 const events = res.data;
                 console.log(res.data);
@@ -119,18 +120,8 @@ export default class RenderEventFilterPage extends React.Component {
             });
     };
 
-    switchToFilter = () => {
-        let events;
-        if (this.state.filteredEvents === undefined || this.state.filteredEvents.length == 0) {
-            events = this.state.events;
-        } else {
-            events = this.state.categoryId;
-        }
-        return events;
-    };
-
     render() {
-        let events = this.switchToFilter();
+        let events = this.state.events;
         return (
             <div>
                 <BrowserRouter>
@@ -138,12 +129,13 @@ export default class RenderEventFilterPage extends React.Component {
                 </BrowserRouter>
                 <div className='container'>
                     <FilterBody
+                        cityName={this.state.cityName}
                         filteredEvents={this.state.filteredEvents}
                         cleanFilter={this.cleanFilter}
                         setDateRange={this.setDateRange}
                         categories={this.state.categories}
                         setCity={this.setCity}
-                        setCategoryId={this.setCategoryId}
+                        setCategoriesId={this.setCategoriesId}
                     />
                     <div className='row'>
                         {events.map(event => {
@@ -151,8 +143,7 @@ export default class RenderEventFilterPage extends React.Component {
                                 <div
                                     key={event.id}
                                     className='col-md-4 col-sm-12 align-self-center cart'
-                                    style={cartStyle}
-                                >
+                                    style={cartStyle}>
                                     <CardExample
                                         title={event.title}
                                         eventId={event.id}

@@ -62,7 +62,8 @@ class Show extends React.Component {
                             equipments={this.props.equipments}
                             reviews={this.props.reviews}
                             creatorId={this.props.creatorId}
-                        />
+                            eventId={this.props.eventId}
+                        /> 
                     </div>
                 </div>
 
