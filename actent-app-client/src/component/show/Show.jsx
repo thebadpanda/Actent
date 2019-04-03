@@ -4,8 +4,8 @@ import Window from './window/Window.jsx';
 import Info from './info/Info.jsx';
 import Chat from './chat/Chat.jsx';
 import './Show.css';
-import Participant from './button/AssigneParticipiant.jsx';
-import Spectator from './button/AssigneSpectator.jsx';
+import Participant from './button/Participant.jsx';
+import Spectator from './button/Spectator.jsx';
 
 class Show extends React.Component {
 
