@@ -45,10 +45,7 @@ export default class Menu extends Component {
                 <MDBCollapse id='navbarCollapse3' isOpen={this.state.isOpen} navbar>
                     <MDBNavbarNav left>
                         <MDBNavItem>
-                            <MDBNavLink to='#!'>Features</MDBNavLink>
-                        </MDBNavItem>
-                        <MDBNavItem>
-                            <MDBNavLink to='#!'>Pricing</MDBNavLink>
+                            <MDBNavLink to='/createEvent'>Create Event</MDBNavLink>
                         </MDBNavItem>
                     </MDBNavbarNav>
                     <MDBNavbarNav right>
@@ -58,8 +55,8 @@ export default class Menu extends Component {
                                     <MDBIcon icon='user' />
                                 </MDBDropdownToggle>
                                 <MDBDropdownMenu className='dropdown-default' right>
-                                    <MDBDropdownItem href='/auth/sign-in'>Sign In</MDBDropdownItem>
-                                    <MDBDropdownItem href='/auth/sign-up'>Sign Up</MDBDropdownItem>
+                                    <MDBDropdownItem href='/auth/signIn'>Sign In</MDBDropdownItem>
+                                    <MDBDropdownItem href='/auth/signUp'>Sign Up</MDBDropdownItem>
                                     <MDBDropdownItem href='/profile'>Profile</MDBDropdownItem>
                                 </MDBDropdownMenu>
                             </MDBDropdown>
