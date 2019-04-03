@@ -6,7 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle/index';
 
 let getUserId = () => 2;
 
-class AssigneSpectator extends React.Component {
+class Spectator extends React.Component {
     state = {
         open: false,
     };
@@ -101,4 +101,4 @@ class AssigneSpectator extends React.Component {
     }
 }
 
-export default AssigneSpectator;
+export default Spectator;
