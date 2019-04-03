@@ -16,6 +16,8 @@ class Equipment extends React.Component {
                             <div id="createbutton" className="col-md-12 d-flex justify-content-end">
                                 <DeleteEquipment
                                         creatorId={this.props.creatorId}
+                                        equipmentId={this.props.equipment.id}
+                                        handleDeleteEquipment={this.props.handleDeleteEquipment}
                                 />
                             </div>
 
