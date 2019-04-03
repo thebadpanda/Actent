@@ -33,11 +33,11 @@ export default class UserEventsPage extends React.Component {
   getEvents() {
     let url = 'http://localhost:8080/api/v1/eventsUsers/';
     if (this.state.selectTab === 0) {
-      url += 'allEvents/7';
+      url += `=allEvents/${this.props.userId}`;
     } else if (this.state.selectTab === 1) {
-      url += 'futureEvents/7';
+      url += `futureEvents/${this.props.userId}`;
     } else if (this.state.selectTab === 2) {
-      url += 'pastEvents/7';
+      url += `pastEvents/${this.props.userId}`;
     }
     if (this.state.filterCategory || this.state.filterCityName || this.state.filterUserType) {
       url += '?';
