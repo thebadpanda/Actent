@@ -1,5 +1,5 @@
 import React from 'react';
-import {MDBJumbotron, MDBBtn} from 'mdbreact';
+import {MDBJumbotron, MDBBtn, NavLink} from 'mdbreact';
 
 const Event = props => {
     return (
@@ -17,10 +17,9 @@ const Event = props => {
                     <p className='lead'>{props.description}</p>
                     <div className='row'>
                         <div className='col-md-8'>
-
-                            <MDBBtn color='default' disabled={false}>
-                                Go to event
-                            </MDBBtn>
+                            <NavLink to={`show/${props.eventId}`}>
+                                <MDBBtn>Go to Event</MDBBtn>
+                            </NavLink>
                         </div>
                     </div>
                 </div>
