@@ -6,11 +6,14 @@ const CardExample = props => {
     return (
         <MDBCol style={{ maxWidth: '22rem', margin: 'auto' }}>
             <MDBCard>
-                <MDBCardImage
-                    className='img-fluid'
-                    src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg'
-                    waves
-                />
+                <NavLink to={`show/${props.eventId}`}>
+                    <MDBCardImage
+                        style={{ cursor: 'pointer' }}
+                        className='img-fluid'
+                        src='https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg'
+                        waves
+                    />
+                </NavLink>
                 <MDBCardBody>
                     <MDBCardTitle>{props.title}</MDBCardTitle>
                     <MDBCardText>Description: {props.description}</MDBCardText>
