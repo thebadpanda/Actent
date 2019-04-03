@@ -103,6 +103,7 @@ class EquipmentList extends React.Component {
                                                     <Equipment
                                                             equipment={item}
                                                             handleUpdateEquipment={this.handleUpdateEquipment}
+                                                            creatorId={this.props.creatorId}
                                                     />
                                                 </div>
                                         )
