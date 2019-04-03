@@ -3,16 +3,9 @@ import ReviewForm from './component/review/ReviewForm';
 import Profile from './component/profile/Profile';
 import FormContainer from './component/createevent/FormContainer';
 import RenderEventFilterPage from './component/EventFilter/RenderEventFilterPage';
+import UserEventsPage from './component/userEventsPage/UserEventsPage';
 import ShowEvent from './container/ShowEvent';
 import SignInUp from './component/SignUpInForm';
-<<<<<<< HEAD
-import { testConfiguration } from './util/apiUtils';
-import { Route, Switch, Redirect } from 'react-router-dom';
-
-export default class App extends React.Component {
-    render() {
-        testConfiguration();
-=======
 import { configureAxios, getCurrentUser } from './util/apiUtils';
 import Show from './component/show/Show';
 
@@ -42,7 +35,6 @@ export default class App extends React.Component {
             console.error(e);
         }
     };
->>>>>>> md1guy_components_review
 
     componentDidMount() {
         this.setCurrentUser();
@@ -53,14 +45,11 @@ export default class App extends React.Component {
             <div>
                 <Switch>
                     <Route path='/auth' component={SignInUp} />
-<<<<<<< HEAD
-                    <Route path='/profile' component={Profile} />
-=======
                     <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
                     <Route path='/profile' render={() => <Profile />} />
+                    <Route parh='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
->>>>>>> md1guy_components_review
                     <Route path='/' component={RenderEventFilterPage} />
                 </Switch>
             </div>
