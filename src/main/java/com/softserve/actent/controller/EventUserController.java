@@ -4,7 +4,9 @@ import com.softserve.actent.constant.StringConstants;
 import com.softserve.actent.constant.UrlConstants;
 import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.converter.EventUserConverter;
+import com.softserve.actent.model.dto.converter.EventUserFilterConverter;
 import com.softserve.actent.model.dto.eventUser.EventUserDto;
+import com.softserve.actent.model.dto.eventUser.EventUserFilterDto;
 import com.softserve.actent.model.entity.EventUser;
 import com.softserve.actent.model.entity.EventUserType;
 import com.softserve.actent.repository.UserEventsFilterRepository;
@@ -29,12 +31,14 @@ public class EventUserController {
     private final EventUserService eventUserService;
     private final EventUserConverter eventsUsersConverter;
     private final UserEventsFilterRepository filterRepository;
+    private final EventUserFilterConverter filterConverter;
 
     @Autowired
-    public EventUserController(EventUserService eventUserService, EventUserConverter eventUserConverter, UserEventsFilterRepository filterRepository) {
+    public EventUserController(EventUserService eventUserService, EventUserConverter eventUserConverter, UserEventsFilterRepository filterRepository, EventUserFilterConverter filterConverter) {
         this.eventUserService = eventUserService;
         this.eventsUsersConverter = eventUserConverter;
         this.filterRepository = filterRepository;
+        this.filterConverter = filterConverter;
     }
 
     @PostMapping(value = "/eventsUsers")
@@ -102,45 +106,45 @@ public class EventUserController {
     }
 
     @GetMapping(value = "/eventsUsers/allEvents/{userId}")
-    public List<EventUserDto> getAllFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
-                                           @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
-                                           @RequestParam(name = "city", required = false) String city,
-                                           @RequestParam(name = "userType", required = false) EventUserType userType,
-                                           @RequestParam(name = "category", required = false) String category) {
+    public List<EventUserFilterDto> getAllFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                                 @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                                 @RequestParam(name = "city", required = false) String city,
+                                                 @RequestParam(name = "userType", required = false) EventUserType userType,
+                                                 @RequestParam(name = "category", required = false) String category) {
         List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserId(userId)
                 .and(UserEventsSpecification.getCity(city))
                 .and(UserEventsSpecification.getUserType(userType))
                 .and(UserEventsSpecification.getCategory(category)));
 
-        return eventsUsersConverter.convertToDto(result);
+        return filterConverter.convertToDto(result);
     }
 
     @GetMapping(value = "/eventsUsers/pastEvents/{userId}")
-    public List<EventUserDto> getAllPastEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
-                                                     @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
-                                                     @RequestParam(name = "city", required = false) String city,
-                                                     @RequestParam(name = "userType", required = false) EventUserType userType,
-                                                     @RequestParam(name = "category", required = false) String category) {
+    public List<EventUserFilterDto> getAllPastEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                                           @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                                           @RequestParam(name = "city", required = false) String city,
+                                                           @RequestParam(name = "userType", required = false) EventUserType userType,
+                                                           @RequestParam(name = "category", required = false) String category) {
         List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserIdAndPastEvents(userId)
                 .and(UserEventsSpecification.getCity(city))
                 .and(UserEventsSpecification.getUserType(userType))
                 .and(UserEventsSpecification.getCategory(category)));
 
-        return eventsUsersConverter.convertToDto(result);
+        return filterConverter.convertToDto(result);
     }
 
     @GetMapping(value = "/eventsUsers/futureEvents/{userId}")
-    public List<EventUserDto> getAllFutureEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
-                                                       @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
-                                                       @RequestParam(name = "city", required = false) String city,
-                                                       @RequestParam(name = "userType", required = false) EventUserType userType,
-                                                       @RequestParam(name = "category", required = false) String category) {
+    public List<EventUserFilterDto> getAllFutureEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                                             @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                                             @RequestParam(name = "city", required = false) String city,
+                                                             @RequestParam(name = "userType", required = false) EventUserType userType,
+                                                             @RequestParam(name = "category", required = false) String category) {
         List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserIdAndFutureEvents(userId)
                 .and(UserEventsSpecification.getCity(city))
                 .and(UserEventsSpecification.getUserType(userType))
                 .and(UserEventsSpecification.getCategory(category)));
 
-        return eventsUsersConverter.convertToDto(result);
+        return filterConverter.convertToDto(result);
     }
 
 }
