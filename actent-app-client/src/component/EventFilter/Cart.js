@@ -16,7 +16,7 @@ const CardExample = props => {
                     <MDBCardText>Description: {props.description}</MDBCardText>
                     <MDBCardText>City: {props.city}</MDBCardText>
                     <MDBCardText>Category: {props.category}</MDBCardText>
-                    <NavLink to={`show/${props.id}`}>
+                    <NavLink to={`show/${props.eventId}`}>
                         <MDBBtn>Go to Event</MDBBtn>
                     </NavLink>
                 </MDBCardBody>
