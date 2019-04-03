@@ -5,43 +5,48 @@ import DialogActions from '@material-ui/core/DialogActions/index';
 import DialogTitle from '@material-ui/core/DialogTitle/index';
 import Axios from 'axios';
 
-let getUserId = () => 2;
-
 class Participant extends React.Component {
 
     state = {
         open: false,
+        disc: true,
         eventUser: undefined,
     };
 
-    getParticipants = () => {
+    assigneAsParticipant = () => {
 
-        let userId = {id: this.props.currentUserId}
-        let eventId = {id: this.props.eventId}
+        let userId = this.props.currentUserId
+        let eventId = this.props.eventId
         let eventUser = {userId, eventId, eventUserType: 'PARTICIPANT'}
+        console.log(eventUser);
         
-        Axios.post(`http://localhost:8080/api/v1/eventsUsers`, eventUser).then().catch(function(error) {
+        Axios.post(`http://localhost:8080/api/v1/eventsUsers`, eventUser).then(eve => {
+            eve
+        }).catch(error => {
+            this.setState({
+                ...this.state,
+                disc: false,
+            });
             console.log(error);
         });
     };
 
-
-    createEventUser = () => {
-        let user = {id: this.props.currentUserId}
-        let event = {id: this.props.eventId}
-
-        this.setState({
-            eventUser: {User: user, Event: event, EventUserType: 'PARTICIPANT'}
+    unassigneUser = () => {
+        Axios.delete(`http://localhost:8080/api/v1/eventsUsers`).then().catch(error => {
+            this.setState({
+                ...this.state,
+                disc: true,
+            });
+            console.log(error);
         });
     }
 
-
     handleClickOpen = () => {
-        this.setState({ open: true });
+        this.setState({ ...this.state, open: true });
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.setState({ ...this.state, open: false });
     };
 
     isPresent = () => {
@@ -49,10 +54,8 @@ class Participant extends React.Component {
     }
 
     handleAssignedUserId = () => {
-
-
+        this.assigneAsParticipant();
         this.handleClose();
-
     };
 
     handleAgreeDiscardAssigne = () => {
@@ -63,7 +66,7 @@ class Participant extends React.Component {
     render() {
         let assigneButton;
     
-        if (this.props.currentUserId) {
+        if (this.props.currentUserId && this.state.disc) {
 
             assigneButton = (
                     <div>
