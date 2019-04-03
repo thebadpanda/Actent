@@ -70,7 +70,7 @@ export default class FilterButtoms extends Component {
                 <MDBCollapse id='category' isOpen={this.state.collapseID}>
                     <div className='container'>
                         <CategoryList
-                            setCategoryId={this.props.setCategoryId}
+                            setCategoriesId={this.props.setCategoriesId}
                             setButtonColor={this.setCategoryButtonColor}
                             categories={this.props.categories}
                         />
@@ -83,7 +83,11 @@ export default class FilterButtoms extends Component {
                 </MDBCollapse>
                 <MDBCollapse id='city' isOpen={this.state.collapseID}>
                     <div className='container'>
-                        <CityInput setButtonColor={this.setCityButtonColor} setCity={this.props.setCity} />
+                        <CityInput
+                            setButtonColor={this.setCityButtonColor}
+                            cityName={this.props.cityName}
+                            setCity={this.props.setCity}
+                        />
                     </div>
                 </MDBCollapse>
             </>

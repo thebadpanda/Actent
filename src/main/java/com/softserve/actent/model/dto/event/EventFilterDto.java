@@ -14,7 +14,7 @@ public class EventFilterDto {
 
     private String cityName;
 
-    private List<Long> categoryId;
+    private List<Long> categoriesId;
 
     private LocalDateTime dateFrom;
 

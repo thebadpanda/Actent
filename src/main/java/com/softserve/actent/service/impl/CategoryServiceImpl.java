@@ -78,6 +78,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getParentCategories(Category parent) {
+        if (parent == null) {
+            return categoryRepository.findAllByParent(parent);
+        } else {
+            throw new ResourceNotFoundException(ExceptionMessages.NO_SUBCATEGORIES_FOUND, ExceptionCode.NOT_FOUND);
+        }
+    }
+
+    @Override
     public Category getParentByName(String name) {
         Category category = categoryRepository.findByName(name);
         if (category == null) {
