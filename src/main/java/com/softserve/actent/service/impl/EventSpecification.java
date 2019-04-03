@@ -3,6 +3,7 @@ package com.softserve.actent.service.impl;
 import com.softserve.actent.model.entity.Event;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class EventSpecification {
@@ -35,13 +36,13 @@ public class EventSpecification {
                         : cb.equal(root.get(EVENT_ADDRESS).get(EVENT_CITY).get(CITY_NAME), city);
     }
 
-    public static Specification<Event> getDate(Long dateFrom, Long dateTo) {
+    public static Specification<Event> getDate(LocalDateTime dateFrom, LocalDateTime dateTo) {
         return (Specification<Event>) (root, query, cb) -> {
-            if (dateFrom == null && dateTo == null || dateFrom.equals(0L) && dateTo.equals(0L)) {
+            if (dateFrom == null && dateTo == null || dateFrom.isAfter(LocalDateTime.now()) && dateTo.equals(POSITIVE_NUMBER)) {
                 return null;
             } else if (dateTo == null || dateTo.equals(POSITIVE_NUMBER)) {
                 return cb.greaterThanOrEqualTo(root.get(EVENT_START_DATE), dateFrom);
-            } else if (dateFrom == null || dateFrom.equals(POSITIVE_NUMBER)) {
+            } else if (dateFrom == null || dateFrom.isAfter(LocalDateTime.now())) {
                 return cb.lessThanOrEqualTo(root.get(EVENT_START_DATE), dateTo);
             } else {
                 return cb.between(root.get(EVENT_START_DATE), dateFrom, dateTo);
