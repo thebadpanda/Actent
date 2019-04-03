@@ -1,7 +1,7 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.validation.IncorrectStringException;
 import com.softserve.actent.model.entity.Image;
@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID + " Id: " + imageId);
-            return new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
+            return new DataNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -52,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_PATH + " Path: " + filePath);
-            return new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_PATH, ExceptionCode.NOT_FOUND);
+            return new DataNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_PATH, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -69,7 +69,7 @@ public class ImageServiceImpl implements ImageService {
 
         return optionalImage.orElseThrow(() -> {
             log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_HASH);
-            return new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_HASH, ExceptionCode.NOT_FOUND);
+            return new DataNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_HASH, ExceptionCode.NOT_FOUND);
         });
     }
 
@@ -91,7 +91,7 @@ public class ImageServiceImpl implements ImageService {
             return imageRepository.save(image);
         } else {
             log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID + " Id: " + imageId);
-            throw new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -105,7 +105,7 @@ public class ImageServiceImpl implements ImageService {
             imageRepository.deleteById(imageId);
         } else {
             log.error(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID + " Id: " + imageId);
-            throw new ResourceNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.IMAGE_NOT_FOUND_WITH_ID, ExceptionCode.NOT_FOUND);
         }
     }
 }
