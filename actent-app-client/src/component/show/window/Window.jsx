@@ -55,6 +55,7 @@ class Window extends React.Component {
                 {value === 1 && <TabContainer>
                                     <EquipmentList
                                     creatorId={this.props.creatorId}
+                                    eventId={this.props.eventId}
                                     />
                                 </TabContainer>}
                 {value === 2 && <TabContainer>
