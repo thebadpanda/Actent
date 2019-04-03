@@ -18,7 +18,7 @@ export default class MainRouter extends React.Component{
                     <Route path='/home' component={ShowEvent} />
 
                     <Route path='/auth' component={SignUpInForm} />
-                    <Route path='/reviews'  render={()=><ReviewForm targetId={2}/>} />
+                    <Route path='/reviews' render={()=><ReviewForm targetId={2}/>} />
                     <Redirect path='*' to='/home' />
                 </Switch>
             </main>
