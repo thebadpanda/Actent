@@ -81,6 +81,7 @@ class EquipmentList extends React.Component {
                 <div className="container-fluid">
                     <CreateEquipment handleCreateEquipment={this.handleCreateEquipment} style={{position: 'fixed'}}
                         eventId={this.props.eventId}
+                        creatorId={this.props.creatorId}
                     />
                     <div className="row ">
                         {
