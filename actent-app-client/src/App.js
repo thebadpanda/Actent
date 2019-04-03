@@ -6,6 +6,7 @@ import RenderEventFilterPage from './component/EventFilter/RenderEventFilterPage
 import ShowEvent from './container/ShowEvent';
 import SignInUp from './component/SignUpInForm';
 import { configureAxios } from './util/apiUtils';
+
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 export default class App extends React.Component {
@@ -16,6 +17,7 @@ export default class App extends React.Component {
             <div>
                 <Switch>
                     <Route path='/auth' component={SignInUp} />
+                    <Route path='/' component={RenderEventFilterPage} />
                 </Switch>
             </div>
         );

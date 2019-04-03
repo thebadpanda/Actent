@@ -9,9 +9,12 @@ import com.softserve.actent.model.dto.converter.EventConverter;
 import com.softserve.actent.model.dto.converter.EventCreationConverter;
 import com.softserve.actent.model.dto.event.EventCreationDto;
 import com.softserve.actent.model.dto.event.EventDto;
+import com.softserve.actent.model.dto.event.EventFilterDto;
 import com.softserve.actent.model.dto.event.EventUpdateDto;
 import com.softserve.actent.model.entity.Event;
+import com.softserve.actent.repository.EventFilterRepository;
 import com.softserve.actent.service.EventService;
+import com.softserve.actent.service.impl.EventSpecification;
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +42,20 @@ public class EventController {
     private final EventCreationConverter eventCreationConverter;
     private final EventConverter eventConverter;
     private final ModelMapper modelMapper;
+    private final EventFilterRepository eventFilterRepository;
 
     @Autowired
     public EventController(EventService eventService,
                            EventCreationConverter eventCreationConverter,
                            EventConverter eventConverter,
-                           ModelMapper modelMapper) {
+                           ModelMapper modelMapper,
+                           EventFilterRepository eventFilterRepository) {
 
         this.eventService = eventService;
         this.eventCreationConverter = eventCreationConverter;
         this.eventConverter = eventConverter;
         this.modelMapper = modelMapper;
+        this.eventFilterRepository = eventFilterRepository;
     }
 
     @GetMapping(value = "/events/all")
@@ -69,6 +75,17 @@ public class EventController {
 
         Event event = eventService.get(id);
         return eventConverter.convertToDto(event);
+    }
+
+    @PostMapping(value = "/events/filter")
+    public List<EventDto> getEventsWithFilter(
+            @RequestBody EventFilterDto eventFilterDto) {
+        System.out.println(eventFilterDto);
+        List<Event> result = eventFilterRepository.findAll(EventSpecification.getTitle(eventFilterDto.getTitle())
+                .and(EventSpecification.getCategory(eventFilterDto.getCategoryId()))
+                .and(EventSpecification.getCity(eventFilterDto.getCityName()))
+                .and(EventSpecification.getDate(eventFilterDto.getDateFrom(), eventFilterDto.getDateTo())));
+        return eventConverter.convertToDto(result);
     }
 
     @GetMapping(value = "/events/title/{title}")
