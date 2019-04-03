@@ -13,14 +13,6 @@ export default class CityInput extends React.Component {
         this.setState({ findCity: event.target.value });
     };
 
-    // changeButtonCollor = () => {
-    //     let findCity = this.state.findCity;
-
-    //     findCity === undefined || findCity === ''
-    //         ? this.props.setButtonColor('info')
-    //         : this.props.setButtonColor('success');
-    // };
-
     setCollorButton = () => {
         this.state.findCity === '' ? this.props.setButtonColor('info') : this.props.setButtonColor('success');
     };

@@ -4,7 +4,6 @@ import FilterBody from './FilterBody';
 import CardExample from './Cart';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
-import FooterPage from './Footer';
 
 const cartStyle = {
     paddingTop: '2rem',
@@ -157,7 +156,6 @@ export default class RenderEventFilterPage extends React.Component {
                         })}
                     </div>
                 </div>
-                <FooterPage />
             </div>
         );
     }
