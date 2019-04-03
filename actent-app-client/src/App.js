@@ -18,6 +18,7 @@ export default class App extends React.Component {
             <div>
                 <Switch>
                     <Route path='/auth' component={SignInUp} />
+                    <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
                     <Route path='/' component={RenderEventFilterPage} />
                 </Switch>
