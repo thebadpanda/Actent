@@ -47,6 +47,7 @@ export default class App extends React.Component {
                     <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
                     <Route path='/profile' render={() => <Profile />} />
+                    <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/' component={RenderEventFilterPage} />
                 </Switch>
             </div>
