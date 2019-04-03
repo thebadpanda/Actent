@@ -32,23 +32,19 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public Chat addChat(String type) {
-        Chat chat = null;
+        Chat chat = new Chat();
 
         if (type.toLowerCase().equals("event")) {
-            chat = new Chat();
             chat.setType(ChatType.EVENT);
-            chatRepository.save(chat);
-            return chat;
         }
         if (type.toLowerCase().equals("direct")) {
-            chat = new Chat();
             chat.setType(ChatType.DIRECT);
-            chatRepository.save(chat);
-            return chat;
         } else {
             throw new IncorrectChatTypeException(ExceptionMessages.ACTIVE_BY_THIS_TYPE_IS_NOT_FOUND,
                     ExceptionCode.INCORRECT_ACTIVITY_TYPE);
         }
+        chatRepository.save(chat);
+        return chat;
     }
 
     @Override

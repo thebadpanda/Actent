@@ -2,6 +2,7 @@ package com.softserve.actent.constant;
 
 public class NumberConstants {
 
+    public static final int DURATION_MIN_VALUE = 600_000;
     public static final short TITLE_MAX_LENGTH = 100;
     public static final short DESCRIPTION_MAX_LENGTH = 500;
     public static final short MIN_VALUE_FOR_START_DATE = 0;
@@ -51,4 +52,7 @@ public class NumberConstants {
     public static final short MAX_VALUE_FOR_CATEGORY_NAME = 30;
     public static final short DEFAULT_MIN_VALUE_FOR_CATEGORY_ID = 0;
 
+    public static final short USER_STATUS_MAX_LENGTH = 13;
+
+    public static final short SHOW_THIRTY_MESSAGES_PER_PAGE = 30;
 }

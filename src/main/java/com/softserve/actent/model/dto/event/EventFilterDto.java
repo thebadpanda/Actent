@@ -18,4 +18,6 @@ public class EventFilterDto {
     private Long dateFrom;
 
     private Long dateTo;
+
 }
+
