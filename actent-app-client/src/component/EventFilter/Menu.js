@@ -1,12 +1,18 @@
 import { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
     MDBNavbar,
     MDBNavbarBrand,
     MDBNavbarNav,
-    MDBNavbarToggler,
-    MDBCollapse,
     MDBNavItem,
     MDBNavLink,
+    MDBNavbarToggler,
+    MDBCollapse,
+    MDBDropdown,
+    MDBDropdownToggle,
+    MDBDropdownMenu,
+    MDBDropdownItem,
+    MDBIcon,
 } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
@@ -29,27 +35,62 @@ export default class Menu extends Component {
 
     render() {
         return (
-            <Router>
-                <MDBNavbar color='bg-primary' fixed='top' dark expand='md' scrolling transparent>
-                    <MDBNavbarBrand href='/'>
-                        <strong>Actent</strong>
+            <MDBNavbar color='blue' dark expand='md'>
+                <NavLink to='/'>
+                    <MDBNavbarBrand>
+                        <strong className='white-text'>Actent</strong>
                     </MDBNavbarBrand>
-                    {!this.state.isWideEnough && <MDBNavbarToggler onClick={this.onClick} />}
-                    <MDBCollapse isOpen={this.state.collapse} navbar>
-                        <MDBNavbarNav left>
-                            <MDBNavItem active>
-                                <MDBNavLink to='#'>Home</MDBNavLink>
-                            </MDBNavItem>
-                            <MDBNavItem>
-                                <MDBNavLink to='#'>Link</MDBNavLink>
-                            </MDBNavItem>
-                            <MDBNavItem>
-                                <MDBNavLink to='#'>Profile</MDBNavLink>
-                            </MDBNavItem>
-                        </MDBNavbarNav>
-                    </MDBCollapse>
-                </MDBNavbar>
-            </Router>
+                </NavLink>
+                <MDBNavbarToggler onClick={this.toggleCollapse} />
+                <MDBCollapse id='navbarCollapse3' isOpen={this.state.isOpen} navbar>
+                    <MDBNavbarNav left>
+                        <MDBNavItem>
+                            <MDBNavLink to='#!'>Features</MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                            <MDBNavLink to='#!'>Pricing</MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                            <MDBDropdown>
+                                <MDBDropdownToggle nav caret>
+                                    <div className='d-none d-md-inline'>Dropdown</div>
+                                </MDBDropdownToggle>
+                                <MDBDropdownMenu className='dropdown-default' right>
+                                    <MDBDropdownItem href='#!'>Action</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Another Action</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
+                                </MDBDropdownMenu>
+                            </MDBDropdown>
+                        </MDBNavItem>
+                    </MDBNavbarNav>
+                    <MDBNavbarNav right>
+                        <MDBNavItem>
+                            <MDBNavLink className='waves-effect waves-light' to='#!'>
+                                <MDBIcon fab icon='twitter' />
+                            </MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                            <MDBNavLink className='waves-effect waves-light' to='#!'>
+                                <MDBIcon fab icon='google-plus-g' />
+                            </MDBNavLink>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                            <MDBDropdown>
+                                <MDBDropdownToggle nav caret>
+                                    <MDBIcon icon='user' />
+                                </MDBDropdownToggle>
+                                <MDBDropdownMenu className='dropdown-default' right>
+                                    <MDBDropdownItem href='#!'>Action</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Another Action</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
+                                    <MDBDropdownItem href='#!'>Something else here</MDBDropdownItem>
+                                </MDBDropdownMenu>
+                            </MDBDropdown>
+                        </MDBNavItem>
+                    </MDBNavbarNav>
+                </MDBCollapse>
+            </MDBNavbar>
         );
     }
 }
