@@ -21,28 +21,40 @@ export default class HomePage extends React.Component {
         this.props.history.push('/auth/sign-up')
     }
 
+    sendProfile = () => {
+        this.props.history.push('/profile')
+    }
+
+
     render() {
         return (
+            <div>
                 <div>
-                    <div>
-                        <Button className="FormField__Button" variant="contained" color="primary"
-                                onClick={this.sendLogin}>
-                            Login
-                        </Button>
-                    </div>
-                    <div>
-                        <Button className="FormField__Button" variant="contained" color="primary"
-                                onClick={this.sendRegistration}>
-                            Registration
-                        </Button>
-                    </div>
-                    <div>
-                        <Button className="FormField__Button" variant="contained" color="primary"
-                                onClick={this.sendReview}>
-                            Review
-                        </Button>
-                    </div>
+                    <Button className="FormField__Button" variant="contained" color="primary"
+                            onClick={this.sendLogin}>
+                        Login
+                    </Button>
                 </div>
+                <div>
+                    <Button className="FormField__Button" variant="contained" color="primary"
+                            onClick={this.sendRegistration}>
+                        Registration
+                    </Button>
+                </div>
+                <div>
+                    <Button className="FormField__Button" variant="contained" color="primary"
+                            onClick={this.sendReview}>
+                        Review
+                    </Button>
+                </div>
+
+                <div>
+                    <Button className="FormField__Button" variant="contained" color="primary"
+                            onClick={this.sendProfile}>
+                        Profile
+                    </Button>
+                </div>
+            </div>
         );
     }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import DatePicker from 'material-ui/DatePicker';
+import { DatePicker } from 'material-ui-pickers';
 import {apiUrl} from './Profile.js';
 import {getImageUrl} from './ProfileView';
-import {Card} from 'material-ui/Card';
+import {Card} from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FileUpload from './FileUpload'
