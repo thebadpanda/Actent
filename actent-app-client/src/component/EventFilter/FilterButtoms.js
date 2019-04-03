@@ -40,7 +40,7 @@ export default class FilterButtoms extends Component {
         console.log('this.props.filteredEvents.length');
         console.log(this.state.filteredEvents.length);
         const button =
-            this.props.filteredEvents.length > 0 && this.props.filteredEvents !== undefined ? (
+            this.props.filteredEvents.length > 0 ? (
                 <MDBBtn color='deep-orange' onClick={this.props.cleanFilter} style={{ marginBottom: '1rem' }}>
                     Clean Filter
                 </MDBBtn>

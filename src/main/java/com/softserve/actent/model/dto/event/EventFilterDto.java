@@ -3,6 +3,7 @@ package com.softserve.actent.model.dto.event;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,9 +16,9 @@ public class EventFilterDto {
 
     private List<Long> categoryId;
 
-    private Long dateFrom;
+    private LocalDateTime dateFrom;
 
-    private Long dateTo;
+    private LocalDateTime dateTo;
 
 }
 
