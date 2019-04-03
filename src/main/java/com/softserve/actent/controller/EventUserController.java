@@ -6,20 +6,16 @@ import com.softserve.actent.model.dto.IdDto;
 import com.softserve.actent.model.dto.converter.EventUserConverter;
 import com.softserve.actent.model.dto.eventUser.EventUserDto;
 import com.softserve.actent.model.entity.EventUser;
+import com.softserve.actent.model.entity.EventUserType;
+import com.softserve.actent.repository.UserEventsFilterRepository;
 import com.softserve.actent.service.EventUserService;
+import com.softserve.actent.service.impl.UserEventsSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -32,11 +28,13 @@ public class EventUserController {
 
     private final EventUserService eventUserService;
     private final EventUserConverter eventsUsersConverter;
+    private final UserEventsFilterRepository filterRepository;
 
     @Autowired
-    public EventUserController(EventUserService eventUserService, EventUserConverter eventUserConverter) {
+    public EventUserController(EventUserService eventUserService, EventUserConverter eventUserConverter, UserEventsFilterRepository filterRepository) {
         this.eventUserService = eventUserService;
         this.eventsUsersConverter = eventUserConverter;
+        this.filterRepository = filterRepository;
     }
 
     @PostMapping(value = "/eventsUsers")
@@ -102,4 +100,50 @@ public class EventUserController {
 
         eventUserService.delete(id);
     }
+
+    @GetMapping(value = "/eventsUsers/allEvents/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public List<EventUserDto> getAllFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                           @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                           @RequestParam(name = "city", required = false) String city,
+                                           @RequestParam(name = "userType", required = false) EventUserType userType,
+                                           @RequestParam(name = "category", required = false) String category) {
+        List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserId(userId)
+                .and(UserEventsSpecification.getCity(city))
+                .and(UserEventsSpecification.getUserType(userType))
+                .and(UserEventsSpecification.getCategory(category)));
+
+        return eventsUsersConverter.convertToDto(result);
+    }
+
+    @GetMapping(value = "/eventsUsers/pastEvents/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public List<EventUserDto> getAllPastEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                                     @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                                     @RequestParam(name = "city", required = false) String city,
+                                                     @RequestParam(name = "userType", required = false) EventUserType userType,
+                                                     @RequestParam(name = "category", required = false) String category) {
+        List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserIdAndPastEvents(userId)
+                .and(UserEventsSpecification.getCity(city))
+                .and(UserEventsSpecification.getUserType(userType))
+                .and(UserEventsSpecification.getCategory(category)));
+
+        return eventsUsersConverter.convertToDto(result);
+    }
+
+    @GetMapping(value = "/eventsUsers/futureEvents/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public List<EventUserDto> getAllFutureEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
+                                                       @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
+                                                       @RequestParam(name = "city", required = false) String city,
+                                                       @RequestParam(name = "userType", required = false) EventUserType userType,
+                                                       @RequestParam(name = "category", required = false) String category) {
+        List<EventUser> result = filterRepository.findAll(UserEventsSpecification.getUserIdAndFutureEvents(userId)
+                .and(UserEventsSpecification.getCity(city))
+                .and(UserEventsSpecification.getUserType(userType))
+                .and(UserEventsSpecification.getCategory(category)));
+
+        return eventsUsersConverter.convertToDto(result);
+    }
+
 }
