@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle/index';
 let getUserId = () => 2;
 
 class Spectator extends React.Component {
+    
     state = {
         open: false,
     };
@@ -36,9 +37,8 @@ class Spectator extends React.Component {
 
     render() {
         let assigneButton;
-        let currentUser = "dont assigne";
 
-        if ((currentUser == "dont assigne") ? true : false ) {
+        if (this.props.currentUserId) {
 
             assigneButton = (
                 <div>
