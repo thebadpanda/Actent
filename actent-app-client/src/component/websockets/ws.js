@@ -1,5 +1,5 @@
 import SockJS from "sockjs-client";
-import {Stomp} from "@stomp/stompjs";
+import { Stomp } from "@stomp/stompjs";
 
 var stompClient = null;
 var count = 0;
@@ -38,7 +38,7 @@ export function showMessageOutput(messageOutput) {
 }
 
 export function connect(chatId) {
-    const socket = new SockJS('/ws');
+    const socket = new SockJS('http://localhost/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, frame => {
         console.log('Connected ' + frame);
@@ -59,6 +59,7 @@ export function sendMessage(chatId) {
         chatId: chatId,
         messageContent: document.getElementById('outlined-email-input').value.trim()
     };
+    console.log(messageSend);
     stompClient.send("/chat/message", {},
         JSON.stringify(messageSend));
     document.getElementById('outlined-email-input').value = '';

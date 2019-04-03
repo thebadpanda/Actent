@@ -9,6 +9,7 @@ import { configureAxios, getCurrentUser } from './util/apiUtils';
 import Confirm from './component/confirm/Confirm';
 import Menu from './component/EventFilter/Menu';
 import Footer from './component/EventFilter/Footer';
+import Chat from './component/chat/Chat';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
 
@@ -53,6 +54,7 @@ export default class App extends React.Component {
                     <Route path='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/confirm' component={Confirm} />
+                    <Route path='/chat' render={()=><Chat chatId={1}/>} />
                     <Route exact path='/' component={RenderEventFilterPage} />
                 </Switch>
                 <Footer />

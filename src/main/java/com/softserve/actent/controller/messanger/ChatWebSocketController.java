@@ -21,7 +21,6 @@ import springfox.documentation.annotations.ApiIgnore;
 import static java.lang.String.format;
 
 @Slf4j
-@PreAuthorize("permitAll()")
 @Controller
 public class ChatWebSocketController {
 
@@ -48,12 +47,11 @@ public class ChatWebSocketController {
         this.viewMessageConverter = viewMessageConverter;
     }
 
-//    @PreAuthorize("isAuthenticated()")
     @MessageMapping("/message")
-    public void sendMessage(@Payload CreateTextMessageDto createMessageDto, @ApiIgnore @CurrentUser UserPrincipal currentUser){
+    public void sendMessage(@Payload CreateTextMessageDto createMessageDto){
 
         Message message = modelMapper.map(createMessageDto, Message.class);
-        message.setSender(userService.get(currentUser.getId()));
+        message.setSender(userService.get(1L));
         message.setChat(chatService.getChatById(createMessageDto.getChatId()));
 
         sendingOperations.convertAndSend(format("/topic/messages/%s", createMessageDto.getChatId()),
