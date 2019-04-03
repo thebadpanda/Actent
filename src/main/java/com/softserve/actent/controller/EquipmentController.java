@@ -32,6 +32,7 @@ import static com.softserve.actent.constant.UrlConstants.EQUIPMENTS;
 @Validated
 @RestController
 @RequestMapping(API_V1 + EQUIPMENTS)
+@PreAuthorize("isAnonymous()")
 public class EquipmentController {
 
     private final EquipmentService equipmentService;
@@ -67,7 +68,7 @@ public class EquipmentController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEquipment(@Validated @RequestBody EquipmentCreateDto equipmentCreateDto) {
 
@@ -76,7 +77,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEquipmentById(@PathVariable
                                     @NotNull
@@ -87,7 +88,7 @@ public class EquipmentController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public EquipmentCreateDto updateEquipmentById(@PathVariable
                                                   @NotNull
