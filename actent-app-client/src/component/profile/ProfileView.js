@@ -32,7 +32,7 @@ export default class ProfileView extends React.Component {
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
                 onClick={this.props.onAddReviewClick}>
-                Edit
+                Add review
             </Button>
         );
 

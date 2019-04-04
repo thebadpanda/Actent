@@ -8,14 +8,13 @@ export const apiUrl = 'http://localhost:8080/api/v1';
 
 export default class Profile extends React.Component {
     constructor(props) {
-        console.log(props);
-
         super(props);
+
         this.state = {
-            userId: props.id,
+            userId: Number(props.match.params.id),
             isEdit: false,
             isReviewing: false,
-            isMyProfile: props.current,
+            isMyProfile: props.current ? true : false,
             firstName: '',
             lastName: '',
             phone: '',
@@ -34,18 +33,8 @@ export default class Profile extends React.Component {
     //     this.getProfile();
     // }
 
-    async componentDidMount() {
-        try {
-            const data = (await getCurrentUser()).data;
-
-            this.setState({
-                ...this.state,
-                userId: data.id,
-            });
-            this.getProfile();
-        } catch (e) {
-            console.error(e);
-        }
+    componentDidMount() {
+        this.getProfile();
     }
 
     getProfile = () => {

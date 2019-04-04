@@ -5,8 +5,9 @@ import { getImageUrl } from './ProfileView';
 import FileUpload from './FileUpload';
 import styles from './style.css';
 import { Button, Card, Typography, TextField } from '@material-ui/core';
-import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
-import DateFnsUtils from '@date-io/date-fns';
+// import { DatePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import DatePicker from 'material-ui/DatePicker';
+// import DateFnsUtils from '@date-io/date-fns';
 
 export default class ProfileEdit extends React.Component {
     constructor(props) {
@@ -35,6 +36,7 @@ export default class ProfileEdit extends React.Component {
             errorBirthDate: '',
             errorBio: '',
         };
+        console.log(props);
     }
 
     handleFirstName = event => {
@@ -100,13 +102,17 @@ export default class ProfileEdit extends React.Component {
     };
 
     getBirthday = () => {
-        return (
-            this.state.birthday.getFullYear() +
-            '-' +
-            this.handleDigitsInMonth(this.state.birthday.getMonth() + 1) +
-            '-' +
-            this.handleDigitsInDate(this.state.birthday.getDate())
-        );
+        if (this.state.birthday !== null) {
+            return (
+                this.state.birthday.getFullYear() +
+                '-' +
+                this.handleDigitsInMonth(this.state.birthday.getMonth() + 1) +
+                '-' +
+                this.handleDigitsInDate(this.state.birthday.getDate())
+            );
+        } else {
+            return null;
+        }
     };
 
     handleDigitsInDate = i => {
@@ -247,6 +253,8 @@ export default class ProfileEdit extends React.Component {
                             label='Phone'
                             onChange={this.handlePhone}
                             fullWidth={true}
+                            error={!!this.state.errorPhone}
+                            helperText={this.state.errorPhone}
                             value={this.state.phone !== null ? this.state.phone : ''}
                         />
                         <TextField
@@ -258,17 +266,17 @@ export default class ProfileEdit extends React.Component {
                             error={!!this.state.errorEmail}
                             helperText={this.state.errorEmail}
                         />
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <DatePicker
-                                id='date_picker_birthday'
-                                label='Birthday'
-                                mode='landscape'
-                                openToYearSelection={true}
-                                fullWidth={true}
-                                onChange={this.handleBirthday}
-                                value={this.state.birthday}
-                            />
-                        </MuiPickersUtilsProvider>
+
+                        <DatePicker
+                            id='date_picker_birthday'
+                            label='Birthday'
+                            mode='landscape'
+                            openToYearSelection={true}
+                            fullWidth={true}
+                            onChange={this.handleBirthday}
+                            value={this.state.birthday}
+                        />
+
                         <TextField
                             id='tv_bio'
                             label='Bio'
