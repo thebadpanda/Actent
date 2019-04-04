@@ -4,23 +4,70 @@ import Window from './window/Window.jsx';
 import Info from './info/Info.jsx';
 import Chat from './chat/Chat.jsx';
 import './Show.css';
+import Participant from './button/Participant.jsx';
+import Spectator from './button/Spectator.jsx';
+import { getCurrentUser } from '../../util/apiUtils.js';
 
 class Show extends React.Component {
+
+    state = {
+        currentUserId: undefined,
+        assigne: undefined,
+    }
+
+    async componentDidMount() {
+        try {
+            const data = (await getCurrentUser()).data;
+            let assi = false;
+            
+            this.props.eventUserList.forEach(e => {
+                e.userId === data.id ? assi = true : assi = false;
+            });
+
+            this.setState({
+                ...this.state,
+                userId: data.id,
+                assigne: assi,
+            });
+            console.log(this.props.eventUserList)
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
     render() {
 
         return(
-            <div className='page'> 
+            <div className='page'>
 
                 <div className='container-1'>
                     <div className='card-title'>
-                        <Title 
+                        <Title
                             title={this.props.title}
                         />
                     </div>
 
+                    <div className='but'>
+                        <div className='b-1'>
+                            <Participant 
+                                currentUserId={this.state.userId}
+                                eventId={this.props.eventId}
+                                assigne={this.state.assigne}
+                            />
+                        </div>
+
+                        <div className='b-2'>
+                            <Spectator 
+                                currentUserId={this.state.userId}
+                                eventId={this.props.eventId}
+                                assigne={this.state.assigne}
+                            />
+                        </div>
+                    </div>
+
                     <div className='card-window'>
-                        <Window 
+                        <Window
                             description={this.props.description}
                             image={this.props.image}
                             equipments={this.props.equipments}
@@ -33,7 +80,7 @@ class Show extends React.Component {
 
                 <div className='container-2'>
                     <div className='card-info box'>
-                        <Info 
+                        <Info
                             info={this.props.info}
 
                             creationDate={this.props.creationDate}
@@ -50,9 +97,9 @@ class Show extends React.Component {
                     </div>
 
                     <div className='card-chat box'>
-                         <Chat 
+                        <Chat
                             chat={this.props.chat}
-                         />
+                        />
                     </div>
                 </div>
 

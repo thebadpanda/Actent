@@ -28,6 +28,7 @@ import java.util.List;
 @PreAuthorize("permitAll()")
 public class EventUserController {
 
+    private static final String url = "/eventsUsers";
     private final EventUserService eventUserService;
     private final EventUserConverter eventsUsersConverter;
     private final UserEventsFilterRepository filterRepository;
@@ -41,7 +42,7 @@ public class EventUserController {
         this.filterConverter = filterConverter;
     }
 
-    @PostMapping(value = "/eventsUsers")
+    @PostMapping(value = url)
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEventUser(@Validated @RequestBody EventUserDto eventUserDto) {
@@ -50,7 +51,7 @@ public class EventUserController {
         return new IdDto(eventUserService.add(eventUser).getId());
     }
 
-    @GetMapping(value = "/eventsUsers")
+    @GetMapping(value = url)
     @ResponseStatus(HttpStatus.OK)
     public List<EventUserDto> getAllEventUser() {
 
@@ -58,7 +59,7 @@ public class EventUserController {
         return eventsUsersConverter.convertToDto(eventUserList);
     }
 
-    @GetMapping(value = "/eventsUsers/{id}")
+    @GetMapping(value = url + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventUserDto getEventUserById(@PathVariable
                                          @NotNull(message = StringConstants.EVENT_USER_ID_CAN_NOT_BE_NULL)
@@ -69,7 +70,7 @@ public class EventUserController {
         return eventsUsersConverter.convertToDto(eventUser);
     }
 
-    @GetMapping(value = "/eventsUsers/events/{id}")
+    @GetMapping(value = url + "/events/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<EventUserDto> getEventUserByEventId(@PathVariable
                                                     @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)
@@ -80,7 +81,7 @@ public class EventUserController {
         return eventsUsersConverter.convertToDto(eventUserList);
     }
 
-    @PutMapping(value = "/eventsUsers/{id}")
+    @PutMapping(value = url + "/{id}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public EventUserDto updateEventsUsers(@Validated @RequestBody EventUserDto eventUserDto,
@@ -94,7 +95,7 @@ public class EventUserController {
         return eventsUsersConverter.convertToDto(eventUser);
     }
 
-    @DeleteMapping(value = "/eventsUsers/{id}")
+    @DeleteMapping(value = url + "/{id}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public void deleteById(@PathVariable
@@ -105,7 +106,7 @@ public class EventUserController {
         eventUserService.delete(id);
     }
 
-    @GetMapping(value = "/eventsUsers/allEvents/{userId}")
+    @GetMapping(value = url + "/allEvents/{userId}")
     public List<EventUserFilterDto> getAllFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                                  @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                                  @RequestParam(name = "city", required = false) String city,
@@ -119,7 +120,7 @@ public class EventUserController {
         return filterConverter.convertToDto(result);
     }
 
-    @GetMapping(value = "/eventsUsers/pastEvents/{userId}")
+    @GetMapping(value = url + "/pastEvents/{userId}")
     public List<EventUserFilterDto> getAllPastEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                                            @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                                            @RequestParam(name = "city", required = false) String city,
@@ -133,7 +134,7 @@ public class EventUserController {
         return filterConverter.convertToDto(result);
     }
 
-    @GetMapping(value = "/eventsUsers/futureEvents/{userId}")
+    @GetMapping(value = url + "/futureEvents/{userId}")
     public List<EventUserFilterDto> getAllFutureEventsFilter(@PathVariable @NotNull(message = StringConstants.USER_ID_CAN_NOT_BE_NULL)
                                                              @Positive(message = StringConstants.USER_ID_MUST_BE_POSITIVE_AND_GREATER_THAN_ZERO) Long userId,
                                                              @RequestParam(name = "city", required = false) String city,

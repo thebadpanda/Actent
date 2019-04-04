@@ -88,6 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             "/swagger*/**",
                             "/webjars/**"
                     )
+
                         .permitAll()
                 .antMatchers("/confirm",
                         "/ws/**",
@@ -98,25 +99,3 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         security.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

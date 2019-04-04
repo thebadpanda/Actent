@@ -94,7 +94,10 @@ public class EquipmentController {
 
     @GetMapping(value = "/event/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<EquipmentDto> getByEventId(@PathVariable Long id) {
+    public List<EquipmentDto> getByEventId(@PathVariable
+                                           @NotNull
+                                           @Positive(message = StringConstants.ASSIGNED_EVENT_ID_MUST_BE_POSITIVE)
+                                                   Long id) {
 
         List<Equipment> equipments = equipmentService.getByAssignedEventId(id);
 
