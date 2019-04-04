@@ -43,7 +43,7 @@ class CategoryFilter extends React.Component {
 
   getCategories() {
     axios
-      .get('http://localhost:8080/api/v1/categories')
+      .get('/categories')
       .then(response => {
         const categories = response.data;
         this.setState({ categories: categories });

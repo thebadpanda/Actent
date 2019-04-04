@@ -31,9 +31,9 @@ export default class UserEventsPage extends React.Component {
   };
 
   getEvents() {
-    let url = 'http://localhost:8080/api/v1/eventsUsers/';
+    let url = '/eventsUsers/';
     if (this.state.selectTab === 0) {
-      url += `=allEvents/${this.props.userId}`;
+      url += `allEvents/${this.props.userId}`;
     } else if (this.state.selectTab === 1) {
       url += `futureEvents/${this.props.userId}`;
     } else if (this.state.selectTab === 2) {
