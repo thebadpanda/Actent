@@ -1,8 +1,8 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.DuplicateValueException;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Event;
 import com.softserve.actent.model.entity.EventUser;
@@ -60,7 +60,7 @@ public class EventUserServiceImpl implements EventUserService {
     public EventUser get(Long id) {
 
         return eventUserRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
+                new DataNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 
     @Override
@@ -106,33 +106,33 @@ public class EventUserServiceImpl implements EventUserService {
     private void checkEventUserForAndFieldsForNull(EventUser eventUser) {
 
         if (eventUser == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
 
         if (eventUser.getEvent() == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
         }
 
         if (eventUser.getUser() == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.USER_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
+            throw new DataNotFoundException(ExceptionMessages.USER_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
         }
 
         if (eventUser.getType() == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_ACCESS_TYPE_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_ACCESS_TYPE_CAN_NOT_BE_NULL, ExceptionCode.THE_FIELD_IS_NULL);
         }
     }
 
     private void checkEventExistence(Long id) {
 
         if (!eventRepository.existsById(id)) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
     }
 
     private void checkUserExistence(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
     }
 
@@ -149,7 +149,7 @@ public class EventUserServiceImpl implements EventUserService {
     private void checkIfEventUserIsExist(Long id) {
 
         if (!eventUserRepository.existsById(id)) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
     }
 }

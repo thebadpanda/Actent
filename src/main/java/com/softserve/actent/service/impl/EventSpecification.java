@@ -10,7 +10,7 @@ public class EventSpecification {
 
     private static final String EVENT_TITLE = "title";
     private static final String EVENT_CATEGORY = "category";
-    private static final String EVENT_ID = "id";
+    private static final String CATEGORY_ID = "id";
     private static final String EVENT_ADDRESS = "address";
     private static final String EVENT_CITY = "city";
     private static final String CITY_NAME = "name";
@@ -24,10 +24,10 @@ public class EventSpecification {
                         : cb.like(root.get(EVENT_TITLE), "%" + title + "%");
     }
 
-    public static Specification<Event> getCategory(List<Long> categoryId) {
+    public static Specification<Event> getCategory(List<Long> categoriesId) {
         return (Specification<Event>) (root, query, cb) ->
-                (categoryId.isEmpty()) ? null
-                        : cb.isTrue(root.get(EVENT_CATEGORY).get(EVENT_ID).in(categoryId));
+                (categoriesId.isEmpty()) ? null
+                        : cb.isTrue(root.get(EVENT_CATEGORY).get(CATEGORY_ID).in(categoriesId));
     }
 
     public static Specification<Event> getCity(String city) {
@@ -38,11 +38,11 @@ public class EventSpecification {
 
     public static Specification<Event> getDate(LocalDateTime dateFrom, LocalDateTime dateTo) {
         return (Specification<Event>) (root, query, cb) -> {
-            if (dateFrom == null && dateTo == null || dateFrom.isAfter(LocalDateTime.now()) && dateTo.equals(POSITIVE_NUMBER)) {
+            if (dateFrom == null && dateTo == null ) {
                 return null;
-            } else if (dateTo == null || dateTo.equals(POSITIVE_NUMBER)) {
+            } else if (dateTo == null && dateFrom.isAfter(LocalDateTime.now())) {
                 return cb.greaterThanOrEqualTo(root.get(EVENT_START_DATE), dateFrom);
-            } else if (dateFrom == null || dateFrom.isAfter(LocalDateTime.now())) {
+            } else if (dateFrom == null) {
                 return cb.lessThanOrEqualTo(root.get(EVENT_START_DATE), dateTo);
             } else {
                 return cb.between(root.get(EVENT_START_DATE), dateFrom, dateTo);

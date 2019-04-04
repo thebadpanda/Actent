@@ -13,9 +13,11 @@ import {
     MDBDropdownMenu,
     MDBDropdownItem,
     MDBIcon,
+    PageLink,
 } from 'mdbreact';
 import React from 'react';
 import { removeAuthorizationToken } from '../../util/apiUtils';
+import { Link } from '@material-ui/core';
 
 export default class Menu extends Component {
     constructor(props) {
@@ -49,7 +51,14 @@ export default class Menu extends Component {
                 <MDBCollapse id='navbarCollapse3' isOpen={this.state.isOpen} navbar>
                     <MDBNavbarNav left>
                         <MDBNavItem>
-                            <MDBNavLink to='/createEvent'>Create Event</MDBNavLink>
+                            <Link href='/createEvent' style={{ color: '#ffffff', textDecoration: 'none' }}>
+                                Create Event
+                            </Link>
+                        </MDBNavItem>
+                        <MDBNavItem>
+                            <Link href='/chat' style={{ color: '#ffffff', textDecoration: 'none' }}>
+                                Chat
+                            </Link>
                         </MDBNavItem>
                     </MDBNavbarNav>
                     <MDBNavbarNav right>

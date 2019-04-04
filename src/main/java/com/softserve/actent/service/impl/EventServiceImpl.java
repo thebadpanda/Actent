@@ -1,7 +1,7 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.model.entity.Chat;
 import com.softserve.actent.model.entity.ChatType;
@@ -20,6 +20,7 @@ import com.softserve.actent.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class EventServiceImpl implements EventService {
     public Event get(Long id) {
 
         return eventRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(
+                new DataNotFoundException(
                         ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND,
                         ExceptionCode.NOT_FOUND));
     }
@@ -72,12 +73,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> findActiveEvents() {
+        return eventRepository.findByStartDateIsGreaterThanEqual(LocalDateTime.now());
+    }
+
+    @Override
     public List<Event> getByTitle(String title) {
 
         List<Event> events = eventRepository.findByTitle(title);
 
         if (events == null) {
-            throw new ResourceNotFoundException(ExceptionMessages.EVENT_BY_THIS_TITLE_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.EVENT_BY_THIS_TITLE_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
 
         return events;
@@ -273,7 +279,7 @@ public class EventServiceImpl implements EventService {
     private void checkIfExist(Long id) {
 
         if (!eventRepository.existsById(id)) {
-            throw new ResourceNotFoundException(
+            throw new DataNotFoundException(
                     ExceptionMessages.EVENT_BY_THIS_ID_IS_NOT_FOUND,
                     ExceptionCode.NOT_FOUND);
         }
@@ -324,6 +330,6 @@ public class EventServiceImpl implements EventService {
     }
 
     private void throwResourceNotFound(String message) {
-        throw new ResourceNotFoundException(message, ExceptionCode.NOT_FOUND);
+        throw new DataNotFoundException(message, ExceptionCode.NOT_FOUND);
     }
 }
