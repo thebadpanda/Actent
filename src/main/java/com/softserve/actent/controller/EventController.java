@@ -41,6 +41,7 @@ import java.util.List;
 @PreAuthorize("permitAll()")
 public class EventController {
 
+    private static final String url = "/events";
     private final EventService eventService;
     private final EventCreationConverter eventCreationConverter;
     private final EventConverter eventConverter;
@@ -61,15 +62,15 @@ public class EventController {
         this.eventFilterRepository = eventFilterRepository;
     }
 
-    @GetMapping(value = "/events/all")
+    @GetMapping(value = url + "/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventDto> getAll() {
+    public List<EventDto> getActiveEvents() {
 
-        List<Event> eventList = eventService.getAll();
+        List<Event> eventList = eventService.findActiveEvents();
         return eventConverter.convertToDto(eventList);
     }
 
-    @GetMapping(value = "/events/{id}")
+    @GetMapping(value = url + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto getEventById(@PathVariable
                                  @NotNull(message = StringConstants.EVENT_ID_CAN_NOT_BE_NULL)
@@ -80,18 +81,18 @@ public class EventController {
         return eventConverter.convertToDto(event);
     }
 
-    @PostMapping(value = "/events/filter")
+    @PostMapping(value = url + "/filter")
     public List<EventDto> getEventsWithFilter(
             @RequestBody EventFilterDto eventFilterDto) {
         System.out.println(eventFilterDto);
         List<Event> result = eventFilterRepository.findAll(EventSpecification.getTitle(eventFilterDto.getTitle())
-                .and(EventSpecification.getCategory(eventFilterDto.getCategoryId()))
+                .and(EventSpecification.getCategory(eventFilterDto.getCategoriesId()))
                 .and(EventSpecification.getCity(eventFilterDto.getCityName()))
                 .and(EventSpecification.getDate(eventFilterDto.getDateFrom(), eventFilterDto.getDateTo())));
         return eventConverter.convertToDto(result);
     }
 
-    @GetMapping(value = "/events/title/{title}")
+    @GetMapping(value = url + "/title/{title}")
     @ResponseStatus(HttpStatus.OK)
     public List<EventDto> getByTitle(@PathVariable
                                      @NotNull(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
@@ -106,7 +107,7 @@ public class EventController {
         return eventConverter.convertToDto(eventList);
     }
 
-    @PostMapping(value = "/events")
+    @PostMapping(value = url)
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEvent(@Validated @RequestBody EventCreationDto eventCreationDto) {
@@ -117,7 +118,7 @@ public class EventController {
         return new IdDto(event.getId());
     }
 
-    @PutMapping(value = "events/{id}")
+    @PutMapping(value = url + "/{id}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEventById(@Validated @RequestBody EventUpdateDto eventUpdateDto,
@@ -132,7 +133,7 @@ public class EventController {
         return eventConverter.convertToDto(event);
     }
 
-    @DeleteMapping(value = "/events/{id}")
+    @DeleteMapping(value = url + "/{id}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
     public void deleteEventById(@PathVariable

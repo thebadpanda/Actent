@@ -10,9 +10,7 @@ import {
     MDBView,
     MDBMask,
 } from 'mdbreact';
-import { BrowserRouter as Router } from 'react-router-dom';
 import HeaderInput from './HeaderInput';
-import Menu from './Menu';
 
 export default class Header extends React.Component {
     constructor(props) {
@@ -34,7 +32,6 @@ export default class Header extends React.Component {
         return (
             <div>
                 <header>
-                    <Menu />
                     <MDBView src='https://mdbootstrap.com/img/Photos/Others/img%20(40).jpg'>
                         <MDBMask overlay='black-strong' className='flex-center flex-column text-white text-center'>
                             <HeaderInput setTitle={this.props.setTitle} />

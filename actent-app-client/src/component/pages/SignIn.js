@@ -29,6 +29,7 @@ export default class SignIn extends React.Component {
 
         getTokenFromCredentials(user)
             .then(response => {
+                console.log(response.data);
                 response.data.accessToken
                     ? this.handleLogin(response.data.accessToken)
                     : Promise.reject('Access token is undefined.');

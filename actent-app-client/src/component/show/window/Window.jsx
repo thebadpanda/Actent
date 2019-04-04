@@ -2,13 +2,11 @@ import React from 'react';
 import Event from './event/Event.jsx';
 import EquipmentList from './equipment/EquipmentList.jsx';
 import Review from './review/Review.jsx';
-
 import './Window.css';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 function TabContainer(props) {
     return (
@@ -35,7 +33,7 @@ class Window extends React.Component {
     render() {
 
         const { value } = this.state;
-
+      
         return (
 
             <div>
@@ -55,6 +53,7 @@ class Window extends React.Component {
                 {value === 1 && <TabContainer>
                                     <EquipmentList
                                     creatorId={this.props.creatorId}
+                                    eventId={this.props.eventId}
                                     />
                                 </TabContainer>}
                 {value === 2 && <TabContainer>

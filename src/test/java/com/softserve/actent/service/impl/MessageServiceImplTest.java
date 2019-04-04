@@ -1,6 +1,6 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.validation.ValidationException;
 import com.softserve.actent.model.entity.Chat;
 import com.softserve.actent.model.entity.Image;
@@ -99,7 +99,7 @@ public class MessageServiceImplTest {
 
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenInValidId_thenExceptionShouldBeThrown() {
         messageService.get(nonExistingId);
     }
@@ -114,7 +114,7 @@ public class MessageServiceImplTest {
         assertThat(messageService.getAll().size()).isEqualTo(messageCount);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenFindAllIsEmpty_thenExceptionShouldBeThrown() {
         Mockito.when(messageRepository.findAll()).thenReturn(Collections.emptyList());
         assertThat(messageService.getAll().size()).isEqualTo(messageCount);
@@ -142,7 +142,7 @@ public class MessageServiceImplTest {
         messageService.delete(firstId);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenDeleteMessageWithNonExistingId_thenExceptionShouldBeThrown() {
 
         messageService.delete(nonExistingId);
