@@ -1,7 +1,6 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.exceptions.DuplicateValueException;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.model.entity.City;
 import com.softserve.actent.model.entity.Image;
@@ -205,7 +204,7 @@ public class UserServiceImplTest {
         assertThat(user.getBio()).isEqualTo(firstUserBio);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenUserByIdNotExist_thenExceptionShouldBeThrown() {
 
         userService.get(nonExistUserId);
@@ -226,7 +225,7 @@ public class UserServiceImplTest {
 
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenUserByEmailNotExist_thenExceptionShouldBeThrown() {
 
         userService.getUserByEmail(nonExistUserEmail);
@@ -254,7 +253,7 @@ public class UserServiceImplTest {
 
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void whenDeleteUserWithNonExistingId_thenExceptionShouldBeThrown() {
 
         userService.delete(nonExistUserId);

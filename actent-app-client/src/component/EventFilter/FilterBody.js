@@ -10,6 +10,7 @@ export default class FilterBody extends Component {
                     <MDBCard reverse>
                         <MDBCardBody cascade className='text-center'>
                             <FilterButtoms
+                                categoriesId={this.props.categoriesId}
                                 cityName={this.props.cityName}
                                 setDateRange={this.props.setDateRange}
                                 cleanFilter={this.props.cleanFilter}

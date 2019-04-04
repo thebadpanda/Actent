@@ -65,11 +65,11 @@ export default class FilterButtoms extends Component {
                     style={{ marginBottom: '1rem' }}>
                     Select City
                 </MDBBtn>
-                {button}
 
                 <MDBCollapse id='category' isOpen={this.state.collapseID}>
                     <div className='container'>
                         <CategoryList
+                            categoriesId={this.props.categoriesId}
                             setCategoriesId={this.props.setCategoriesId}
                             setButtonColor={this.setCategoryButtonColor}
                             categories={this.props.categories}

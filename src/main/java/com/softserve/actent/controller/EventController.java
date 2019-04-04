@@ -64,9 +64,9 @@ public class EventController {
 
     @GetMapping(value = url + "/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventDto> getAll() {
+    public List<EventDto> getActiveEvents() {
 
-        List<Event> eventList = eventService.getAll();
+        List<Event> eventList = eventService.findActiveEvents();
         return eventConverter.convertToDto(eventList);
     }
 
