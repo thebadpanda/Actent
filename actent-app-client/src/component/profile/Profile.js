@@ -2,29 +2,19 @@ import React from 'react';
 import axios from 'axios';
 import ProfileView from './ProfileView';
 import ProfileEdit from './ProfileEdit';
+import { getCurrentUser } from '../../util/apiUtils';
 
 export const apiUrl = 'http://localhost:8080/api/v1';
-
-export const getUserId = () => {
-    let cookies = document.cookie.split(';').map(cookie => cookie.replace(' ', ''));
-    const name = 'user_id=';
-
-    for (let i = 0; i < cookies.length; i++) {
-        if (cookies[i].indexOf(name) !== -1) {
-            return +cookies[i].substring(name.length, cookies[i].length);
-        }
-    }
-    return null;
-};
 
 export default class Profile extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            userId: 1,
+            userId: Number(props.match.params.id),
             isEdit: false,
             isReviewing: false,
-            isMyProfile: true, // isMyProfile: +this.props.match.params.userId === getCurrentUser().getId(),
+            isMyProfile: props.current ? true : false,
             firstName: '',
             lastName: '',
             phone: '',
@@ -53,8 +43,6 @@ export default class Profile extends React.Component {
         axios
             .get(profileUrl)
             .then(response => {
-                console.log(response.data);
-
                 this.setState({
                     userId: response.data['id'],
                     firstName: response.data['firstName'],
@@ -118,6 +106,6 @@ export default class Profile extends React.Component {
             />
         );
 
-        return <div>{view}</div>;
+        return view;
     }
 }

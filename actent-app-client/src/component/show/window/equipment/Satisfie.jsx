@@ -154,7 +154,7 @@ class ConfirmationDialog extends React.Component {
     render() {
         const { classes } = this.props;
 
-        const isDisabled = !!(this.props.currentEquipment.assignedUserId - this.state.currentUserId);
+        const isDisabled = !(this.props.currentEquipment.assignedUserId === this.state.currentUserId);
 
         return (
             <div className={classes.root}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { el } from 'date-fns/esm/locale';
+import './Event.css';
 
 class Image extends React.Component {
 
@@ -14,7 +14,7 @@ class Image extends React.Component {
         } else {
             return (
                 <div>
-                    <img src='bigstock-events-7444309.jpg' />
+                    {/* <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkuMDBpYUKMxK9VxkfZSNgZdHvP4xueFcGoBHKx5h-4ykw_cm2"} ></img> */}
                 </div>
             )
         }

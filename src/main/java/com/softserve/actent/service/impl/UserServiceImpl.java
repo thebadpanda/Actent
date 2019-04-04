@@ -8,12 +8,16 @@ import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.exceptions.validation.IncorrectEmailException;
 import com.softserve.actent.model.entity.User;
 import com.softserve.actent.repository.UserRepository;
+import com.softserve.actent.service.CityService;
 import com.softserve.actent.service.ImageService;
 import com.softserve.actent.service.LocationService;
 import com.softserve.actent.service.UserService;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -22,16 +26,16 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final LocationService locationService;
+    private final CityService cityService;
     private final ImageService imageService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           LocationService locationService,
+                           CityService cityService,
                            ImageService imageService) {
 
         this.userRepository = userRepository;
-        this.locationService = locationService;
+        this.cityService = cityService;
         this.imageService = imageService;
     }
 
@@ -51,14 +55,32 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
     @Override
     public User update(User user, Long id) {
+
         if (userRepository.existsById(id)) {
-            user.setId(id);
-            user.setLocation(locationService.get(user.getLocation().getId()));
-            user.setAvatar(imageService.get(user.getAvatar().getId()));
-            return userRepository.save(user);
+
+            User existingUser = this.get(id);
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setLogin(user.getLogin());
+            existingUser.setPhone(user.getPhone());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setBirthDate(user.getBirthDate());
+            existingUser.setBio(user.getBio());
+
+            if (user.getLocation() != null){
+                existingUser.setLocation(cityService.get(user.getLocation().getId()));
+            }
+            if (user.getAvatar() != null){
+                existingUser.setAvatar(imageService.get(user.getAvatar().getId()));
+            }
+            return userRepository.save(existingUser);
+
         } else {
             throw new AccessDeniedException(ExceptionMessages.USER_NOT_REGISTRED, ExceptionCode.NOT_FOUND);
         }
