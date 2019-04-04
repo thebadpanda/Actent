@@ -50,7 +50,6 @@ public class MessageServiceImpl implements MessageService {
     public Message addImageMessage(Message message) {
         Image image = new Image();
         Message newMessage = new Message();
-        image.setHash(message.getImage().getHash());
         image.setFilePath(message.getImage().getFilePath());
         newMessage.setMessageType(MessageType.IMAGE);
         newMessage.setImage(imageService.add(image));
