@@ -18,9 +18,7 @@ class Show extends React.Component {
     async componentDidMount() {
         try {
             const data = (await getCurrentUser()).data;
-
             let assi = false;
-
             console.log(this.props.eventUserList)
             
             this.props.eventUserList.forEach(e => {

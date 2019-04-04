@@ -38,7 +38,6 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank(message = StringConstants.TITLE_SHOULD_NOT_BE_BLANK)
     @Length(max = NumberConstants.TITLE_MAX_LENGTH, message = StringConstants.TITLE_LENGTH_IS_TO_LONG)
     @Column(nullable = false, length = NumberConstants.TITLE_MAX_LENGTH)
@@ -66,7 +65,7 @@ public class Event {
     @Fetch(FetchMode.JOIN)
     private User creator;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
     @Fetch(FetchMode.JOIN)
     private Location address;
