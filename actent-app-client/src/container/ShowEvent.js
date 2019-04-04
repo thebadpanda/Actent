@@ -4,48 +4,12 @@ import Axios from 'axios';
 
 class ShowEvent extends React.Component {
     state = {
-        eventId: this.props.match.params.id,
-        title: 'Super party event',
-        description: 'Description of this super puper event !',
-        image: 'Image name',
-        info: 'All info about event',
-        chat: 'Chat of this event',
-        equipments: ['first equipment', 'second equipment', 'third equipment'],
-        reviews: [
-            'first review',
-            'second review',
-            'third review',
-            'fff review',
-            'fourth review',
-            'fifth review',
-            'sixth review',
-            'seventh review',
-            'eight review',
-            'ten review',
-            'eleven review',
-            'twelve review',
-            'thirteen review',
-            'fourteen review',
-            '15 review',
-            '16 review',
-            '17 review',
-            '18 review',
-            '19 review',
-            '20 review',
-            '21 review',
-            '22 review',
-            '23 review',
-            '24 review',
-            '25 review',
-            '26 review',
-            '27 review',
-            '28 review',
-            '29 review',
-        ],
-
+        eventId: Number(this.props.match.params.id),
+        reviews: ['first review', 'second review', 'third review', 'fff review', 'fourth review', 'fifth review', 'sixth review', 'seventh review', 'eight review', 'ten review', 'eleven review', 'twelve review', 'thirteen review', 'fourteen review', '15 review', '16 review', '17 review', '18 review', '19 review', '20 review', '21 review', '22 review', '23 review', '24 review', '25 review', '26 review', '27 review', '28 review', '29 review'],
         creatorId: undefined,
         participants: undefined,
         spectators: undefined,
+        eventUserList: [],
     };
 
     componentDidMount() {
@@ -94,6 +58,7 @@ class ShowEvent extends React.Component {
                 ...this.state,
                 participants: participantsCount,
                 spectators: spectatorsCount,
+                eventUserList: part.data,
             });
         });
     };
@@ -120,6 +85,7 @@ class ShowEvent extends React.Component {
                     participants={this.state.participants}
                     spectators={this.state.spectators}
                     eventId={this.state.eventId}
+                    eventUserList={this.state.eventUserList}
                 />
             </div>
         );
