@@ -18,6 +18,7 @@ export default class ProfileView extends React.Component {
     render() {
         const editBtn = this.props.isMyProfile ? (
             <Button
+                style={{ marginLeft: '20px' }}
                 label='Edit'
                 color='primary'
                 variant='contained'
@@ -35,6 +36,17 @@ export default class ProfileView extends React.Component {
                 Add review
             </Button>
         );
+
+        const userEvents = this.props.isMyProfile ? (
+            <Button
+                label='My events'
+                color='primary'
+                variant='contained'
+                disabled={this.props.profileData.id === ''}
+                onClick={this.props.onEditClick}>
+                My Events
+            </Button>
+        ) : null;
 
         const img =
             this.props.profileData.avatar !== null ? (
@@ -88,7 +100,9 @@ export default class ProfileView extends React.Component {
                     </div>
                 </div>
 
-                <div className='styleLowerMain2'>{editBtn}</div>
+                <div className='styleLowerMain2'>
+                    {userEvents} {editBtn}
+                </div>
             </div>
         );
     }
