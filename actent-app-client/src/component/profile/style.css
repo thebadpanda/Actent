@@ -45,10 +45,11 @@
     width: 100px;
 }
 
-.imageStyle {
+/* .imageStyle {
     max-width: 100%;
     max-height: 100%;
-}
+
+} */
 
 /*Edit profile styles*/
 
@@ -109,8 +110,8 @@
 .imageStyle {
     max-width: 100%;
     max-height: 100%;
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 /* FileUpload styles */

@@ -16,10 +16,9 @@ export default class App extends React.Component {
         super(props);
         configureAxios();
         this.state = {
-            currentUser: null,
-            currentUserId: null,
             isAuthenticated: false,
         };
+        this.setCurrentUser();
     }
 
     setCurrentUser = _ => {
@@ -30,14 +29,9 @@ export default class App extends React.Component {
                     currentUserId: res.data.id,
                     isAuthenticated: true,
                 });
-                console.log(this.state);
             })
             .catch(e => console.error(e));
     };
-
-    componentDidMount() {
-        this.setCurrentUser();
-    }
 
     render() {
         return (
@@ -46,7 +40,35 @@ export default class App extends React.Component {
                     <Route path='/auth' component={SignInUp} />
                     <Route path='/show/:id' component={ShowEvent} />
                     <Route path='/show' render={() => <ShowEvent />} />
-                    <Route path='/profile' render={() => <Profile id={this.state.currentUserId} current={true} />} />
+                    <Route
+                        path='/profile'
+                        render={
+                            this.state.currentUserId
+                                ? props => {
+                                      console.log(this);
+
+                                      return <Redirect to={`/users/${this.state.currentUserId}`} />;
+                                  }
+                                : console.log('Waiting for currentUserId...')
+                        }
+                    />
+                    <Route
+                        path='/users/:id'
+                        render={
+                            this.state.currentUserId
+                                ? props => {
+                                      console.log(props.match.params.id);
+                                      console.log(this.state.currentUserId);
+
+                                      props =
+                                          Number(props.match.params.id) === Number(this.state.currentUserId)
+                                              ? { ...props, current: true }
+                                              : { ...props, current: false };
+                                      return <Profile {...props} />;
+                                  }
+                                : console.log('Waiting for currentUserId...')
+                        }
+                    />
                     <Route path='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route exact path='/' component={RenderEventFilterPage} />
