@@ -78,11 +78,8 @@ export default class App extends React.Component {
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/confirm' component={Confirm} />
                     <Route path='/chat' render={() => <Chat chatId={1} />} />
-<<<<<<< HEAD
-=======
                     <Route path='/users/:targetId/addReview' render={props => <ReviewForm {...props} />} />
                     <Route path='/users/:userId/reviews' render={props => <ReviewList {...props} />} />
->>>>>>> 972c0d03bec26c7f1cd11a38827703296a7a4ef9
                     <Route exact path='/' component={RenderEventFilterPage} />
                 </Switch>
                 <Footer />
