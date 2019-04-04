@@ -1,6 +1,6 @@
 package com.softserve.actent.service.impl;
 
-import com.softserve.actent.exceptions.ResourceNotFoundException;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.model.entity.Country;
 import com.softserve.actent.model.entity.Region;
 import com.softserve.actent.repository.CountryRepository;
@@ -72,12 +72,12 @@ public class RegionServiceImplTest {
         assertThat(regionService.get(id).getName()).isEqualTo(name);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void testGetNullId() {
         regionService.get(null);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void testGetByNotExistedId_orThrowException() {
         regionService.get(notExistedId);
     }
@@ -87,7 +87,7 @@ public class RegionServiceImplTest {
         assertThat(regionService.getAll().get(index)).isEqualTo(region);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void testUpdateByNotExistedId_thenThrowException() {
         regionService.update(region, notExistedId);
     }
@@ -102,12 +102,12 @@ public class RegionServiceImplTest {
         regionService.delete(id);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void testDeleteByNotExistedId_thenThrowException() {
         regionService.delete(notExistedId);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = DataNotFoundException.class)
     public void testDeleteByNullId() {
         regionService.delete(null);
     }
