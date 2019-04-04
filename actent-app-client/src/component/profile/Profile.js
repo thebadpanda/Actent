@@ -28,11 +28,6 @@ export default class Profile extends React.Component {
         };
     }
 
-    // componentWillReceiveProps(nextProps, nextContext) {
-    //     //TODO: check if my profile
-    //     this.getProfile();
-    // }
-
     componentDidMount() {
         this.getProfile();
     }
