@@ -94,7 +94,7 @@ public class CountryServiceImplTest {
     }
 
     @Test
-    public void testUpdat() {
+    public void testUpdate() {
         when(countryRepository.existsById(secondId)).thenReturn(true);
         assertThat(countryService.update(secondCountry, secondId).getName()).isEqualTo(secondCountryName);
     }
