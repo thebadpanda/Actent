@@ -15,6 +15,7 @@ export default class Profile extends React.Component {
             userId: Number(props.match.params.id),
             isEdit: false,
             isReviewing: false,
+            isUserEventsOpen: false,
             isMyProfile: props.current ? true : false,
             firstName: '',
             lastName: '',
@@ -83,6 +84,12 @@ export default class Profile extends React.Component {
     handleClose = () => {
         this.setState({
             isEdit: false,
+        });
+    };
+
+    handleUserEvents = () => {
+        this.setState({
+            isUserEventsOpen: true,
         });
     };
 

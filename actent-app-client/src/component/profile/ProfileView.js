@@ -16,8 +16,6 @@ export default class ProfileView extends React.Component {
         super(props);
     }
 
-    handleAddReview = path => {};
-
     render() {
         const editBtn = this.props.isMyProfile ? (
             <Button
