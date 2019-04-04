@@ -55,6 +55,11 @@ export default class Menu extends Component {
                                 Create Event
                             </Link>
                         </MDBNavItem>
+                        <MDBNavItem>
+                            <Link href='/chat' style={{ color: '#ffffff', textDecoration: 'none', marginLeft: '25%' }}>
+                                Chat
+                            </Link>
+                        </MDBNavItem>
                     </MDBNavbarNav>
                     <MDBNavbarNav right>
                         <MDBNavItem>
