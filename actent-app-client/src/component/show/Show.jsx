@@ -12,15 +12,25 @@ class Show extends React.Component {
 
     state = {
         currentUserId: undefined,
+        assigne: undefined,
     }
 
     async componentDidMount() {
         try {
             const data = (await getCurrentUser()).data;
 
+            let assi = false;
+
+            console.log(this.props.eventUserList)
+            
+            this.props.eventUserList.forEach(e => {
+                e.userId === data.id ? assi = true : assi = false;
+            });
+
             this.setState({
                 ...this.state,
                 userId: data.id,
+                assigne: assi,
             });
 
             this.getProfile();
@@ -47,11 +57,16 @@ class Show extends React.Component {
                             <Participant 
                                 currentUserId={this.state.userId}
                                 eventId={this.props.eventId}
+                                assigne={this.state.assigne}
                             />
                         </div>
 
                         <div className='b-2'>
-                            <Spectator currentUserId={this.state.userId}/>
+                            <Spectator 
+                                currentUserId={this.state.userId}
+                                eventId={this.props.eventId}
+                                assigne={this.state.assigne}
+                            />
                         </div>
                     </div>
 
