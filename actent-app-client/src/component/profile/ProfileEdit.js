@@ -78,8 +78,6 @@ export default class ProfileEdit extends React.Component {
 
     handleBirthday = (event, date) => {
         this.setState({ birthday: date });
-        console.log(date);
-        console.log(event);
     };
 
     handleBio = event => {
@@ -108,7 +106,7 @@ export default class ProfileEdit extends React.Component {
             return (
                 this.state.birthday.getFullYear() +
                 '-' +
-                this.handleDigitsInMonth(this.state.birthday.getMonth() + 1) +
+                this.handleDigitsInMonth(this.state.birthday.getMonth()) +
                 '-' +
                 this.handleDigitsInDate(this.state.birthday.getDate())
             );
