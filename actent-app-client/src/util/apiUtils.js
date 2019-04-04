@@ -11,16 +11,6 @@ import {
 } from '../constants/apiConstants';
 import axios from 'axios';
 
-export const testConfiguration = _ => {
-    axios.defaults.baseURL = API_BASE_URL;
-    axios.defaults.headers.common['Content-Type'] = 'application/json';
-
-    saveAuthorizationToken(
-        'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTU0MjU0NTU3LCJleHAiOjE1NTQ4NTkzNTd9.uz6_MnbzwnBF5G1yr_ZTDb7HlzWyUaYxlpWRgcO-zwfJQF7lM189nxxx-3TXaZad7RF1CspnKVL3Q1cue80tPQ',
-    );
-    setAuthorizationHeader();
-};
-
 export const configureAxios = _ => {
     axios.defaults.baseURL = API_BASE_URL;
     axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -29,15 +19,16 @@ export const configureAxios = _ => {
 
 export const saveAuthorizationToken = accessToken => localStorage.setItem(ACCESS_TOKEN, accessToken);
 
-export const removeAuthorizationToken = _ => localStorage.removeItem(ACCESS_TOKEN);
+export const removeAuthorizationToken = _ => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    removeAuthorizationHeader();
+};
 
 export const setAuthorizationHeader = _ => {
-    
     localStorage.getItem(ACCESS_TOKEN)
         ? (axios.defaults.headers.common[AUTHORIZATION_HEADER] = `${BEARER} ${localStorage.getItem(ACCESS_TOKEN)}`)
         : Promise.reject('setAuthorizationHeader: No access token set.');
-        
-}
+};
 
 export const removeAuthorizationHeader = _ => delete axios.defaults.headers.common[AUTHORIZATION_HEADER];
 

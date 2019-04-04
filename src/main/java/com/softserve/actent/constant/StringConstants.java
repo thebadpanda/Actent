@@ -89,7 +89,7 @@ public class StringConstants {
     public static final String ASSIGNED_EVENT_ID_MUST_BE_POSITIVE = "Assigned eventId must be positive number";
     public static final String ASSIGNED_EVENT_ID_SHOULD_NOT_BE_NULL = "Assigned eventId shouldn`t be empty";
     public static final String TITLE_AT_LEAST_SIX_AND_NO_LONGER_THAN_HUNDRED_SYMBOLS = "Title should be between 6 and 100 symbols";
-    public static final String DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS = "Descriptions should be between 6 and 1000 symbols";
+    public static final String DESCRIPTION_AT_LEAST_SIX_AND_NO_LONGER_THAN_THOUSAND_SYMBOLS = "Descriptions should be between 6 and 500 symbols";
     public static final String EQUIPMENT_ID_SHOULD_BE_POSITIVE = "Equipment id should be positive";
 
     public static final String MESSAGE_SHOULD_NOT_BE_BLANK = "Message can't be blank";

@@ -1,8 +1,8 @@
 package com.softserve.actent.service.impl;
 
 import com.softserve.actent.constant.ExceptionMessages;
+import com.softserve.actent.exceptions.DataNotFoundException;
 import com.softserve.actent.exceptions.DuplicateValueException;
-import com.softserve.actent.exceptions.ResourceNotFoundException;
 import com.softserve.actent.exceptions.codes.ExceptionCode;
 import com.softserve.actent.exceptions.security.AccessDeniedException;
 import com.softserve.actent.exceptions.validation.IncorrectEmailException;
@@ -105,13 +105,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
+                .orElseThrow(() -> new DataNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(() ->
-                new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_EMAIL_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
+                new DataNotFoundException(ExceptionMessages.USER_BY_THIS_EMAIL_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 
     @Transactional
@@ -122,13 +122,13 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             userRepository.deleteById(id);
         } else {
-            throw new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
+            throw new DataNotFoundException(ExceptionMessages.USER_BY_THIS_ID_IS_NOT_FOUND, ExceptionCode.NOT_FOUND);
         }
     }
 
     @Override
     public User getUserByLogin(String login) {
         return userRepository.findUserByLogin(login).orElseThrow(() ->
-                new ResourceNotFoundException(ExceptionMessages.USER_BY_THIS_LOGIN_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
+                new DataNotFoundException(ExceptionMessages.USER_BY_THIS_LOGIN_IS_NOT_FOUND, ExceptionCode.NOT_FOUND));
     }
 }
