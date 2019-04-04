@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import './style.css';
+import { Redirect } from 'react-router-dom';
 
 export const s3Root = 'https://s3.ap-south-1.amazonaws.com/';
 
@@ -23,7 +24,8 @@ export default class ProfileView extends React.Component {
                 color='primary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                onClick={this.props.onEditClick}>
+                onClick={this.props.onEditClick}
+            >
                 Edit
             </Button>
         ) : (
@@ -32,18 +34,14 @@ export default class ProfileView extends React.Component {
                 color='secondary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                onClick={this.props.isUserEventsOpen}>
+                href={`${this.props.link}`}
+            >
                 Add review
             </Button>
         );
 
         const userEvents = this.props.isMyProfile ? (
-            <Button
-                label='My events'
-                color='primary'
-                variant='contained'
-                disabled={this.props.profileData.id === ''}
-                onClick={this.props.onEditClick}>
+            <Button label='My events' color='primary' variant='contained' disabled={this.props.profileData.id === ''}>
                 My Events
             </Button>
         ) : null;
