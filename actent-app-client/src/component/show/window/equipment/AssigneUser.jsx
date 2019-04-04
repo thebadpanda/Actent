@@ -4,13 +4,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { getCurrentUser } from '../../../../util/apiUtils';
-
-let getUserId = () => 2;
+import './AssignedUser.css'
 
 class AlertDialog extends React.Component {
     state = {
         open: false,
         currentUserId: undefined,
+        isDisabled: this.props.currentEquipment.assignedUserId ? true : false,
     };
 
     constructor(props) {
@@ -29,7 +29,7 @@ class AlertDialog extends React.Component {
     handleAssignedUserId = () => {
         let equipment = {
             assignedEventId: this.props.currentEquipment.assignedEventId,
-            assignedUserId: getUserId(),
+            assignedUserId: this.state.currentUserId,
             description: this.props.currentEquipment.description,
             satisfied: this.props.currentEquipment.satisfied,
             title: this.props.currentEquipment.title
@@ -59,23 +59,29 @@ class AlertDialog extends React.Component {
 
     hasAccesDiscardAssigne = () => {
 
+        console.log(this.state.currentUserId);
         console.log(this.props.currentEquipment.assignedUserId);
 
-        if (this.state.currentUserId !== this.props.currentEquipment.assignedUserId ){
-            return false;
-        }
+         console.log("has accses" + this.state.currentUserId !== this.props.currentEquipment.assignedUserId);
 
-        return true;
+        if (this.state.currentUserId !== this.props.currentEquipment.assignedUserId ){
+            console.log("sadadsda");
+            
+            this.setState({isDisabled: true})
+        } else {
+
+            this.setState({isDisabled: false})
+        } 
     }
 
     render() {
         let assigneButton;
-
+        let assignedMatch = !!(this.props.currentEquipment.assignedUserId - this.state.currentUserId);
         if (this.props.currentEquipment.assignedUserId === null) {
 
             assigneButton = (
                 <div>
-                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen} style={{ margin: "10%" }}>
                         Assigne
                     </Button>
 
@@ -100,7 +106,7 @@ class AlertDialog extends React.Component {
         } else{
             assigneButton = (
                 <div>
-                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen} disabled={!this.hasAccesDiscardAssigne}>
+                    <Button variant="outlined" color="primary" onClick={this.handleClickOpen} disabled={assignedMatch} style={{ margin: "10%" }}>
                         Discard assigne
                     </Button>
 
@@ -127,8 +133,10 @@ class AlertDialog extends React.Component {
         return (
             <div>
                 {assigneButton}
-                <p>{this.props.currentEquipment.assignedUserFirstName}</p>
-                <p>{this.props.currentEquipment.assignedUserLastName}</p>
+                <div className="assignedUser">
+                    <p>{this.props.currentEquipment.assignedUserFirstName}</p>
+                    <p>{this.props.currentEquipment.assignedUserLastName}</p>
+                </div>
             </div>
         );
     }
