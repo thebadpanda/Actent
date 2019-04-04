@@ -34,14 +34,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@PreAuthorize("isAnonymous()")
+@PreAuthorize("permitAll()")
 @RequestMapping(UrlConstants.API_V1)
 public class UserController {
 
@@ -99,7 +102,7 @@ public class UserController {
                                      @PathVariable Long userId) {
 
         if (currentUser.getId().equals(userId)) {
-            // TODO: user can not write review for himself
+            throw new AccessDeniedException(StringConstants.USER_CANNOT_WRITE_REVIEW_ABOUT_HIMSELF, ExceptionCode.VALIDATION_FAILED);
         }
 
         Review review = modelMapper.map(createReviewDto, Review.class);
