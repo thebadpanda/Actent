@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { Grid, Typography, Divider, Button } from '@material-ui/core';
 import Ratings from 'react-ratings-declarative';
 import { addReviewToUser, getUserById } from '../../util/apiUtils';
+import { Redirect } from 'react-router-dom';
 
 export default class ReviewForm extends Component {
     state = {
@@ -15,10 +16,9 @@ export default class ReviewForm extends Component {
 
     constructor(props) {
         super(props);
-        // 'user' or 'event'
         this.state.target.type = props.targetType ? props.targetType : 'user';
-        this.state.target.id = props.targetId;
-        getUserById(props.targetId).then(res =>
+        this.state.target.id = props.match.params.targetId;
+        getUserById(props.match.params.targetId).then(res =>
             this.setState({
                 ...this.state,
                 target: {
@@ -52,20 +52,24 @@ export default class ReviewForm extends Component {
         const review = this.state.review;
 
         if (review.score < 1 || review.score > 5) {
+            alert(`Bad score: ${review.score}. Score must be in range from 1 to 5.`);
             return Promise.reject(`Bad score: ${review.score}`);
         }
 
         if (review.text.length < 10 || review.text.length > 500) {
+            alert(`Bad text length, must be in range from 10 to 500.`);
             return Promise.reject('Bad text length.');
         }
 
-        return addReviewToUser(
+        let redirect;
+
+        addReviewToUser(
             {
                 score: review.score,
                 text: review.text,
             },
             this.state.target.id,
-        );
+        ).then(alert(`Review successfully added.`));
     };
 
     render() {
@@ -121,7 +125,7 @@ export default class ReviewForm extends Component {
                             <Button
                                 variant='outlined'
                                 style={{ marginTop: 5 }}
-                                onClick={async _ => console.log((await this.submitUserReview(targetId)).data)}
+                                onClick={_ => this.submitUserReview(targetId)}
                             >
                                 Submit review
                             </Button>

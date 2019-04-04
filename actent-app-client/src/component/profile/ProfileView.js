@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import './style.css';
+import { Redirect } from 'react-router-dom';
 
 export const s3Root = 'https://s3.ap-south-1.amazonaws.com/';
 
@@ -23,7 +24,8 @@ export default class ProfileView extends React.Component {
                 color='primary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                onClick={this.props.onEditClick}>
+                onClick={this.props.onEditClick}
+            >
                 Edit
             </Button>
         ) : (
@@ -32,18 +34,14 @@ export default class ProfileView extends React.Component {
                 color='secondary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                onClick={this.props.onAddReviewClick}>
+                href={`${this.props.link}`}
+            >
                 Add review
             </Button>
         );
 
         const userEvents = this.props.isMyProfile ? (
-            <Button
-                label='My events'
-                color='primary'
-                variant='contained'
-                disabled={this.props.profileData.id === ''}
-                onClick={this.props.onEditClick}>
+            <Button label='My events' color='primary' variant='contained' disabled={this.props.profileData.id === ''}>
                 My Events
             </Button>
         ) : null;
@@ -78,6 +76,14 @@ export default class ProfileView extends React.Component {
                             {this.props.profileData.login}
                         </p>
                         <p className='styleInput'>
+                            <span className='styleSpan'>Email:</span>
+                            {this.props.profileData.email}
+                        </p>
+                        <p className='styleInput'>
+                            <span className='styleSpan'>Phone:</span>
+                            {this.props.profileData.phone}
+                        </p>
+                        <p className='styleInput'>
                             <span className='styleSpan'>Address:</span>
                             {this.props.address !== null && this.props.address !== undefined
                                 ? `${this.props.profileData.address.name} , ${
@@ -92,10 +98,6 @@ export default class ProfileView extends React.Component {
                         <p className='styleInput'>
                             <span className='styleSpan'>Bio:</span>
                             {this.props.profileData.bio}
-                        </p>
-                        <p className='styleInput'>
-                            <span className='styleSpan'>Interests:</span>
-                            {this.props.profileData.interests}
                         </p>
                     </div>
                 </div>

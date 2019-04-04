@@ -15,6 +15,8 @@ class Location extends React.Component {
         cities: [],
         address: undefined,
         cityId: undefined,
+
+        locationQueryStatus: undefined
     };
 
     handleAddress = (event) => {
@@ -88,6 +90,7 @@ class Location extends React.Component {
             cityId: this.state.cityId
         };
 
+        this.setState({locationQueryStatus: 0});
         fetch("http://localhost:8080/api/v1/locations", {
             method: "POST",
             body: JSON.stringify(eventData),
@@ -95,12 +98,29 @@ class Location extends React.Component {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
-        }).then(response => {
-            response.json().then(data => {
-                console.log("Successful" + data);
-                this.props.setLocationId(data.id)
-            });
-        });
+        })
+            .then((response) => {
+                let status = +response.status;
+                if (status >= 200 && status < 300) {
+                    this.setState({locationQueryStatus: 1});
+                } else {
+                    this.setState({locationQueryStatus: 2});
+                }
+                return response;
+            }, (err) => {
+                console.log('error', err);
+                this.setState({locationQueryStatus: 2});
+                return JSON.stringify({});
+            })
+            .then(response => {
+                response.json()
+                    .then(data => {
+                        console.log("Successful" + data);
+                        this.props.setLocationId(data.id);
+                    });
+            })
+
+        ;
     }
 
     getCities = () => {
@@ -134,7 +154,7 @@ class Location extends React.Component {
                         </select>
                     </div>
 
-                    {this.state.country && (<div >
+                    {this.state.country && (<div>
                             <label>Region</label>
                             <select className="browser-default custom-select" onChange={this.handleChangeRegions}
                                     value={this.state.region}>
@@ -169,6 +189,9 @@ class Location extends React.Component {
                 {this.state.city && (<div>
                         <Input title="To continue please enter address and press Save Location button" type="text"
                                placeholder="Please enter address of event" handleChange={this.handleAddress}/>
+                        {this.state.locationQueryStatus === 0 && (<div>Sending request...</div>)}
+                        {this.state.locationQueryStatus === 1 && (<div>Location created successfully</div>)}
+                        {this.state.locationQueryStatus === 2 && (<div>Something went wrong.....</div>)}
                         <Button
                             action={this.handleAddLocation}
                             type={"primary"}
