@@ -6,7 +6,6 @@ class Chat extends React.Component {
 
         return (
             <div>
-                <h1>Valik</h1>
                 <h1>{this.props.chat}</h1>
             </div>
         );

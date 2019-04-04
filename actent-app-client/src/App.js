@@ -62,9 +62,6 @@ export default class App extends React.Component {
                         render={
                             this.state.currentUserId
                                 ? props => {
-                                      console.log(props.match.params.id);
-                                      console.log(this.state.currentUserId);
-
                                       props =
                                           Number(props.match.params.id) === Number(this.state.currentUserId)
                                               ? { ...props, current: true }
@@ -78,8 +75,8 @@ export default class App extends React.Component {
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/confirm' component={Confirm} />
                     <Route path='/chat' render={() => <Chat chatId={1} />} />
-                    <Route path='/users/:targetId/addReview' render={props => <ReviewForm {...props} />} />
-                    <Route path='/users/:userId/reviews' render={props => <ReviewList {...props} />} />
+                    <Route path='/addReview/:targetId' render={props => <ReviewForm {...props} />} />
+                    <Route path='/reviews/:userId' render={props => <ReviewList {...props} />} />
                     <Route exact path='/' component={RenderEventFilterPage} />
                 </Switch>
                 <Footer />

@@ -3,6 +3,7 @@ import axios from 'axios';
 import ProfileView from './ProfileView';
 import ProfileEdit from './ProfileEdit';
 import { getCurrentUser } from '../../util/apiUtils';
+import { Redirect } from 'react-router-dom';
 
 export const apiUrl = 'http://localhost:8080/api/v1';
 
@@ -53,7 +54,7 @@ export default class Profile extends React.Component {
                     birthday: response.data['birthDate'],
                     bio: response.data['bio'],
                     interests: response.data['interests'],
-                    avatar: response.data['avatar'],
+                    avatonAddReviewClick: response.data['avatar'],
                     email: response.data['email'],
                     phone: response.data['phone'],
                 });
@@ -73,6 +74,11 @@ export default class Profile extends React.Component {
         this.setState({
             isReviewing: true,
         });
+
+        this.setState({
+            redirect: true,
+        });
+        return <Redirect to={`/users/${this.state.currentUserId}/addReview`} />;
     };
 
     handleClose = () => {
@@ -110,6 +116,7 @@ export default class Profile extends React.Component {
                 isMyProfile={this.state.isMyProfile}
                 onEditClick={this.handleEditClick}
                 onAddReviewClick={this.handleAddReview}
+                link={`/addReview/${this.state.userId}`}
             />
         );
 
