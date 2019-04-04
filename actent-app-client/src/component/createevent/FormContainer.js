@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './styles.css';
+import {getCurrentUser} from "../../util/apiUtils";
 
 
 class FormContainer extends Component {
@@ -22,17 +23,29 @@ class FormContainer extends Component {
             accessType: undefined,
             capacity: undefined,
             categoryId: undefined,
-            creatorId: 1,
+            creatorId: undefined,
             description: undefined,
             duration: undefined,
             imageId: null,
             locationId: undefined,
-            startDate: Date.now(),
+            startDate: '2019-04-04T21:11:54',
             title: undefined,
             accessOptions: ["public", "private"],
             errorTitle: undefined,
-            errorDescription: undefined
+            errorDescription: undefined,
+            formQueryStatus: undefined
         };
+    }
+    async componentDidMount() {
+        try {
+            const data = (await getCurrentUser()).data;
+            this.setState({
+                ...this.state,
+                creatorId: data.id,
+            });
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     handleTitle = (e) => {
@@ -47,7 +60,8 @@ class FormContainer extends Component {
     }
 
     handleDateChange = (e) => {
-        let value = Date.parse(e);
+        // let value = Date.parse(e);
+        let value = e.target.value;
         this.setState({startDate: value});
     }
 
@@ -72,6 +86,9 @@ class FormContainer extends Component {
 
         let eventData = this.state;
 
+        this.setState({
+            formQueryStatus: 0
+        });
         fetch("http://localhost:8080/api/v1/events", {
             method: "POST",
             body: JSON.stringify(eventData),
@@ -79,14 +96,24 @@ class FormContainer extends Component {
                 Accept: "application/json",
                 "Content-Type": "application/json"
             }
-        }).then(response => {
-            response.json().then(data => {
-                console.log("Successful" + data);
+        })
+            .then(response => {
+                let status = +response.status;
+                if (status >= 200 && status < 300) {
+                    this.setState({formQueryStatus: 1});
+                } else {
+                    this.setState({formQueryStatus: 2});
+                }
+                return response;
+            })
+            .then(response => {
+                response.json().then(data => {
+                    console.log("Successful" + data);
+                });
             });
-        });
     }
 
-    isTitleValid = (title) =>{
+    isTitleValid = (title) => {
         let isValid = true;
         let errorTitle = "";
         if (title === '') {
@@ -102,7 +129,7 @@ class FormContainer extends Component {
         return isValid;
     }
 
-    isDescriptionValid = (description) =>{
+    isDescriptionValid = (description) => {
         let isValid = true;
         let errorDescription = "";
         if (description === '') {
@@ -146,7 +173,7 @@ class FormContainer extends Component {
     render() {
         return (
             <div className="mainWrapper">
-                <h1> Creating an event  </h1>
+                <h1> Creating an event </h1>
                 <Input
                     type={"text"}
                     title={"Title "}
@@ -196,13 +223,13 @@ class FormContainer extends Component {
                         margin="normal"
                         label="Date picker"
                         value={this.state.startDate}
-                        onChange={this.handleDateChange}
+                        // onChange={this.handleDateChange}
                     />
                     <TimePicker
                         margin="normal"
                         label="Time picker"
                         value={this.state.startDate}
-                        onChange={this.handleDateChange}
+                        // onChange={this.handleDateChange}
                     />
                 </MuiPickersUtilsProvider>
                 <Select title={'Access'}
@@ -221,6 +248,11 @@ class FormContainer extends Component {
                     placeholder={"Describe details about event"}
                     error={this.state.errorDescription}
                 />
+
+
+                {this.state.formQueryStatus === 0 && (<div>Status: Sending request...</div>)}
+                {this.state.formQueryStatus === 1 && (<div>Status: Event created successfully</div>)}
+                {this.state.formQueryStatus === 2 && (<div>Status: Something went wrong.....</div>)}
                 <Button
                     action={this.handleFormSubmit}
                     type={"primary"}
