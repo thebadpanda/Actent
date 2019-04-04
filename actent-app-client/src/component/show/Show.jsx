@@ -19,7 +19,6 @@ class Show extends React.Component {
         try {
             const data = (await getCurrentUser()).data;
             let assi = false;
-            console.log(this.props.eventUserList)
             
             this.props.eventUserList.forEach(e => {
                 e.userId === data.id ? assi = true : assi = false;
@@ -30,8 +29,7 @@ class Show extends React.Component {
                 userId: data.id,
                 assigne: assi,
             });
-
-            this.getProfile();
+            console.log(this.props.eventUserList)
 
         } catch (e) {
             console.error(e);
