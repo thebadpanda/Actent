@@ -79,6 +79,7 @@ export default class Profile extends React.Component {
         this.setState({
             isEdit: false,
         });
+        window.location.reload();
     };
 
     handleUserEvents = () => {
