@@ -76,7 +76,9 @@ class AlertDialog extends React.Component {
 
     render() {
         let assigneButton;
-        let assignedMatch = !!(this.props.currentEquipment.assignedUserId - this.state.currentUserId);
+
+        let assignedMatch = !(this.props.currentEquipment.assignedUserId === this.state.currentUserId);
+
         if (this.props.currentEquipment.assignedUserId === null) {
 
             assigneButton = (
