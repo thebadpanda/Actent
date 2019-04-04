@@ -108,7 +108,7 @@ public class EventController {
     }
 
     @PostMapping(value = url)
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public IdDto addEvent(@Validated @RequestBody EventCreationDto eventCreationDto) {
 
