@@ -30,11 +30,6 @@ export default class Profile extends React.Component {
         };
     }
 
-    // componentWillReceiveProps(nextProps, nextContext) {
-    //     //TODO: check if my profile
-    //     this.getProfile();
-    // }
-
     componentDidMount() {
         this.getProfile();
     }
@@ -85,7 +80,7 @@ export default class Profile extends React.Component {
         this.setState({
             isEdit: false,
         });
-        window.location.reload();
+        this.getProfile();
     };
 
     handleUserEvents = () => {
