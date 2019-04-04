@@ -63,9 +63,9 @@ public class EventController {
 
     @GetMapping(value = "/events/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventDto> getAll() {
+    public List<EventDto> getActiveEvents() {
 
-        List<Event> eventList = eventService.getAll();
+        List<Event> eventList = eventService.findActiveEvents();
         return eventConverter.convertToDto(eventList);
     }
 
@@ -85,7 +85,7 @@ public class EventController {
             @RequestBody EventFilterDto eventFilterDto) {
         System.out.println(eventFilterDto);
         List<Event> result = eventFilterRepository.findAll(EventSpecification.getTitle(eventFilterDto.getTitle())
-                .and(EventSpecification.getCategory(eventFilterDto.getCategoryId()))
+                .and(EventSpecification.getCategory(eventFilterDto.getCategoriesId()))
                 .and(EventSpecification.getCity(eventFilterDto.getCityName()))
                 .and(EventSpecification.getDate(eventFilterDto.getDateFrom(), eventFilterDto.getDateTo())));
         return eventConverter.convertToDto(result);

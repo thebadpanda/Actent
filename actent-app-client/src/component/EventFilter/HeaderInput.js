@@ -7,7 +7,7 @@ const style = {
 };
 export default class HeaderInput extends Component {
     state = {
-        findEvent: '',
+        findEvent: this.props.findEvent,
     };
 
     handleChange = event => {
