@@ -56,7 +56,7 @@ export default class Menu extends Component {
                             </Link>
                         </MDBNavItem>
                         <MDBNavItem>
-                            <Link href='/chat' style={{ color: '#ffffff', textDecoration: 'none' }}>
+                            <Link href='/chat' style={{ color: '#ffffff', textDecoration: 'none', marginLeft: '25%' }}>
                                 Chat
                             </Link>
                         </MDBNavItem>

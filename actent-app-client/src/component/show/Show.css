@@ -19,6 +19,19 @@
     align-self: stretch;
 }
 
+.but {
+    display: flex;
+    align-self: flex-end;
+}
+
+.b-1 {
+
+}
+
+.b-2 {
+
+}
+
 .box {
     box-shadow: 0 2px 5px;
     border-radius: 1pc;

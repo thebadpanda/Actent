@@ -12,6 +12,7 @@ import Dialog from '@material-ui/core/Dialog';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { getCurrentUser } from '../../../../util/apiUtils';
 
 const options = [
     'Satisfied',
@@ -112,12 +113,15 @@ const styles = theme => ({
 
 class ConfirmationDialog extends React.Component {
 
+    state = {
+        open: false,
+        value: this.props.currentEquipment.satisfied ? options[0] : options[1],
+        currentUserId: undefined,
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-            value: this.props.currentEquipment.satisfied ? options[0] : options[1],
-        };
+        this.setCurrentUserId();
     }
 
     handleClickListItem = () => {
@@ -142,8 +146,15 @@ class ConfirmationDialog extends React.Component {
         this.props.handleUpdateEquipment(this.props.currentEquipment.id, equipment);
     }
 
+    setCurrentUserId = () => {
+
+        getCurrentUser().then(res => this.setState({ currentUserId: res.data.id })).catch(e => console.error(e));
+    }
+
     render() {
         const { classes } = this.props;
+
+        const isDisabled = !(this.props.currentEquipment.assignedUserId === this.state.currentUserId);
 
         return (
             <div className={classes.root}>
@@ -151,6 +162,7 @@ class ConfirmationDialog extends React.Component {
                     <ListItem
                         button
                         onClick={this.handleClickListItem}
+                        disabled={isDisabled}
                     >
                         <ListItemText primary="Is satisfy" secondary={this.state.value} />
                     </ListItem>

@@ -15,10 +15,9 @@ export default class ReviewForm extends Component {
 
     constructor(props) {
         super(props);
-        // 'user' or 'event'
         this.state.target.type = props.targetType ? props.targetType : 'user';
-        this.state.target.id = props.targetId;
-        getUserById(props.targetId).then(res =>
+        this.state.target.id = props.match.params.targetId;
+        getUserById(props.match.params.targetId).then(res =>
             this.setState({
                 ...this.state,
                 target: {
@@ -52,10 +51,12 @@ export default class ReviewForm extends Component {
         const review = this.state.review;
 
         if (review.score < 1 || review.score > 5) {
+            alert(`Bad score: ${review.score}. Score must be in range from 1 to 5.`);
             return Promise.reject(`Bad score: ${review.score}`);
         }
 
         if (review.text.length < 10 || review.text.length > 500) {
+            alert(`Bad text length, must be in range from 10 to 500.`);
             return Promise.reject('Bad text length.');
         }
 
