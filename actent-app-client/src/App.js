@@ -12,6 +12,8 @@ import Footer from './component/EventFilter/Footer';
 import Chat from './component/chat/Chat';
 
 import { Route, Switch, Redirect } from 'react-router-dom';
+import ReviewForm from './component/review/ReviewForm';
+import ReviewList from './component/review/ReviewList';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -54,7 +56,9 @@ export default class App extends React.Component {
                     <Route path='/userEvents' render={() => <UserEventsPage />} />
                     <Route path='/createEvent' render={() => <FormContainer />} />
                     <Route path='/confirm' component={Confirm} />
-                    <Route path='/chat' render={()=><Chat chatId={1}/>} />
+                    <Route path='/chat' render={() => <Chat chatId={1} />} />
+                    <Route path='/users/:targetId/addReview' render={props => <ReviewForm {...props} />} />
+                    <Route path='/users/:userId/reviews' render={props => <ReviewList {...props} />} />
                     <Route exact path='/' component={RenderEventFilterPage} />
                 </Switch>
                 <Footer />
