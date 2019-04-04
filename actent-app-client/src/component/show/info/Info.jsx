@@ -8,7 +8,7 @@ class Info extends React.Component {
 
             <div>
                 <h1>{this.props.info}</h1>
-                <h4>Creation date: {this.props.creationDate}</h4>
+            
                 <h4>Start date: {this.props.startDate}</h4>
                 <h4>Duration: {this.props.duration}</h4>
                 <h4>Capacity: {this.props.capacity}</h4>
@@ -16,8 +16,7 @@ class Info extends React.Component {
                 <h4>Creator:</h4>
                 <h4> First name: {this.props.creatorFirstName}</h4>
                 <h4> Last name: {this.props.creatorLastName}</h4>
-                <h4>Participants: {this.props.participants}</h4>
-                <h4>Spectators: {this.props.spectators}</h4>
+            
             </div>
         );
     }
