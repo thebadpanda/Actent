@@ -27,7 +27,6 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final ChatService chatService;
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
     private final CategoryRepository categoryRepository;
@@ -36,7 +35,6 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     public EventServiceImpl(EventRepository eventRepository,
-                            ChatService chatService,
                             UserRepository userRepository,
                             LocationRepository locationRepository,
                             CategoryRepository categoryRepository,
@@ -44,7 +42,6 @@ public class EventServiceImpl implements EventService {
                             ChatRepository chatRepository) {
 
         this.eventRepository = eventRepository;
-        this.chatService = chatService;
         this.userRepository = userRepository;
         this.locationRepository = locationRepository;
         this.categoryRepository = categoryRepository;
@@ -120,7 +117,9 @@ public class EventServiceImpl implements EventService {
 
     private Chat createChat() {
 
-        return chatService.addChat(ChatType.EVENT.toString());
+        Chat chat = new Chat();
+        chat.setType(ChatType.EVENT);
+        return chatRepository.save(chat);
     }
 
     private Event getPreparedEventFromDataBase(Event event, Long id) {

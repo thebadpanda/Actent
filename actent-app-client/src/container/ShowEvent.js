@@ -9,6 +9,7 @@ class ShowEvent extends React.Component {
         creatorId: undefined,
         participants: undefined,
         spectators: undefined,
+        eventUserList: [],
     };
 
     componentDidMount() {
@@ -57,6 +58,7 @@ class ShowEvent extends React.Component {
                 ...this.state,
                 participants: participantsCount,
                 spectators: spectatorsCount,
+                eventUserList: part.data,
             });
         });
     };
@@ -83,6 +85,7 @@ class ShowEvent extends React.Component {
                     participants={this.state.participants}
                     spectators={this.state.spectators}
                     eventId={this.state.eventId}
+                    eventUserList={this.state.eventUserList}
                 />
             </div>
         );

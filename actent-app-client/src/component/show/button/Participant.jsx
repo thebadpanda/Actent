@@ -9,33 +9,45 @@ class Participant extends React.Component {
 
     state = {
         open: false,
-        disc: true,
-        eventUser: undefined,
+        assigne: false,
     };
+
+    componentDidMount() {
+        this.isPresent();
+    }
 
     assigneAsParticipant = () => {
 
         let userId = this.props.currentUserId
         let eventId = this.props.eventId
         let eventUser = {userId, eventId, eventUserType: 'PARTICIPANT'}
-        console.log(eventUser);
         
         Axios.post(`http://localhost:8080/api/v1/eventsUsers`, eventUser).then(eve => {
-            eve
+            this.setState({
+                ...this.state,
+                id: eve.data.id,
+                assigne: true,
+            });
         }).catch(error => {
             this.setState({
                 ...this.state,
-                disc: false,
+                assigne: true,
             });
             console.log(error);
         });
     };
 
     unassigneUser = () => {
-        Axios.delete(`http://localhost:8080/api/v1/eventsUsers`).then().catch(error => {
+        Axios.delete(`http://localhost:8080/api/v1/eventsUsers/${this.state.id}`).then(eve => {
             this.setState({
                 ...this.state,
-                disc: true,
+                assigne: false,
+            })
+        }
+        ).catch(error => {
+            this.setState({
+                ...this.state,
+                assigne: false,
             });
             console.log(error);
         });
@@ -50,7 +62,22 @@ class Participant extends React.Component {
     };
 
     isPresent = () => {
+        if (this.props.assigne) {
+            console.log(this.props.assigne)
+            this.setState({
+                assigne: true,
+            })
+        } else {
+            console.log(this.props.assigne)
+            this.setState({
+                assigne: false,
+            })
+        }
+    }
 
+    handleUnAssignedUser = () => {
+        this.unassigneUser();
+        this.handleClose();
     }
 
     handleAssignedUserId = () => {
@@ -59,39 +86,67 @@ class Participant extends React.Component {
     };
 
     handleAgreeDiscardAssigne = () => {
-
         this.handleClose();
     };
 
     render() {
         let assigneButton;
     
-        if (this.props.currentUserId && this.state.disc) {
+        if (this.props.currentUserId) {
 
-            assigneButton = (
-                    <div>
-                        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                            Assigne as participiant
-                        </Button>
+            if (this.state.assigne) {
 
-                        <Dialog
-                                open={this.state.open}
-                                onClose={this.handleClose}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
-                            <DialogActions>
-                                <Button onClick={this.handleClose} color="primary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={this.handleAssignedUserId} color="primary" autoFocus>
-                                    Agree
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                    </div>
-            );
+                assigneButton = (
+                        <div>
+                            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                                Unassigne as participiant
+                            </Button>
+
+                            <Dialog
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={this.handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={this.handleUnAssignedUser} color="primary" autoFocus>
+                                        Agree
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
+                );
+            } else {
+
+                    assigneButton = (
+                        <div>
+                            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                                Assigne as participiant
+                            </Button>
+
+                            <Dialog
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={this.handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={this.handleAssignedUserId} color="primary" autoFocus>
+                                        Agree
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
+                );
+            }
         } else {
             assigneButton = (
                     <div>
