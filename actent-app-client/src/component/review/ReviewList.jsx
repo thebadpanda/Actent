@@ -11,7 +11,7 @@ export default class ReviewList extends Component {
 
     constructor(props) {
         super(props);
-        this.getUserReviews(props.userId)
+        this.getUserReviews(props.match.params.userId)
             .then(res =>
                 this.setState({
                     ...this.state,
