@@ -24,8 +24,7 @@ export default class ProfileView extends React.Component {
                 color='primary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                onClick={this.props.onEditClick}
-            >
+                onClick={this.props.onEditClick}>
                 Edit
             </Button>
         ) : (
@@ -34,8 +33,7 @@ export default class ProfileView extends React.Component {
                 color='secondary'
                 variant='contained'
                 disabled={this.props.profileData.id === ''}
-                href={`${this.props.link}`}
-            >
+                href={`${this.props.link}`}>
                 Add review
             </Button>
         );
