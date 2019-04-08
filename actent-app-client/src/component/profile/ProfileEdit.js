@@ -215,7 +215,7 @@ export default class ProfileEdit extends React.Component {
 
                     <div className='styleContainerEdit'>{img}</div>
 
-                    <FileUpload fetchData={this.fetchData} handleSavePhoto={this.handleSavePhoto} />
+                    <FileUpload fetchData={this.fetchData} handleSavePhoto={this.saveUserPhoto} />
                     <div className='styleName'>
                         <TextField
                             id='tv_first_name'
@@ -239,7 +239,7 @@ export default class ProfileEdit extends React.Component {
                             rowsMax={3}
                             value={this.state.login}
                         />
-                        {/* <TextField
+                        <TextField
                             id='tv_address'
                             label='Address'
                             onChange={this.handleAddress}
@@ -247,7 +247,7 @@ export default class ProfileEdit extends React.Component {
                             multiline
                             rowsMax={3}
                             value={this.state.address !== null ? this.state.address.name : ''}
-                        /> */}
+                        />
                         <TextField
                             id='tv_phone'
                             label='Phone'
